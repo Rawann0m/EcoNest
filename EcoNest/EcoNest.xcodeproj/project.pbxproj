@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		992114B62DC8A3D800F80334 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 992114B52DC8A3D800F80334 /* FirebaseAuth */; };
+		992114B82DC8A3D800F80334 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 992114B72DC8A3D800F80334 /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9921136F2DC7C19700F80334 /* EcoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				992114B82DC8A3D800F80334 /* FirebaseCore in Frameworks */,
+				992114B62DC8A3D800F80334 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +40,7 @@
 			isa = PBXGroup;
 			children = (
 				992113712DC7C19700F80334 /* EcoNest */,
+				992114B42DC8A3D800F80334 /* Frameworks */,
 				992113702DC7C19700F80334 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +51,13 @@
 				9921136F2DC7C19700F80334 /* EcoNest.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		992114B42DC8A3D800F80334 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +80,8 @@
 			);
 			name = EcoNest;
 			packageProductDependencies = (
+				992114B52DC8A3D800F80334 /* FirebaseAuth */,
+				992114B72DC8A3D800F80334 /* FirebaseCore */,
 			);
 			productName = EcoNest;
 			productReference = 9921136F2DC7C19700F80334 /* EcoNest.app */;
@@ -94,6 +111,9 @@
 			);
 			mainGroup = 992113662DC7C19700F80334;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 992113702DC7C19700F80334 /* Products */;
 			projectDirPath = "";
@@ -322,6 +342,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		992114B52DC8A3D800F80334 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		992114B72DC8A3D800F80334 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 992113672DC7C19700F80334 /* Project object */;
 }
