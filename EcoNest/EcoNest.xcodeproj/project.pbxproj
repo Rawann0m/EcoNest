@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		992114B62DC8A3D800F80334 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 992114B52DC8A3D800F80334 /* FirebaseAuth */; };
 		992114B82DC8A3D800F80334 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 992114B72DC8A3D800F80334 /* FirebaseCore */; };
+		9921172B2DC8B7CE00F80334 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9921172A2DC8B7CE00F80334 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 			files = (
 				992114B82DC8A3D800F80334 /* FirebaseCore in Frameworks */,
 				992114B62DC8A3D800F80334 /* FirebaseAuth in Frameworks */,
+				9921172B2DC8B7CE00F80334 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +84,7 @@
 			packageProductDependencies = (
 				992114B52DC8A3D800F80334 /* FirebaseAuth */,
 				992114B72DC8A3D800F80334 /* FirebaseCore */,
+				9921172A2DC8B7CE00F80334 /* FirebaseFirestore */,
 			);
 			productName = EcoNest;
 			productReference = 9921136F2DC7C19700F80334 /* EcoNest.app */;
@@ -108,6 +111,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = 992113662DC7C19700F80334;
 			minimizedProjectReferenceProxies = 1;
@@ -150,6 +154,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -213,6 +218,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -364,6 +370,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		9921172A2DC8B7CE00F80334 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
