@@ -20,6 +20,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct YourApp: App {
+    @StateObject private var themeManager = ThemeManager()
+    @StateObject var localizableManager = LanguageManager()
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
@@ -27,7 +29,11 @@ struct YourApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        ContentView()
+          WelcomePage()
+              .environmentObject(localizableManager)
+              .environmentObject(themeManager)
+              .environmentObject(AlertManager.shared)
+              .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
       }
     }
   }
