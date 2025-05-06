@@ -29,19 +29,11 @@ struct YourApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-
-//          WelcomePage()
-//              .environmentObject(localizableManager)
-//              .environmentObject(themeManager)
-//              .environmentObject(AlertManager.shared)
-//              .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-
-          SettingsView()
-                        .environmentObject(localizableManager)
-                        .environmentObject(themeManager)
-                        .environmentObject(AlertManager.shared)
-                        .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-
+          MainTabView()
+              .environmentObject(localizableManager)
+              .environmentObject(themeManager)
+              .environmentObject(AlertManager.shared)
+              .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
       }
     }
   }

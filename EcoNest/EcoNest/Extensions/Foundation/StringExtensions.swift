@@ -2,9 +2,8 @@
 //  StringExtensions.swift
 //  EcoNest
 //
-//  Created by Rawan on 05/05/2025.
+//  Created by Tahani Ayman on 08/11/1446 AH.
 //
-
 
 import Foundation
 
@@ -26,3 +25,4 @@ extension String {
         return NSLocalizedString(self, tableName: nil, bundle: bundle, value: "", comment: "")
     }
 }
+

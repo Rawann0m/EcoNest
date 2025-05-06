@@ -1,0 +1,12 @@
+/* 
+  en.lproj
+  ExpanseTracker
+
+  Created by Tahani Ayman on 17/10/1446 AH.
+  
+*/
+
+"welcome" = "Welcome!";
+"search" = "Search for a transaction...";
+"no_title" = "No Title";
+"no_description" = "No Description";
