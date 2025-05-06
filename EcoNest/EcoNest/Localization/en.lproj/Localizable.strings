@@ -1,10 +1,17 @@
-/* 
+/*
   Localizable.strings
   EcoNest
 
-  Created by Rawan on 05/05/2025.
+  Created by Tahani Ayman on 08/11/1446 AH.
   
 */
+
+// Tab View
+"Home" = "Home";
+"Plant" = "Plant";
+"Community" = "Community";
+"Setting" = "Setting";
+
 "Error" = "Error";
 "FillAll" = "Please fill in all fields";
 "InvalidEmail" = "Invalid Email";
@@ -15,4 +22,5 @@
 "WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
 "SignupFailed" = "Signup Failed";
 "LoginFailed" = "Login Failed";
+
 

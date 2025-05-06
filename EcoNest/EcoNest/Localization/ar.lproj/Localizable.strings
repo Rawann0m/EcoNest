@@ -1,10 +1,17 @@
-/* 
+/*
   Localizable.strings
   EcoNest
 
-  Created by Rawan on 05/05/2025.
+  Created by Tahani Ayman on 08/11/1446 AH.
   
 */
+
+// Tab View
+"Home" = "الرئيسية";
+"Plant" = "النباتات";
+"Community" = "المجتمع";
+"Setting" = "الإعدادات";
+
 "Error" = "خطأ";
 "FillAll" = "الرجاء تعبئة جميع الحقول";
 "InvalidEmail" = "ايميل غير صحيح";
@@ -15,3 +22,4 @@
 "WeakPasswordMsg2" = "كلمة المرور ضعيفة جدًا. الرجاء اختيار كلمة مرور أقوى.";
 "SignupFailed" = "فشل انشاء حساب جديد";
 "LoginFailed" = "فشل تسجيل الدخول";
+
