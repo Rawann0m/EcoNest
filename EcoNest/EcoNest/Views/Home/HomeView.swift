@@ -17,6 +17,7 @@ struct HomeView: View {
                 VStack {
                     // Custom app bar at the top of the screen
                     AppBar()
+                    SearchView()
                     
                     Spacer() // Pushes content to the top
                 }
