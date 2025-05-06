@@ -29,7 +29,7 @@ struct YourApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-          WelcomePage()
+          MainTabView()
               .environmentObject(localizableManager)
               .environmentObject(themeManager)
               .environmentObject(AlertManager.shared)
