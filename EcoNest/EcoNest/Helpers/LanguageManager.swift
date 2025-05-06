@@ -5,8 +5,6 @@
 //  Created by Rawan on 05/05/2025.
 //
 
-
-
 import Foundation
 
 /// A singleton class responsible for managing app language settings.

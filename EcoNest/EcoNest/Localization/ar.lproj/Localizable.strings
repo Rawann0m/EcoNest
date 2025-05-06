@@ -15,3 +15,10 @@
 "WeakPasswordMsg2" = "كلمة المرور ضعيفة جدًا. الرجاء اختيار كلمة مرور أقوى.";
 "SignupFailed" = "فشل انشاء حساب جديد";
 "LoginFailed" = "فشل تسجيل الدخول";
+"General" = "عام";
+"Orders" = "الطلبات";
+"Language" = "اللغة";
+"DarkMode" = "المظهر الداكن";
+"DeleteAccount" = "حذف الحساب";
+"LogOut" = "تسجيل الخروج";
+"CustomerSupport" = "الدعم الفني";

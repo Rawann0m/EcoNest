@@ -15,4 +15,10 @@
 "WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
 "SignupFailed" = "Signup Failed";
 "LoginFailed" = "Login Failed";
-
+"General" = "General";
+"Orders" = "Orders";
+"Language" = "Language";
+"DarkMode" = "Dark Mode";
+"DeleteAccount" = "Delete Account";
+"LogOut" = "Log Out";
+"CustomerSupport" = "Customer Support";
