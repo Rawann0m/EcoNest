@@ -16,7 +16,7 @@ struct MainTabView: View {
     var body: some View {
         
         TabView(selection: $selectedTabIndex) {
-            Text("First Tab").tag(1)
+            HomeView().tag(1)
             Text("Second Tab").tag(2)
             Text("Third Tab").tag(3)
             Text("Fourth Tab").tag(4)
