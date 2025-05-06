@@ -1,0 +1,13 @@
+/*
+  Localizable.strings
+  EcoNest
+
+  Created by Tahani Ayman on 08/11/1446 AH.
+  
+*/
+
+// Tab View
+"Home" = "Home";
+"Plant" = "Plant";
+"Community" = "Community";
+"Setting" = "Setting";
