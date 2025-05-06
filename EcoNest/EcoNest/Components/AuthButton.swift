@@ -23,9 +23,9 @@ struct AuthButton: View {
                 .fill( Color.white.opacity(0.7))
                 .frame(width: 350, height: 50)
             
-            Text(label)
-                .foregroundColor( themeManager.backgroundColor)
-                .bold()
+//            Text(label)
+//                .foregroundColor()
+//                .bold()
         }
     }
 }
