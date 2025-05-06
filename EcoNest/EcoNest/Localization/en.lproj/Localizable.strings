@@ -11,3 +11,16 @@
 "Plant" = "Plant";
 "Community" = "Community";
 "Setting" = "Setting";
+
+"Error" = "Error";
+"FillAll" = "Please fill in all fields";
+"InvalidEmail" = "Invalid Email";
+"ValidEmail" = "Please enter a valid email address";
+"PasswordMismatch" = "Password Mismatch";
+"PasswordMismatchMsg" = "Please enter matched passwords";
+"WeakPasswordMsg" = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
+"WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
+"SignupFailed" = "Signup Failed";
+"LoginFailed" = "Login Failed";
+
+
