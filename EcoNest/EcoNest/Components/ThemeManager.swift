@@ -30,7 +30,7 @@ class ThemeManager: ObservableObject {
     }
     
     var textColor: Color {
-        isDarkMode ?  Color("DarkGreen") : Color("LightGreen")
+        isDarkMode ?  Color("LightGreen") : Color("DarkGreen")
     }
     
     var secondaryColor: Color {

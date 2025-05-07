@@ -28,13 +28,11 @@ struct YourApp: App {
 
   var body: some Scene {
     WindowGroup {
-      NavigationView {
-          MainTabView()
+          SplashView()
               .environmentObject(localizableManager)
               .environmentObject(themeManager)
               .environmentObject(AlertManager.shared)
               .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-      }
     }
   }
 }
