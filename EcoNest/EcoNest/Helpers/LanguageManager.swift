@@ -2,9 +2,8 @@
 //  LanguageManager.swift
 //  EcoNest
 //
-//  Created by Tahani Ayman on 08/11/1446 AH.
+//  Created by Rawan on 05/05/2025.
 //
-
 
 import Foundation
 

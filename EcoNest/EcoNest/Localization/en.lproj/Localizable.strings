@@ -1,17 +1,14 @@
-/*
+/* 
   Localizable.strings
   EcoNest
 
-  Created by Tahani Ayman on 08/11/1446 AH.
+  Created by Rawan on 05/05/2025.
   
 */
-
-// Tab View
 "Home" = "Home";
 "Plant" = "Plant";
 "Community" = "Community";
 "Setting" = "Setting";
-
 "Error" = "Error";
 "FillAll" = "Please fill in all fields";
 "InvalidEmail" = "Invalid Email";
@@ -22,7 +19,16 @@
 "WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
 "SignupFailed" = "Signup Failed";
 "LoginFailed" = "Login Failed";
-
+"General" = "General";
+"Orders" = "Orders";
+"Language" = "Language";
+"DarkMode" = "Dark Mode";
+"DeleteAccount" = "Delete Account";
+"LogOut" = "Log Out";
+"CustomerSupport" = "Customer Support";
+"DirectMessages" = "Direct Messages";
+"JoinNow" = "Join Now";
+"Send" = "Send";
 "SignUp" = "Sign up";
 "SignUp2" = "Sign up";
 "LogIn2" = "Log in";
@@ -30,4 +36,3 @@
 "LogIn" = "Log in";
 "LogIn2" = "Log in";
 "DHaveAccount" = "Don't have an account?";
-
