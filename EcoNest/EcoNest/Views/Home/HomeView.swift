@@ -24,10 +24,7 @@ struct HomeView: View {
                         
                         // Custom reusable search bar
                         SearchView()
-                        SearchView()
-                        SearchView()
-                        SearchView()
-                        SearchView()
+            
                         // Auto-playing image slider
                         ImageSliderView()
                         
