@@ -21,7 +21,7 @@ struct SplashView: View {
                         .scaleEffect(animateOut ? 1.2 : 1.0)
                         .transition(.opacity)
                 } else {
-                    LogInPage()
+                    MainTabView()
                 }
             }
             .onAppear {
