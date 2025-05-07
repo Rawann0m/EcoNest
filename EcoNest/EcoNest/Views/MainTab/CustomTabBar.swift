@@ -57,6 +57,7 @@ struct CustomTabBar: View {
                                         Circle()
                                             .fill(.white)
                                             .shadow(radius: 10)
+                                                  
                                     }
                                 }
                                 .offset(y: isMiddle ? -iconH / 2 : 0) // Elevate middle icon

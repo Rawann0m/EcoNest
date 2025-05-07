@@ -1,17 +1,14 @@
-/*
+/* 
   Localizable.strings
   EcoNest
 
-  Created by Tahani Ayman on 08/11/1446 AH.
+  Created by Rawan on 05/05/2025.
   
 */
-
-// Tab View
 "Home" = "الرئيسية";
 "Plant" = "النباتات";
-"Community" = "المجتمع";
+"Community" = "المجتمعات";
 "Setting" = "الإعدادات";
-
 "Error" = "خطأ";
 "FillAll" = "الرجاء تعبئة جميع الحقول";
 "InvalidEmail" = "ايميل غير صحيح";
@@ -22,4 +19,19 @@
 "WeakPasswordMsg2" = "كلمة المرور ضعيفة جدًا. الرجاء اختيار كلمة مرور أقوى.";
 "SignupFailed" = "فشل انشاء حساب جديد";
 "LoginFailed" = "فشل تسجيل الدخول";
-
+"General" = "عام";
+"Orders" = "الطلبات";
+"Language" = "اللغة";
+"DarkMode" = "المظهر الداكن";
+"DeleteAccount" = "حذف الحساب";
+"LogOut" = "تسجيل الخروج";
+"CustomerSupport" = "الدعم الفني";
+"DirectMessages" = "الرسائل الخاصة";
+"JoinNow" = "انضم الآن";
+"Send" = "ارسال";
+"SignUp" = "انشاء حساب جديد";
+"SignUp2" = "سجل الان";
+"HaveAccount" = "هل لديك حساب بالفعل؟";
+"LogIn" = "تسجيل الدخول";
+"LogIn2" = "سجّل الدخول";
+"DHaveAccount" = "ليس لديك حساب؟";
