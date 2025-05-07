@@ -32,7 +32,7 @@ struct SettingsView: View {
                         .offset(y: 100)
                     
                     // check if there is no profuile image put this
-                    Image("profile2")
+                    Image("profile")
                         .resizable()
                         .frame(width: 80, height: 80)
                         .cornerRadius(50)
@@ -41,6 +41,7 @@ struct SettingsView: View {
                                 .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
                         }
                         .offset(y: 30)
+                    
                     
                    if isEdit {
                         ZStack {
@@ -58,14 +59,16 @@ struct SettingsView: View {
                         .offset(x: 30 ,y: 60)
                     }
                     
-                    Image(systemName: isEdit ? "checkmark" : "pencil")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(Color("DarkGreen"))
-                        .offset(x: 150, y: 50)
-                        .onTapGesture {
-                            isEdit.toggle()
-                        }
+                    if FirebaseManager.shared.isLoggedIn {
+                        Image(systemName: isEdit ? "checkmark" : "pencil")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color("DarkGreen"))
+                            .offset(x: 150, y: 50)
+                            .onTapGesture {
+                                isEdit.toggle()
+                            }
+                    }
                     
                     VStack(spacing: 10){
                         if isEdit{
