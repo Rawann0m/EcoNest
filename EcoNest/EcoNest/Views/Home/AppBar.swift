@@ -26,13 +26,14 @@ struct AppBar: View {
                     // Cart icon with navigation
                     IconNavigationLink(systemImageName: "cart", destination: Text("Cart"))
                 }
-                .font(.system(size: 30))
+                .font(.system(size: 25))
                 
                 // Subtitle text
                 Text("Favorite plants")
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color("LimeGreen"))
             }
+            .padding(.horizontal, 16) 
         
     }
 }
@@ -55,8 +56,8 @@ struct IconNavigationLink<Destination: View>: View {
                 .background {
                     Rectangle()
                         .fill(Color("LimeGreen"))
-                        .frame(width: 40, height: 40)
-                        .cornerRadius(8) 
+                        .frame(width: 35, height: 35)
+                        .cornerRadius(8)
                 }
         }
     }

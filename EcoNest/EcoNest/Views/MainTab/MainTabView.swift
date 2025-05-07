@@ -27,5 +27,6 @@ struct MainTabView: View {
             CustomTabBar(selectedIndex: $selectedTabIndex)
         }
         .ignoresSafeArea()
+        
     }
 }

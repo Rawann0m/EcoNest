@@ -15,6 +15,7 @@ struct SearchView: View {
     @State private var search: String = ""
     
     var body: some View {
+        
         HStack {
             // Search icon on the left
             Image(systemName: "magnifyingglass")
@@ -31,6 +32,7 @@ struct SearchView: View {
         .background(.gray.opacity(0.15))
         .frame(height: 50)
         .cornerRadius(12)
+        .padding(.horizontal, 16) 
     }
 }
 
