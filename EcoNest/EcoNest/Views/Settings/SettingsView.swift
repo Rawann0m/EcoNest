@@ -16,6 +16,7 @@ struct SettingsView: View {
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
     @State var name: String = "Rayaheen Mseri"
+    @State var isLogin = FirebaseManager.shared.auth.currentUser?.uid == nil
     var body: some View {
         NavigationStack{
             VStack {
@@ -30,10 +31,11 @@ struct SettingsView: View {
                         .frame(width: 350, height: 135)
                         .offset(y: 100)
                     
-                    
-                    Image(systemName: "person.crop.circle.fill")
+                    // check if there is no profuile image put this
+                    Image("profile2")
                         .resizable()
                         .frame(width: 80, height: 80)
+                        .cornerRadius(50)
                         .background{
                             Circle()
                                 .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
@@ -194,11 +196,12 @@ struct SettingsView: View {
 
 @ViewBuilder
 func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trailingView: () -> some View = { EmptyView() }) -> some View {
+    @EnvironmentObject var themeManager: ThemeManager
     HStack(spacing: 16) {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color("LimeGreen").opacity(0.3))
-                .frame(width: 55, height: 55)
+                .frame(width: 50, height: 50)
             
             Image(systemName: icon)
                 .resizable()
@@ -217,7 +220,7 @@ func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trail
         
     }
     .padding(.horizontal)
-    .frame(width: 350, height: 70)
+    .frame(width: 350, height: 60)
     .background{
         RoundedRectangle(cornerRadius: 10)
             .stroke(.gray.opacity(0.3), lineWidth: 2)
@@ -229,8 +232,4 @@ func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trail
             function()
         }
     }
-}
-
-#Preview {
-    SettingsView()
 }

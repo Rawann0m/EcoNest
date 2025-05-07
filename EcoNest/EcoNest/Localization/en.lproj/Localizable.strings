@@ -5,6 +5,10 @@
   Created by Rawan on 05/05/2025.
   
 */
+"Home" = "Home";
+"Plant" = "Plant";
+"Community" = "Community";
+"Setting" = "Setting";
 "Error" = "Error";
 "FillAll" = "Please fill in all fields";
 "InvalidEmail" = "Invalid Email";
@@ -22,3 +26,6 @@
 "DeleteAccount" = "Delete Account";
 "LogOut" = "Log Out";
 "CustomerSupport" = "Customer Support";
+"DirectMessages" = "Direct Messages";
+"JoinNow" = "Join Now";
+"Send" = "Send";

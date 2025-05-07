@@ -5,6 +5,10 @@
   Created by Rawan on 05/05/2025.
   
 */
+"Home" = "الرئيسية";
+"Plant" = "النباتات";
+"Community" = "المجتمعات";
+"Setting" = "الإعدادات";
 "Error" = "خطأ";
 "FillAll" = "الرجاء تعبئة جميع الحقول";
 "InvalidEmail" = "ايميل غير صحيح";
@@ -22,3 +26,6 @@
 "DeleteAccount" = "حذف الحساب";
 "LogOut" = "تسجيل الخروج";
 "CustomerSupport" = "الدعم الفني";
+"DirectMessages" = "الرسائل الخاصة";
+"JoinNow" = "انضم الآن";
+"Send" = "ارسال";
