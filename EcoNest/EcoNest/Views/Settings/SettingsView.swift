@@ -15,8 +15,8 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = "Rayaheen Mseri"
-    @State var isLogin = FirebaseManager.shared.auth.currentUser?.uid == nil
+    @State var name: String = "Guest"
+    @State var login: Bool = false
     var body: some View {
         NavigationStack{
             VStack {
@@ -82,8 +82,21 @@ struct SettingsView: View {
                                 .disabled(true)
                         }
                         
-                        Text("Rayaheen@gmail.com")
-                            .frame(width: 200)
+                        if FirebaseManager.shared.isLoggedIn {
+                            Text("useremail")
+                                .frame(width: 200)
+                        } else {
+                            Text("Login/Create Account")
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background{
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color("LimeGreen"))
+                                }
+                                .onTapGesture {
+                                    login.toggle()
+                                }
+                        }
                     }
                     .offset(y: 110)
                     
@@ -156,19 +169,29 @@ struct SettingsView: View {
                     openURL(URL(string: "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--fb0c4daf.local-credentialless.webcontainer-api.io/")!)
                 })
                 
-                settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
-                    // show alert and delete account
-                    print("delete account")
-                })
                 
-                settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
-                    // log out
-                    print("logout")
-                })
-   
+                if FirebaseManager.shared.isLoggedIn {
+                    settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
+                        // show alert and delete account
+                        print("delete account")
+                    })
+                    
+                    settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
+                        // log out
+                        if FirebaseManager.shared.isLoggedIn{
+                            print("logout")
+                        } else {
+                            
+                        }
+                    })
+                }
+                
                 Spacer()
 
             }
+            .fullScreenCover(isPresented: $login, content: {
+                LogInPage()
+            })
             .onChange(of: isArabic) { _ , value in
                 let languageCode = value ? "ar" : "en"
                 languageManager.setLanguage(languageCode)
@@ -197,42 +220,3 @@ struct SettingsView: View {
         
 }
 
-@ViewBuilder
-func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trailingView: () -> some View = { EmptyView() }) -> some View {
-    @EnvironmentObject var themeManager: ThemeManager
-    HStack(spacing: 16) {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color("LimeGreen").opacity(0.3))
-                .frame(width: 50, height: 50)
-            
-            Image(systemName: icon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 30, height: 30)
-                .foregroundColor(Color("LimeGreen"))
-        }
-        
-        Text(text)
-            .bold()
-            .foregroundColor(.black)
-        
-        Spacer()
-    
-        trailingView()
-        
-    }
-    .padding(.horizontal)
-    .frame(width: 350, height: 60)
-    .background{
-        RoundedRectangle(cornerRadius: 10)
-            .stroke(.gray.opacity(0.3), lineWidth: 2)
-            .fill(Color.white)
-            .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
-    }
-    .onTapGesture {
-        if let function = function {
-            function()
-        }
-    }
-}

@@ -13,7 +13,6 @@ struct SplashView: View {
     @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
-        NavigationStack {
             ZStack {
                 if showWelcome {
                     WelcomePage()
@@ -34,6 +33,5 @@ struct SplashView: View {
                     }
                 }
             }
-        }
     }
 }

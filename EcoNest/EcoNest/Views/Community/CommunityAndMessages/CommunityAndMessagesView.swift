@@ -53,7 +53,7 @@ struct CommunityAndMessagesView: View {
                     CommuintyListView()
                         .padding()
                 } else {
-                    DirectMessageList()
+                    DirectMessageListView()
                         .padding()
                 }
                 

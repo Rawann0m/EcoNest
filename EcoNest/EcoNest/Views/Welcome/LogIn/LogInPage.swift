@@ -16,6 +16,7 @@ struct LogInPage: View {
     @State private var isLoading = false
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
+        NavigationStack{
             VStack{
                 ZStack{
                     //bubbles
@@ -62,7 +63,7 @@ struct LogInPage: View {
                             CustomButton(
                                 title: "LogIn".localized(using: currentLanguage),
                                 action: {
-
+                                    
                                 }
                             ).disabled(isLoading)
                                 .padding(.bottom,60)
@@ -83,14 +84,15 @@ struct LogInPage: View {
                 }
                 
             }
-        .navigationBarBackButtonHidden(true)
-        NavigationLink(
-            destination: SignUpPage(),
-                    isActive: $isLoggedIn,
-                    label: {
-                        EmptyView()
-                    }
-        )
+            .navigationBarBackButtonHidden(true)
+            NavigationLink(
+                destination: SignUpPage(),
+                isActive: $isLoggedIn,
+                label: {
+                    EmptyView()
+                }
+            )
+        }
     }
 }
 
