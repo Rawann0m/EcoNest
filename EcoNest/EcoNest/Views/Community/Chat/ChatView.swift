@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Chat: View {
+struct ChatView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @Environment(\.dismiss) var dismiss
     var body: some View {
@@ -101,6 +101,17 @@ struct Chat: View {
                         .foregroundColor(.primary)
                         .onTapGesture{
                             dismiss()
+                        }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Image("profile")
+                        .resizable()
+                        .frame(width: 35, height: 35)
+                        .cornerRadius(50)
+                        .background{
+                            Circle()
+                                .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
                         }
                 }
             }

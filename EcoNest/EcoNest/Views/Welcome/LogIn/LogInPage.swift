@@ -20,6 +20,7 @@ struct LogInPage: View {
     @StateObject private var alertManager = AlertManager.shared
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
+        NavigationStack{
             VStack{
                 ZStack{
                     //bubbles
@@ -79,7 +80,6 @@ struct LogInPage: View {
                                             }
                                         }
                                     }
-
                                 }
                             ).disabled(isLoading)
                                 .padding(.bottom,60)
@@ -102,6 +102,7 @@ struct LogInPage: View {
             }.fullScreenCover(isPresented:$goToForgot){
                 ForgotPasswordPage()
             }
+        }
             .alert(isPresented: $alertManager.alertState.isPresented) {
                 Alert(
                     title: Text(alertManager.alertState.title),
@@ -123,7 +124,6 @@ struct LogInPage: View {
                         EmptyView()
                     }
                 )
-
     }
 }
 

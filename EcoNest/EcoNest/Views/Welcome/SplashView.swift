@@ -12,7 +12,6 @@ struct SplashView: View {
     @State private var animateOut = false
     @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
-        NavigationStack {
             ZStack {
                 if showWelcome {
                     WelcomePage()
@@ -21,7 +20,6 @@ struct SplashView: View {
                         .transition(.opacity)
                 } else {
                     MainTabView()
-
                 }
             }
             .onAppear {
@@ -34,6 +32,5 @@ struct SplashView: View {
                     }
                 }
             }
-        }
     }
 }

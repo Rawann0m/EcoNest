@@ -43,7 +43,8 @@
 "LogIn" = "Log in";
 "LogIn2" = "Log in";
 "DHaveAccount" = "Don't have an account?";
-
+"Members" = "Members";
+"Posts" = "Posts";
 "UnknownError" = "An unknown error occurred. Please try again.";
 "EmailInvalid" = "The email address entered is invalid.";
 "WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
@@ -51,4 +52,3 @@
 "2Many" = "Too many attempts. Please wait and try again later.";
 "InternalError" = "An internal error occurred. Please try again later.";
 "PasswordReset" = "Password reset email sent.";
-
