@@ -28,7 +28,7 @@ struct YourApp: App {
 
   var body: some Scene {
     WindowGroup {
-          SplashView()
+        SplashView()
               .environmentObject(localizableManager)
               .environmentObject(themeManager)
               .environmentObject(AlertManager.shared)
