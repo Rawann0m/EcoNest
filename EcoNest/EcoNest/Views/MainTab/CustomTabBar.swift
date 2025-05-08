@@ -25,7 +25,8 @@ struct CustomTabBar: View {
             
             // Draws the background shape using a custom Bezier curve
             BezierCurvePath()
-                .foregroundStyle(Color("DarkGreen"))
+                .foregroundStyle(.white)
+                .shadow(radius: 10)
             
             HStack(spacing: 0) {
                 
@@ -54,7 +55,9 @@ struct CustomTabBar: View {
                                     if isMiddle {
                                         // Highlight background circle for middle tab
                                         Circle()
-                                            .fill(Color("DarkGreen").gradient)
+                                            .fill(.white)
+                                            .shadow(radius: 10)
+                                                  
                                     }
                                 }
                                 .offset(y: isMiddle ? -iconH / 2 : 0) // Elevate middle icon
@@ -67,7 +70,7 @@ struct CustomTabBar: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .foregroundStyle(isSelected ? .white : .gray)
+                        .foregroundStyle(isSelected ? Color("DarkGreen") : .gray)
                         .offset(y: !isMiddle ? -5 : 0)
                     }
                     .buttonStyle(.plain)
