@@ -17,6 +17,9 @@ struct SignUpPage:View {
     @State private var isConPasswordSecure: Bool = true
     @State private var isLoggedIn = false
     @State private var isLoading = false
+    @State private var goToHome = false
+    @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var alertManager = AlertManager.shared
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
         NavigationStack{
@@ -72,6 +75,22 @@ struct SignUpPage:View {
                             CustomButton(
                                 title: "SignUp".localized(using: currentLanguage),
                                 action: {
+                                    // Check name
+                                    guard !username.trimmingCharacters(in: .whitespaces).isEmpty else {
+                                        let message = "NameRequired".localized(using: currentLanguage)
+                                        AlertManager.shared.showAlert(title: "Error".localized(using: currentLanguage), message: message)
+                                        return
+                                    }
+                                    // Create User with Firebase
+                                    isLoading = true
+                                    authViewModel.signUp(name: username, email: email, password: password,confirmPassword: confirmPassword) { success, message in
+                                        isLoading = false
+                                        if success {
+                                            goToHome = true
+                                        } else if let message = message {
+                                            AlertManager.shared.showAlert(title: "Error".localized(using: currentLanguage), message: message)
+                                        }
+                                    }
                                 }
                             ).disabled(isLoading)
                             // Navigation to log in
@@ -90,14 +109,28 @@ struct SignUpPage:View {
                 }
                 
             }
-        }
+            NavigationLink(
+                destination: MainTabView(),
+                isActive: $goToHome,
+                label: {
+                    EmptyView()
+                }
+            )
+            NavigationLink(
+                destination: LogInPage(),
+                isActive: $isLoggedIn,
+                label: {
+                    EmptyView()
+                }
+            )
+        }.alert(isPresented: $alertManager.alertState.isPresented) {
+            Alert(
+                title: Text(alertManager.alertState.title),
+                message: Text(alertManager.alertState.message),
+                dismissButton: .default(Text("OK".localized(using: currentLanguage)))
+            )}
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         .navigationBarBackButtonHidden(true)
-        NavigationLink(
-            destination: LogInPage(),
-            isActive: $isLoggedIn,
-            label: {
-                EmptyView()
-            }
-        )
+
     }
 }

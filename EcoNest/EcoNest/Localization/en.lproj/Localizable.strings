@@ -11,7 +11,7 @@
 "Plant" = "Plant";
 "Community" = "Community";
 "Setting" = "Setting";
-
+"AssociatedEmail" = "This email address is already associated with another account.";
 "Error" = "Error";
 "FillAll" = "Please fill in all fields";
 "InvalidEmail" = "Invalid Email";
@@ -22,7 +22,7 @@
 "WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
 "SignupFailed" = "Signup Failed";
 "LoginFailed" = "Login Failed";
-
+"CredentialsError" = "The login credentials are incorrect or the account does not exist. Please check your email and password, then try again.";
 "SignUp" = "Sign up";
 "SignUp2" = "Sign up";
 "LogIn2" = "Log in";
@@ -30,4 +30,10 @@
 "LogIn" = "Log in";
 "LogIn2" = "Log in";
 "DHaveAccount" = "Don't have an account?";
-
+"UnknownError" = "An unknown error occurred. Please try again.";
+"EmailInvalid" = "The email address entered is invalid.";
+"WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
+"NetworkError" =  "A network error occurred. Please check your connection and try again.";
+"2Many" = "Too many attempts. Please wait and try again later.";
+"InternalError" = "An internal error occurred. Please try again later.";
+"PasswordReset" = "Password reset email sent.";

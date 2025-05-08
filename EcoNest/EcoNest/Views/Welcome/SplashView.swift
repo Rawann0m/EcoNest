@@ -11,7 +11,6 @@ struct SplashView: View {
     @State private var showWelcome = true
     @State private var animateOut = false
     @EnvironmentObject var themeManager: ThemeManager
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -21,7 +20,7 @@ struct SplashView: View {
                         .scaleEffect(animateOut ? 1.2 : 1.0)
                         .transition(.opacity)
                 } else {
-                    LogInPage()
+                    SignUpPage()
                 }
             }
             .onAppear {
