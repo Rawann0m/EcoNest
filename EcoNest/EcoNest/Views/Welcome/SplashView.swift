@@ -20,7 +20,6 @@ struct SplashView: View {
                         .transition(.opacity)
                 } else {
                     MainTabView()
-
                 }
             }
             .onAppear {

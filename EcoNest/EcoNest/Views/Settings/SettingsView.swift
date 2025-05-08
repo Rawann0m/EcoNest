@@ -213,6 +213,8 @@ struct SettingsView: View {
                         languageManager.setLanguage(defaultLanguage)
                     }
                 }
+                
+                print(FirebaseManager.shared.auth.currentUser?.uid)
             }
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         }
