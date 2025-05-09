@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PostDetailView: View {
-    let postText: String // Assuming you pass the post text
+    let postText: String
     @State private var replies: [String] = []
     @State private var newReply: String = ""
     @Environment(\.dismiss) var dismiss
@@ -103,8 +103,4 @@ struct PostDetailView: View {
             }
         }
     }
-}
-
-#Preview {
-    PostDetailView(postText: "This is a sample post text that could be quite long and span multiple lines to demonstrate how the layout adapts to the content.")
 }

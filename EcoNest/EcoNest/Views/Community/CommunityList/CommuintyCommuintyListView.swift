@@ -40,28 +40,34 @@ struct CommuintyListView: View {
                             }
                             .offset(y: 50)
                             
-                            Text("JoinNow".localized(using: currentLanguage))
-                                .background{
-                                    Capsule()
-                                        .fill(.white)
-                                        .frame(width: 320, height: 50)
-                                }
-                                .frame(width: 320, height: 50)
-                                .offset(y: 50)
-                                .onTapGesture {
-                                    if FirebaseManager.shared.isLoggedIn {
-                                        // add user to community
-                                    } else {
-                                        AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                            if !community.memberOfCommunity {
+                                Text("JoinNow".localized(using: currentLanguage))
+                                    .background{
+                                        Capsule()
+                                            .fill(.white)
+                                            .frame(width: 320, height: 50)
                                     }
-                                }
+                                    .frame(width: 320, height: 50)
+                                    .offset(y: 50)
+                                    .onTapGesture {
+                                        if FirebaseManager.shared.isLoggedIn {
+                                            
+                                            if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
+                                                
+                                                communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
+                                            }
+                                            
+                                            
+                                        } else {
+                                            AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                        }
+                                    }
+                            }
                         }
                     }
                     .onTapGesture {
                         communityViewModel.selectedCommunity = community
-                       // if communityViewModel.selectedCommunity != nil {
-                            showCommunity.toggle()
-                      //  }
+                        showCommunity.toggle()
                     }
                 }
             }

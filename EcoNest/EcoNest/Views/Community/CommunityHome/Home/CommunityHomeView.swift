@@ -18,6 +18,7 @@ struct CommunityHomeView: View {
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     var community: Community
+    @ObservedObject var communityViewModel = CommunityListViewModel()
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing){
@@ -43,7 +44,7 @@ struct CommunityHomeView: View {
                                 
                                 Spacer()
                                 
-                                Text("Join")
+                                Text(community.memberOfCommunity ? "Leave": "Join")
                                     .frame(width: 70)
                                     .padding()
                                     .bold()
@@ -53,7 +54,21 @@ struct CommunityHomeView: View {
                                     }
                                     .onTapGesture {
                                         if FirebaseManager.shared.isLoggedIn {
-                                            // add user to community
+                                            if community.memberOfCommunity {
+                                                if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
+                                                    
+                                                    communityViewModel.removeUserIDToMembers(communityId: communityId, userId: userId)
+                                                    
+                                                    communityViewModel.setMemberStatus(communityId: communityId, isMember: false)
+                                                }
+                                            } else {
+                                                if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
+                                                    
+                                                    communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
+                                                    
+                                                    communityViewModel.setMemberStatus(communityId: communityId, isMember: true)
+                                                }
+                                            }
                                         } else {
                                             AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
                                         }
@@ -115,7 +130,7 @@ struct CommunityHomeView: View {
                             }
                             
                             if showPosts {
-                                PostsListView()
+                                PostsListView(communityId: community.id ?? "")
                             } else {
                                 MembersListView(members: community.members)
                             }
@@ -129,7 +144,7 @@ struct CommunityHomeView: View {
                     }
                 }
                 
-                if showPosts {
+                if showPosts && community.memberOfCommunity{
                     Button(action: {
                         if FirebaseManager.shared.isLoggedIn {
                             showCreatePost.toggle()
@@ -142,11 +157,11 @@ struct CommunityHomeView: View {
                             .background(Color("LimeGreen"))
                             .foregroundColor(.white)
                             .clipShape(Circle())
-
+                        
                     }
                     .padding()
                 }
-  
+                
             }
             .alert(isPresented: $alertManager.alertState.isPresented) {
                 Alert(
@@ -159,8 +174,8 @@ struct CommunityHomeView: View {
                 )
             }
             .fullScreenCover(isPresented: $navigateToLogin) {
-                    LogInPage()
-                }
+                LogInPage()
+            }
             .edgesIgnoringSafeArea(.top)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

@@ -16,10 +16,8 @@ struct MembersListView: View {
     var body: some View {
         VStack{
             if viewModel.members.isEmpty {
-                
                 Text("No members found")
                     .frame(height: 300, alignment: .center)
-                
             } else {
                 ForEach(viewModel.members){ member in
                     UsersRow(username: member.username, email: member.email, image: member.profileImage, time: "", message: "")

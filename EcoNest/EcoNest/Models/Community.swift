@@ -13,4 +13,6 @@ struct Community: Identifiable, Hashable {
     let name: String
     let description: String
     let members: [String]
+    
+    var memberOfCommunity: Bool
 }
