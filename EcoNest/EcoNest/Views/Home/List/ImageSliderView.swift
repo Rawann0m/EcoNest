@@ -16,6 +16,8 @@ struct ImageSliderView: View {
     // List of image asset names to be shown in the slider
     var sliders: [String] = ["AfricanViolet", "Anthurium", "Begonia", "BirdParadise"]
     
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             
@@ -36,7 +38,7 @@ struct ImageSliderView: View {
                 
                 ForEach(sliders.indices, id: \.self) { index in
                     Circle()
-                        .fill(self.currentIndex == index ? Color("DarkGreen") : Color("LimeGreen"))
+                        .fill(self.currentIndex == index ?  themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen") : Color("LimeGreen"))
                         .frame(width: 12, height: 12)
                 }
             }

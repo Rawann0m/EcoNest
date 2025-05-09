@@ -35,3 +35,11 @@
 "LogIn" = "تسجيل الدخول";
 "LogIn2" = "سجّل الدخول";
 "DHaveAccount" = "ليس لديك حساب؟";
+
+// Home
+"Findyour" = "ابحث عن";
+"Favoriteplants" = "نباتاتك المفضلة";
+"Search" = "ابحث عن النباتات ...";
+"Explore" = "استكشاف";
+"NoProductsFound" = "لم يتم العثور على منتجات";
+

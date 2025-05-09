@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 // A reusable view that displays a product card for a product plant.
 struct ProductCardView: View {
+    
+    @EnvironmentObject var themeManager: ThemeManager
+    var product: Product
+    @ObservedObject var viewModel: CartViewModel
+    
     var body: some View {
         
         ZStack {
@@ -18,37 +24,39 @@ struct ProductCardView: View {
                 VStack(alignment: .leading) {
                     
                     // Product image with styling
-                    Image("AfricanViolet")
+                    //Image(product.image)
+                    WebImage(url: URL(string: product.image))
                         .resizable()
                         .background(Color.gray.opacity(0.15))
                         .frame(width: 160, height: 150)
                         .cornerRadius(8)
                     
                     // Product name text
-                    Text("African Violet")
+                    Text(product.name)
                         .font(.subheadline)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                         .padding(.vertical, 1)
                     
                     // Price and currency image
                     HStack {
-                        Text("300.00")
-                            .foregroundStyle(.black)
+                        Text("\(product.price, specifier: "%.2f")")
+                            .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                             .bold()
                         
-                        Image("RiyalB")
+                        Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                             .resizable()
                             .frame(width: 18, height: 18)
                     }
+                    
                 }
                 
                 // Add-to-cart button
                 Button(action: {
-                    
+                    viewModel.addToCart(product: product)
                 }, label: {
-                    Image(systemName: "plus.circle.fill")
+                    Image(systemName: product.isAddedToCart ? "checkmark.circle.fill" : "plus.circle.fill")
                         .resizable()
-                        .foregroundStyle(Color("DarkGreen"))
+                        .foregroundStyle(product.isAddedToCart ? Color("LightGreen") : Color("LimeGreen"))
                         .frame(width: 35, height: 35)
                 })
             }
@@ -56,7 +64,10 @@ struct ProductCardView: View {
         .frame(width: 180, height: 230)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(.gray, lineWidth: 2)
+                .stroke(.gray.opacity(0.3), lineWidth: 2)
+                .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
         )
     }
 }
+
+   

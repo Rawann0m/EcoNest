@@ -36,3 +36,10 @@
 "LogIn" = "Log in";
 "LogIn2" = "Log in";
 "DHaveAccount" = "Don't have an account?";
+
+// Home
+"Findyour" = "Find your";
+"Favoriteplants" = "Favorite plants";
+"Search" = "Search for plants ...";
+"Explore" = "Explore";
+"NoProductsFound" = "No Products Found";
