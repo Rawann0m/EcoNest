@@ -49,6 +49,7 @@ struct CartView: View {
                         CartProductRow(cartProduct: cart)
                             .listRowSeparator(.hidden) // Hide separator for a cleaner look
                     }
+                    .onDelete(perform: viewModel.removeFormCart)
                 }
                 .listStyle(.plain)
                 
