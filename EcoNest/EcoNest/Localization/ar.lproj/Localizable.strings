@@ -43,3 +43,8 @@
 "Explore" = "استكشاف";
 "NoProductsFound" = "لم يتم العثور على منتجات";
 
+// Cart
+"YourCartEmpty" = "سلة التسوق الخاصة بك فارغة";
+"AddProductsHere" = "أضف منتجات لعرضها هنا";
+"MyCart" = "سلتي";
+

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 // An auto-sliding image carousel view
 struct ImageSliderView: View {
@@ -13,10 +14,8 @@ struct ImageSliderView: View {
     // Tracks the currently displayed image index
     @State private var currentIndex = 0
     
-    // List of image asset names to be shown in the slider
-    var sliders: [String] = ["AfricanViolet", "Anthurium", "Begonia", "BirdParadise"]
-    
     @EnvironmentObject var themeManager: ThemeManager
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -24,19 +23,27 @@ struct ImageSliderView: View {
             ZStack(alignment: .trailing) {
                 
                 // Display the current image based on index
-                Image(sliders[currentIndex])
-                    .resizable()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 180)
-                    .scaledToFit()
-                    .background(Color.gray.opacity(0.15))
-                    .cornerRadius(15)
+                if currentIndex < viewModel.sliderImages.count {
+                    WebImage(url: URL(string: viewModel.sliderImages[currentIndex])) { image in
+                        image
+                            .resizable()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 220)
+                            .scaledToFit()
+                            .background(Color.gray.opacity(0.15))
+                            .cornerRadius(15)
+                    } placeholder: {
+                        ProgressView()
+                            .frame(height: 180)
+                    }
+                }
+                
             }
             
             // Dot indicators representing image count and current index
             HStack {
                 
-                ForEach(sliders.indices, id: \.self) { index in
+                ForEach(viewModel.sliderImages.indices, id: \.self) { index in
                     Circle()
                         .fill(self.currentIndex == index ?  themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen") : Color("LimeGreen"))
                         .frame(width: 12, height: 12)
@@ -45,13 +52,13 @@ struct ImageSliderView: View {
             .padding()
         }
         .padding(.top)
-        .padding(.horizontal, 16)  
+        .padding(.horizontal, 16)
         
         // Automatically updates the image every 5 seconds
         .onAppear {
             
             Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { timer in
-                if self.currentIndex + 1 == self.sliders.count {
+                if self.currentIndex + 1 == viewModel.sliderImages.count {
                     self.currentIndex = 0 // Reset to first image
                 } else {
                     self.currentIndex += 1 // Move to next image

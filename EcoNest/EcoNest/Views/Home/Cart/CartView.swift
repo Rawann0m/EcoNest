@@ -7,35 +7,67 @@
 
 import SwiftUI
 
+/// A SwiftUI view that displays the user's cart items or an empty state if no items are added.
 struct CartView: View {
     
+    /// Manages dark/light mode theming throughout the app.
     @EnvironmentObject var themeManager: ThemeManager
+    
+    /// ViewModel that handles cart operations like fetching and updating cart data.
     @ObservedObject var viewModel: CartViewModel
     
+    /// Stores and observes the current language preference (used for localization).
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
     var body: some View {
-            List {
-                ForEach(viewModel.cartProducts) { cart in
-                    CartProductRow(product: cart.product)
-                        .listRowSeparator(.hidden)
+        NavigationStack {
+            // Show empty state if cart is empty
+            if viewModel.cartProducts.isEmpty {
+                VStack(spacing: 10) {
+                    
+                    // Display cart image
+                    Image("Cart")
+                        .resizable()
+                        .frame(width: 230, height: 230)
+                    
+                    // Localized message when the cart is empty
+                    Text("YourCartEmpty".localized(using: currentLanguage))
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                    
+                    // Localized instruction to add products
+                    Text("AddProductsHere".localized(using: currentLanguage))
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    
                 }
+                .padding()
+            } else {
+                // Display list of cart products when cart is not empty
+                List {
+                    ForEach(viewModel.cartProducts) { cart in
+                        CartProductRow(cartProduct: cart)
+                            .listRowSeparator(.hidden) // Hide separator for a cleaner look
+                    }
+                }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
-        
-        .navigationTitle("My Cart")
+        }
+        // Navigation title at the top of the screen
+        .navigationTitle("MyCart")
         .padding(.top)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
-                    
                 }) {
                     Image(systemName: "bag")
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                 }
             }
         }
+        // Fetch cart data when view appears
         .onAppear {
-            viewModel.loadCartFromDefaults()
+            viewModel.fetchCartData()
         }
     }
 }
-

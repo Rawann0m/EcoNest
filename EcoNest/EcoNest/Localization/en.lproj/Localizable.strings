@@ -43,3 +43,8 @@
 "Search" = "Search for plants ...";
 "Explore" = "Explore";
 "NoProductsFound" = "No Products Found";
+
+// Cart
+"YourCartEmpty" = "Your Cart is Empty";
+"AddProductsHere" = "Add a products to see it here.";
+"MyCart" = "My Cart";

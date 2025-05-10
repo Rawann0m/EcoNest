@@ -19,8 +19,13 @@ class HomeViewModel: ObservableObject {
     /// Products filtered based on the search query
     @Published var filtered: [Product] = []
     
+    /// Computed property returning the first few product image URLs for slider
+    var sliderImages: [String] {
+        return products.prefix(4).map { $0.image }
+    }
+    
     /// Fetches product data from the "ProductTH" collection in Firestore
-    func fetchData() {
+    func fetchProductData() {
         let db = FirebaseManager.shared.firestore
         
         db.collection("ProductTH").getDocuments { (snapshot, error) in
@@ -71,8 +76,3 @@ class HomeViewModel: ObservableObject {
 
 
 
-struct Cart: Identifiable, Codable {
-    var id = UUID().uuidString
-    var product: Product
-    var quantity: Int
-}

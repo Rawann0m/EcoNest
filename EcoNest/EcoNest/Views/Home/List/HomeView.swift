@@ -38,7 +38,7 @@ struct HomeView: View {
                         SearchView(viewModel: homeViewModel)
                         
                         // Auto-playing promotional image slider
-                        ImageSliderView()
+                        ImageSliderView(viewModel: homeViewModel)
                         
                         // Section title for product grid
                         HStack {
@@ -103,7 +103,7 @@ struct HomeView: View {
         }
         // Fetch product data when view appears
         .onAppear {
-            homeViewModel.fetchData()
+            homeViewModel.fetchProductData()
         }
         // Observe changes in the search term and filter products accordingly
         .onChange(of: homeViewModel.search) { oldValue, newValue in
