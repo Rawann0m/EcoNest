@@ -15,26 +15,6 @@ class CartViewModel: ObservableObject {
     /// List of cart items currently stored in Firestore for the user.
     @Published var cartProducts: [Cart] = []
     
-    /// Adds a product to the current user's cart in Firestore.
-    /// - Parameter product: The product to be added to the cart.
-    func addToCart(product: Product) {
-        let db = FirebaseManager.shared.firestore
-        
-        db.collection("users")
-            .document("QhB8R3sqxN96eEfTk1Me")
-            .collection("cart")
-            .document() // Generate a new document with a unique ID
-            .setData([
-                "productId": product.id,
-                "quantity": 1,
-                "price": product.price
-            ]) { err in
-                if let err = err {
-                    print("Error adding to cart: \(err.localizedDescription)")
-                }
-            }
-    }
-    
     /// Fetches all cart items from Firestore and resolves them into complete `Cart` objects with full `Product` data.
     func fetchCartData() {
         let db = FirebaseManager.shared.firestore
@@ -95,4 +75,17 @@ class CartViewModel: ObservableObject {
               }
           }
     }
+    
+    /// Calculates the total price of all items in the cart.
+    /// - Returns: The sum of (quantity × unit price) for each cart item.
+    func calculateTotal() -> Double {
+        var price: Double = 0
+        // Iterate through each cart item
+        cartProducts.forEach { cartItem in
+            // Multiply quantity by the product's price, then add to total
+            price += Double(cartItem.quantity) * cartItem.product.price
+        }
+        return price
+    }
+
 }

@@ -91,7 +91,7 @@ struct HomeView: View {
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
                                 ForEach(homeViewModel.filtered) { product in
-                                    ProductCardView(product: product, viewModel: cartViewModel)
+                                    ProductCardView(product: product, viewModel: homeViewModel)
                                 }
                             }
                             .padding(.horizontal, 16)

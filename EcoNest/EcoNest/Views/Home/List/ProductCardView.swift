@@ -13,7 +13,7 @@ struct ProductCardView: View {
     
     @EnvironmentObject var themeManager: ThemeManager
     var product: Product
-    @ObservedObject var viewModel: CartViewModel
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         

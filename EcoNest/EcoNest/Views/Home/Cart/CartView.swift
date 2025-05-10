@@ -51,10 +51,45 @@ struct CartView: View {
                     }
                 }
                 .listStyle(.plain)
+                
+                HStack {
+                    // Left side: total price display
+                    HStack {
+                        // Show the calculated total
+                        Text("\(viewModel.calculateTotal(), specifier: "%.2f")")
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        // Display the currency icon
+                        Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                    }
+                    .padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    // Right side: Continue button
+                    Button(action: {
+                        
+                    }) {
+                        // Localized button label
+                        Text("Continue".localized(using: currentLanguage))
+                            .font(.title2)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color("LimeGreen"))
+                            .cornerRadius(8)
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.top) 
             }
         }
         // Navigation title at the top of the screen
-        .navigationTitle("MyCart")
+        .navigationTitle("MyCart".localized(using: currentLanguage))
         .padding(.top)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

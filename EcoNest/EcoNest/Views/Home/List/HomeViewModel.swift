@@ -72,6 +72,34 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
+    
+    /// Adds a product to the current user's cart in Firestore.
+    /// - Parameter product: The product to be added to the cart.
+    func addToCart(product: Product) {
+        let db = FirebaseManager.shared.firestore
+
+        db.collection("users")
+            .document("QhB8R3sqxN96eEfTk1Me")
+            .collection("cart")
+            .document()
+            .setData([
+                "productId": product.id,
+                "quantity": 1,
+                "price": product.price
+            ]) { err in
+                if let err = err {
+                    print("Error adding to cart: \(err.localizedDescription)")
+                } else {
+                    if let index = self.products.firstIndex(where: { $0.id == product.id }) {
+                        DispatchQueue.main.async {
+                            self.products[index].isAddedToCart = true
+                            self.filtered = self.products // reflect change in filtered list too
+                        }
+                    }
+                }
+            }
+    }
+
 }
 
 
