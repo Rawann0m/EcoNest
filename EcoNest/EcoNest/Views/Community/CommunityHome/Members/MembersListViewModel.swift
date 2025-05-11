@@ -1,0 +1,69 @@
+//
+//  MembersListViewModel.swift
+//  EcoNest
+//
+//  Created by Rayaheen Mseri on 10/11/1446 AH.
+//
+
+import SwiftUI
+import FirebaseFirestore
+
+class MembersListViewModel: ObservableObject {
+    @Published var members: [User] = []
+    
+//    func fetchMembers(members: [String] ) {
+//        print("hi")
+//        for member in members {
+//            FirebaseManager.shared.firestore.collection("users").document(member).getDocument { snapshot, error in
+//                if let error = error {
+//                    print("Error getting documents: \(error)")
+//                } else {
+//                    print("hii")
+//                    if let data = snapshot?.data() {
+//                        print("hiii")
+//                        let name = data["username"] as! String
+//                        let email = data["email"] as! String
+//                        let profileImage = data["profileImage"] as! String
+//                        
+//                        let user = User(id: snapshot?.documentID, username: name, email: email, profileImage: profileImage)
+//                        
+//                        print("id : \(snapshot?.documentID ?? "no id")")
+//                        self.members.append(user)
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    func fetchMembers(members: [String]) {
+        print("Total members to fetch: \(members.count)")
+        
+        for member in members {
+            print("Fetching member ID: \(member)")
+            
+            FirebaseManager.shared.firestore.collection("users").document(member).getDocument { snapshot, error in
+                if let error = error {
+                    print("Error getting document: \(error)")
+                } else if let snapshot = snapshot, snapshot.exists {
+                    if let data = snapshot.data() {
+                        print("hiii")
+                        let name = data["username"] as? String ?? "Unknown"
+                        let email = data["email"] as? String ?? "Unknown"
+                        let profileImage = data["profileImage"] as? String ?? ""
+                        
+                        let user = User(id: snapshot.documentID, username: name, email: email, profileImage: profileImage)
+                        
+                        DispatchQueue.main.async {
+                            self.members.append(user)
+                        }
+                    } else {
+                        print("No data in snapshot for member: \(member)")
+                    }
+                } else {
+                    print("Document does not exist for member: \(member)")
+                }
+            }
+        }
+    }
+
+}

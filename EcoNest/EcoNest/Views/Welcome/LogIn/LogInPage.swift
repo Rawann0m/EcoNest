@@ -14,8 +14,13 @@ struct LogInPage: View {
     @State private var isPasswordSecure: Bool = true
     @State private var isLoggedIn = false
     @State private var isLoading = false
+    @State private var goToHome = false
+    @State private var goToForgot = false
+    @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var alertManager = AlertManager.shared
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
+        NavigationStack{
             VStack{
                 ZStack{
                     //bubbles
@@ -29,6 +34,7 @@ struct LogInPage: View {
                         .padding(.bottom,30)
                         .padding(.top , 45)
                 }.padding(.top)
+                NavigationLink("Show 3D Model", destination: Show(modelName: "Tulip"))
                 ZStack{
                     CustomRoundedRectangle(topLeft: 90, topRight: 0, bottomLeft: 0, bottomRight: 0)
                         .fill(Color("LightGreen").opacity(0.4))
@@ -54,7 +60,7 @@ struct LogInPage: View {
                                 }
                             }
                             Button("Forgot Password?"){
-                                
+                                goToForgot = true
                             }.foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("LimeGreen"))
                                 .padding(.leading,230)
                             
@@ -62,7 +68,18 @@ struct LogInPage: View {
                             CustomButton(
                                 title: "LogIn".localized(using: currentLanguage),
                                 action: {
-
+                                    DispatchQueue.main.async {
+                                        isLoading = true
+                                        // Firebase login
+                                        authViewModel.logIn(email: email, password: password) { success, message in
+                                            isLoading = false
+                                            if success {
+                                                goToHome = true
+                                            }else if let message = message {
+                                                AlertManager.shared.showAlert(title: "Error".localized(using: currentLanguage), message: message)
+                                            }
+                                        }
+                                    }
                                 }
                             ).disabled(isLoading)
                                 .padding(.bottom,60)
@@ -82,7 +99,16 @@ struct LogInPage: View {
                     }.padding(.top)
                 }
                 
+            }.fullScreenCover(isPresented:$goToForgot){
+                ForgotPasswordPage()
             }
+        }
+            .alert(isPresented: $alertManager.alertState.isPresented) {
+                Alert(
+                    title: Text(alertManager.alertState.title),
+                    message: Text(alertManager.alertState.message),
+                    dismissButton: .default(Text("OK".localized(using: currentLanguage)))
+                )}
         .navigationBarBackButtonHidden(true)
         NavigationLink(
             destination: SignUpPage(),
@@ -91,6 +117,13 @@ struct LogInPage: View {
                         EmptyView()
                     }
         )
+        NavigationLink(
+            destination: MainTabView(),
+                    isActive: $goToHome,
+                    label: {
+                        EmptyView()
+                    }
+                )
     }
 }
 
