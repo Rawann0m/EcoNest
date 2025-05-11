@@ -46,7 +46,7 @@ class CommunityListViewModel: ObservableObject {
                         var isMember = false
                         
                         for member in members {
-                            if member == FirebaseManager.shared.auth.currentUser!.uid {
+                            if member == FirebaseManager.shared.auth.currentUser?.uid {
                                 isMember = true
                             }
                         }

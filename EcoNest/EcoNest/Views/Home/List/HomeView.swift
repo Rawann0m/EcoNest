@@ -17,10 +17,6 @@ struct HomeView: View {
     @StateObject private var cartViewModel = CartViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
     
-    // Animation state for the loading spinner
-    @State private var degree: Int = 270
-    @State private var spinnerLength = 0.6
-    
     var body: some View {
         
         ZStack(alignment: .top) {
@@ -56,19 +52,7 @@ struct HomeView: View {
                         
                         // Loading state spinner while products are being fetched
                         if homeViewModel.products.isEmpty {
-                            Circle()
-                                .trim(from: 0.0, to: spinnerLength)
-                                .stroke(.blue, lineWidth: 5)
-                                .frame(width: 60, height: 60)
-                                .rotationEffect(Angle(degrees: Double(degree)))
-                                .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: degree)
-                                .onAppear {
-                                    // Animate spinner stroke and rotation
-                                    withAnimation(.easeIn(duration: 1.5).repeatForever(autoreverses: true)) {
-                                        spinnerLength = 1
-                                    }
-                                    degree = 270 + 360
-                                }
+                            ProgressView()
                         }
                         
                         // No results found placeholder after filtering
@@ -117,7 +101,7 @@ struct HomeView: View {
             if newValue.isEmpty {
                 withAnimation(.easeInOut(duration: 0.3)) {
                     homeViewModel.filtered = homeViewModel.products
-                }
+               }
             }
         }
     }

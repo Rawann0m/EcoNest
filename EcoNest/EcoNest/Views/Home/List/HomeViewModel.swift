@@ -70,7 +70,7 @@ class HomeViewModel: ObservableObject {
             self.filtered = self.products.filter {
                 $0.name.lowercased().contains(self.search.lowercased())
             }
-        }
+       }
     }
     
     /// Adds a product to the current user's cart in Firestore.
