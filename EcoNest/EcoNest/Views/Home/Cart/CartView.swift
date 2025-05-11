@@ -86,7 +86,7 @@ struct CartView: View {
                     }
                     .padding(.horizontal)
                 }
-                .padding(.top) 
+                .padding([.top, .bottom]) 
             }
         }
         // Navigation title at the top of the screen
