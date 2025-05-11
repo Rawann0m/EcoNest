@@ -9,13 +9,17 @@ import SwiftUI
 
 // MARK: - AppBar (Top Section with Title and Icons)
 struct AppBar: View {
+    
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @ObservedObject var viewModel: CartViewModel
+    
     var body: some View {
 
             VStack(alignment: .leading) {
                 
                 HStack {
                     // Title text
-                    Text("Find your")
+                    Text("Findyour".localized(using: currentLanguage))
                         .font(.largeTitle.bold())
                     
                     Spacer()
@@ -24,12 +28,12 @@ struct AppBar: View {
                     IconNavigationLink(systemImageName: "heart", destination: Text("Favorite"))
                     
                     // Cart icon with navigation
-                    IconNavigationLink(systemImageName: "cart", destination: Text("Cart"))
+                    IconNavigationLink(systemImageName: "cart", destination: CartView(viewModel: viewModel))
                 }
                 .font(.system(size: 25))
                 
                 // Subtitle text
-                Text("Favorite plants")
+                Text("Favoriteplants".localized(using: currentLanguage))
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color("LimeGreen"))
             }
