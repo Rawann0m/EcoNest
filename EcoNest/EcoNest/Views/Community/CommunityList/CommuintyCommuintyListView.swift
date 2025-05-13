@@ -10,66 +10,74 @@ import SwiftUI
 struct CommuintyListView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State var showCommunity: Bool = false
-    @ObservedObject var communityViewModel = CommunityListViewModel()
+    @StateObject var communityViewModel = CommunityViewModel()
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     
     var body: some View {
         NavigationStack {
             VStack{
-                ForEach(communityViewModel.communities, id: \.self){ community in
-                    ZStack{
-                        Image("community")
-                            .resizable()
-                            .frame(width: 350, height: 250)
-                            .cornerRadius(10)
-                        
-                        VStack{
-                            Group{
-                                Text(community.name)
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .frame(width: 320, alignment: .leading)
-                                
-                                Text("\(community.members.count) members")
-                                    .font(.title3)
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .frame(width: 320, alignment: .leading)
-                            }
-                            .offset(y: 50)
+                if communityViewModel.isLoading {
+                    ProgressView()
+                        .frame(height: 500, alignment: .center)
+                } else {
+                    ForEach(communityViewModel.communities, id: \.self){ community in
+                        ZStack{
+                            Image("community")
+                                .resizable()
+                                .frame(width: 350, height: 250)
+                                .cornerRadius(10)
                             
-                            if !community.memberOfCommunity {
-                                Text("JoinNow".localized(using: currentLanguage))
-                                    .background{
-                                        Capsule()
-                                            .fill(.white)
-                                            .frame(width: 320, height: 50)
-                                    }
-                                    .frame(width: 320, height: 50)
-                                    .offset(y: 50)
-                                    .onTapGesture {
-                                        if FirebaseManager.shared.isLoggedIn {
-                                            
-                                            if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
-                                                
-                                                communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
-                                            }
-                                            
-                                            
-                                        } else {
-                                            AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                            VStack{
+                                Group{
+                                    Text(community.name)
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                        .bold()
+                                        .frame(width: 320, alignment: .leading)
+                                    
+                                    Text("\(community.members.count) members")
+                                        .font(.title3)
+                                        .foregroundColor(.white)
+                                        .bold()
+                                        .frame(width: 320, alignment: .leading)
+                                }
+                                .offset(y: community.memberOfCommunity ? 75 : 50)
+                                
+                                if !community.memberOfCommunity {
+                                    Text("JoinNow".localized(using: currentLanguage))
+                                        .background{
+                                            Capsule()
+                                                .fill(.white)
+                                                .frame(width: 320, height: 50)
                                         }
-                                    }
+                                        .frame(width: 320, height: 50)
+                                        .offset(y: 50)
+                                        .onTapGesture {
+                                            if FirebaseManager.shared.isLoggedIn {
+                                                
+                                                if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
+                                                    
+                                                    communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
+                                                }
+                                                
+                                                
+                                            } else {
+                                                AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                            }
+                                        }
+                                }
                             }
                         }
-                    }
-                    .onTapGesture {
-                        communityViewModel.selectedCommunity = community
-                        showCommunity.toggle()
+                        .onTapGesture {
+                            communityViewModel.selectedCommunity = community
+                            showCommunity.toggle()
+                        }
                     }
                 }
+            }
+            .onDisappear{
+                communityViewModel.firestoreListener?.remove()
             }
             .alert(isPresented: $alertManager.alertState.isPresented) {
                 Alert(
@@ -83,9 +91,7 @@ struct CommuintyListView: View {
             }
         }
         .fullScreenCover(isPresented: $showCommunity) {
-            if let community = communityViewModel.selectedCommunity {
-                CommunityHomeView(community: community)
-            }
+            CommunityHomeView(communityViewModel: communityViewModel)
         }
         .fullScreenCover(isPresented: $navigateToLogin) {
             LogInPage()
