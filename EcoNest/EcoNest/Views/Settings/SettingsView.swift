@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State private var isArabic: Bool = false
     @EnvironmentObject var themeManager: ThemeManager
     @EnvironmentObject var languageManager: LanguageManager
+    @StateObject private var authViewModel = AuthViewModel()
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
@@ -192,7 +193,7 @@ struct SettingsView: View {
                 settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
                     // go to customer suport website
                     print("Customer Support")
-                    openURL(URL(string: "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--fb0c4daf.local-credentialless.webcontainer-api.io/")!)
+                    openURL(URL(string: "https://econestsupport.netlify.app/")!)
                 })
                 
                 
@@ -200,18 +201,20 @@ struct SettingsView: View {
                     settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
                         // show alert and delete account
                         print("delete account")
+//                        authViewModel.deleteUserAccount(email: <#T##String#>, password: <#T##String#>, completion: <#T##(Result<String, Error>) -> Void#>)
                     })
                     
                     settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
                         // log out
                         if FirebaseManager.shared.isLoggedIn{
                             print("logout")
+                            authViewModel.logOut()
                         } else {
                             
                         }
                     })
                 }
-                
+                NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
                 Spacer()
                 
             }

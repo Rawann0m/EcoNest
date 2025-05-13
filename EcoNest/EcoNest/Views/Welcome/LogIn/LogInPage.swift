@@ -22,6 +22,7 @@ struct LogInPage: View {
     var body: some View {
         NavigationStack{
             VStack{
+                ScrollView(.vertical) {
                 ZStack{
                     //bubbles
                     Image("bubbles")
@@ -33,24 +34,31 @@ struct LogInPage: View {
                         .frame(width: 230,height: 190)
                         .padding(.bottom,30)
                         .padding(.top , 45)
-                }.padding(.top)
-                NavigationLink("Show 3D Model", destination: Show(modelName: "Tulip"))
+                    Image(systemName:currentLanguage == "ar" ? "chevron.right":"chevron.left")
+                        .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
+                        .offset(x:-170, y:-120)
+                        .onTapGesture {
+                            goToHome = true
+                        }
+                }
+                .padding(.top,-50)
                 ZStack{
                     CustomRoundedRectangle(topLeft: 90, topRight: 0, bottomLeft: 0, bottomRight: 0)
                         .fill(Color("LightGreen").opacity(0.4))
                         .frame(width: 400,height: 550)
                         .padding()
                         .edgesIgnoringSafeArea(.bottom)
-                    ScrollView(.vertical) {
+                    
                         VStack(spacing: 20){
-                            Text("Log in")
+                            Text("LogIn".localized(using: currentLanguage))
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
                                 .padding(.bottom,20)
-                            CustomTextField(placeholder: "Email", text: $email, isSecure: .constant(false))
+                                .padding(.top,-15)
+                            CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false))
                             ZStack(alignment: .trailing) {
-                                CustomTextField(placeholder: "Password", text: $password, isSecure: $isPasswordSecure)
+                                CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure)
                                 Button(action: {
                                     isPasswordSecure.toggle()
                                 }) {
@@ -59,11 +67,12 @@ struct LogInPage: View {
                                         .padding(.trailing, 16)
                                 }
                             }
-                            Button("Forgot Password?"){
+                            Button(action:{
                                 goToForgot = true
-                            }.foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("LimeGreen"))
-                                .padding(.leading,230)
-                            
+                            }){ Text("ForgotPassword".localized(using: currentLanguage))
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("LimeGreen"))
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                            }
                             // Custom button
                             CustomButton(
                                 title: "LogIn".localized(using: currentLanguage),
@@ -75,6 +84,7 @@ struct LogInPage: View {
                                             isLoading = false
                                             if success {
                                                 goToHome = true
+                                                print("go home")
                                             }else if let message = message {
                                                 AlertManager.shared.showAlert(title: "Error".localized(using: currentLanguage), message: message)
                                             }
@@ -82,7 +92,7 @@ struct LogInPage: View {
                                     }
                                 }
                             ).disabled(isLoading)
-                                .padding(.bottom,60)
+                                .padding(.bottom)
                             // Navigation to log in
                             HStack{
                                 Text("DHaveAccount".localized(using: currentLanguage))
@@ -95,13 +105,27 @@ struct LogInPage: View {
                             }
                             
                         }.padding(.horizontal,30)
-                            .padding(.top,30)
-                    }.padding(.top)
+                            //.padding(.top)
+                }.padding(.bottom,-60)
                 }
                 
             }.fullScreenCover(isPresented:$goToForgot){
                 ForgotPasswordPage()
             }
+            NavigationLink(
+                destination: SignUpPage(),
+                        isActive: $isLoggedIn,
+                        label: {
+                            EmptyView()
+                        }
+            )
+            NavigationLink(
+                destination: MainTabView(),
+                        isActive: $goToHome,
+                        label: {
+                            EmptyView()
+                        }
+                    )
         }
             .alert(isPresented: $alertManager.alertState.isPresented) {
                 Alert(
@@ -109,21 +133,8 @@ struct LogInPage: View {
                     message: Text(alertManager.alertState.message),
                     dismissButton: .default(Text("OK".localized(using: currentLanguage)))
                 )}
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         .navigationBarBackButtonHidden(true)
-        NavigationLink(
-            destination: SignUpPage(),
-                    isActive: $isLoggedIn,
-                    label: {
-                        EmptyView()
-                    }
-        )
-        NavigationLink(
-            destination: MainTabView(),
-                    isActive: $goToHome,
-                    label: {
-                        EmptyView()
-                    }
-                )
     }
 }
 

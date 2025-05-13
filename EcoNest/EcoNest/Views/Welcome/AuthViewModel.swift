@@ -15,6 +15,10 @@ class AuthViewModel:ObservableObject {
     //MARK: - Variables
     @Published var isAuthenticated: Bool = false
     @Published var isLoading: Bool = false
+    @Published var alertMessage: String = ""
+    @Published var showAlert: Bool = false
+    @Published var resetError: String?
+    @Published var resetSuccessMessage: String?
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     // MARK: - Initialization
@@ -51,7 +55,7 @@ class AuthViewModel:ObservableObject {
             completion(false, "Invalid email")
             return
         }
-
+        
         isLoading = true
         FirebaseManager.shared.auth.signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let self = self else { return }
@@ -127,7 +131,7 @@ class AuthViewModel:ObservableObject {
             completion(false, "Weak password")
             return
         }
-
+        
         isLoading = true
         // Create user
         FirebaseManager.shared.auth.createUser(withEmail: email, password: password) { [weak self] result, error in
@@ -163,7 +167,7 @@ class AuthViewModel:ObservableObject {
     
     /// Handles logic after a successful login.
     private func handleSuccessfulLogin(uid: String, completion: @escaping (Bool, String?) -> Void) {
- 
+        
         fetchUserFromFirestore(uid: uid) { success in
             DispatchQueue.main.async {
                 if success {
@@ -217,15 +221,15 @@ class AuthViewModel:ObservableObject {
             
             let username = data["username"] as? String ?? ""
             let email = data["email"] as? String ?? ""
-//            let user = User(
-//                username: username,
-//                email: email,
-//                password: "",
-//                image: nil,
-//                transactions: [],
-//                budgets: [],
-//                categories: []
-//            )
+            //            let user = User(
+            //                username: username,
+            //                email: email,
+            //                password: "",
+            //                image: nil,
+            //                transactions: [],
+            //                budgets: [],
+            //                categories: []
+            //            )
             completion(true)
         }
     }
@@ -270,42 +274,137 @@ class AuthViewModel:ObservableObject {
             }
         }
     }
-    // MARK: - Reset Password
+
     
-    func sendPasswordReset(email: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let sanitizedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    // MARK: - Reset Password
+//    func checkEmailExists(email: String, completion: @escaping (Bool) -> Void) {
+//           let sanitizedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+//           
+//           // Ensure the email is not empty
+//           if sanitizedEmail.isEmpty {
+//               DispatchQueue.main.async {
+//                   self.alertMessage = "Please enter a valid email address."
+//                   self.showAlert = true
+//               }
+//               completion(false)
+//               return
+//           }
+//
+//           print("Checking if email exists: \(sanitizedEmail)") // Debug print
+//
+//           // Fetch sign-in methods associated with the email
+//           Auth.auth().fetchSignInMethods(forEmail: sanitizedEmail) { methods, error in
+//               if let error = error {
+//                   DispatchQueue.main.async {
+//                       self.alertMessage = "Error checking email: \(error.localizedDescription)"
+//                       self.showAlert = true
+//                   }
+//                   print("Error fetching sign-in methods: \(error.localizedDescription)") // Debug print
+//                   completion(false)
+//                   return
+//               }
+//
+//               print("Fetched methods: \(methods ?? [])") // Debug print
+//
+//               if let methods = methods, methods.isEmpty {
+//                   DispatchQueue.main.async {
+//                       self.alertMessage = "No user found with this email."
+//                       self.showAlert = true
+//                   }
+//                   print("No user found with this email.") // Debug print
+//                   completion(false)
+//               } else {
+//                   // Email exists, print the available sign-in methods
+//                   DispatchQueue.main.async {
+//                       self.alertMessage = "User found, sending reset email..."
+//                       self.showAlert = true
+//                   }
+//                   print("User found with these sign-in methods: \(methods ?? [])") // Debug print
+//                   completion(true)
+//               }
+//           }
+//       }
+//       
+//       // Function to send password reset email
+//       func sendPasswordReset(email: String) {
+//           // First, check if the email exists
+//           print("Sending password reset for email: \(email)") // Debug print
+//           
+//           checkEmailExists(email: email) { exists in
+//               print("Email exists: \(exists)") // Debug print
+//
+//               if exists {
+//                   // Email exists, send password reset
+//                   Auth.auth().sendPasswordReset(withEmail: email) { error in
+//                       if let error = error {
+//                           DispatchQueue.main.async {
+//                               self.alertMessage = "Error sending reset email: \(error.localizedDescription)"
+//                               self.showAlert = true
+//                           }
+//                           print("Error sending password reset: \(error.localizedDescription)") // Debug print
+//                       } else {
+//                           DispatchQueue.main.async {
+//                               self.alertMessage = "Password reset email sent successfully!"
+//                               self.showAlert = true
+//                           }
+//                           print("Password reset email sent successfully.") // Debug print
+//                       }
+//                   }
+//               } else {
+//                   // Email does not exist, notify the user
+//                   DispatchQueue.main.async {
+//                       self.alertMessage = "No user found with this email."
+//                       self.showAlert = true
+//                   }
+//                   print("No user found with this email.") // Debug print
+//               }
+//           }
+//       }
+//
+    private let db = Firestore.firestore()
+    func resetPasswordWithEmailLookup(for email: String) {
+            let lowercasedEmail = email.lowercased()
+            print("Looking up user with email (lowercased): \(lowercasedEmail)")
 
-        FirebaseAuth.Auth.auth().fetchSignInMethods(forEmail: sanitizedEmail) { methods, error in
-            if let error = error {
-                // Log the error to understand it better
-                print("Error while checking email existence: \(error.localizedDescription)")
-                let errorMessage = self.mapPasswordResetError(error)
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
-                return
-            }
+            db.collection("users")
+                .whereField("email", isEqualTo: lowercasedEmail)
+                .getDocuments { snapshot, error in
+                    if let error = error {
+                        print("Error fetching user: \(error.localizedDescription)")
+                        self.resetError = "Something went wrong."
+                        return
+                    }
 
-            guard let methods = methods, !methods.isEmpty else {
-                let userNotFoundMessage = "No user found with this email."
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: userNotFoundMessage])))
-                return
-            }
+                    guard let doc = snapshot?.documents.first else {
+                        print("No matching email found in Firestore.")
+                        self.resetError = "No user found with this email."
+                        return
+                    }
 
-            // If user exists, attempt to send the reset email
-            FirebaseManager.shared.auth.sendPasswordReset(withEmail: sanitizedEmail) { error in
+                    if let correctEmail = doc.get("email") as? String {
+                        print("Exact email found: \(correctEmail)")
+                        self.sendResetEmail(to: correctEmail)
+                    } else {
+                        self.resetError = "Invalid email format."
+                    }
+                }
+        }
+
+        private func sendResetEmail(to email: String) {
+            print("Sending password reset email to: \(email)")
+            Auth.auth().sendPasswordReset(withEmail: email) { error in
                 if let error = error {
-                    print("Error while sending password reset email: \(error.localizedDescription)") // Log the error
-                    completion(.failure(error)) // Pass the error back to the caller
+                    print("Reset error: \(error.localizedDescription)")
+                    self.resetError = error.localizedDescription
                 } else {
-                    completion(.success(())) // Successfully sent reset email
+                    self.resetSuccessMessage = "Password reset email sent."
                 }
             }
         }
-    }
-
     // MARK: - Validation Helpers
     
     /// Validates if an email string matches proper format.
-    private func isValidEmail(_ email: String) -> Bool {
+    func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: email)
@@ -358,57 +457,58 @@ class AuthViewModel:ObservableObject {
         }
     }
     
-//    func mapPasswordResetError(_ error: Error) -> String {
-//        guard let errorCode = AuthErrorCode(rawValue: (error as NSError).code) else {
-//            return "An unexpected error occurred. Please try again later." //"حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
-//        }
-//
-//        switch errorCode {
-//        case .invalidEmail:
-//            return "Invalid email address." //"البريد الإلكتروني غير صالح."
-//        case .userNotFound:
-//            return "No user found with this email." //"لم يتم العثور على مستخدم بهذا البريد الإلكتروني."
-//        case .networkError:
-//            return "Network error. Please try again." //            "حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى."
-//        case .tooManyRequests:
-//            return "Too many requests. Try again later." // "تم إرسال عدد كبير جدًا من الطلبات. يرجى المحاولة لاحقًا."
-//        default:
-//            return "An unexpected error occurred. Please try again later." //"حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
-//        }
-//    }
-//    
-
+    //    func mapPasswordResetError(_ error: Error) -> String {
+    //        guard let errorCode = AuthErrorCode(rawValue: (error as NSError).code) else {
+    //            return "An unexpected error occurred. Please try again later." //"حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
+    //        }
+    //
+    //        switch errorCode {
+    //        case .invalidEmail:
+    //            return "Invalid email address." //"البريد الإلكتروني غير صالح."
+    //        case .userNotFound:
+    //            return "No user found with this email." //"لم يتم العثور على مستخدم بهذا البريد الإلكتروني."
+    //        case .networkError:
+    //            return "Network error. Please try again." //            "حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى."
+    //        case .tooManyRequests:
+    //            return "Too many requests. Try again later." // "تم إرسال عدد كبير جدًا من الطلبات. يرجى المحاولة لاحقًا."
+    //        default:
+    //            return "An unexpected error occurred. Please try again later." //"حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
+    //        }
+    //    }
+    //
     
     
- // MARK: - Password Reset Error Mapping
+    
+    // MARK: - Password Reset Error Mapping
     
     func mapPasswordResetError(_ error: Error) -> String {
         let nsError = error as NSError
-        print("Error received: \(error.localizedDescription)")
-        
-        switch nsError.code {
-        case 17008:
-            return "Invalid email address."
-        case 17011:
-            return "No user found with this email."
-        case 17010:
-            return "Too many requests. Please try again later."
-        case 17020:
-            return "Network error. Please check your connection."
-        case AuthErrorCode.invalidEmail.rawValue:
-            return "Invalid email address format."
-        case AuthErrorCode.userNotFound.rawValue:
-            return "No user found with this email."
-        case AuthErrorCode.networkError.rawValue:
-            return "Network error. Please try again."
-        case AuthErrorCode.tooManyRequests.rawValue:
-            return "Too many requests. Please try again later."
-        default:
-            print("Unknown error code: \(nsError.code)")  
+        guard nsError.domain == AuthErrorDomain else {
+            print("Non-auth error domain: \(nsError.domain)")
+            return error.localizedDescription
+        }
+
+        guard let authCode = AuthErrorCode(rawValue: nsError.code) else {
+            print("Unknown error code: \(nsError.code)")
             return "An unknown error occurred. Please try again."
         }
-    }
 
+        switch authCode {
+        case .invalidEmail:
+            return "Invalid email address."
+        case .userNotFound:
+            return "No user found with this email."
+        case .tooManyRequests:
+            return "Too many requests. Please try again later."
+        case .networkError:
+            return "Network error. Please try again."
+        default:
+            print("Unhandled error code: \(authCode.rawValue)")
+            return "An unknown error occurred. Please try again."
+        }
+        
+    }
 }
+
 
 
