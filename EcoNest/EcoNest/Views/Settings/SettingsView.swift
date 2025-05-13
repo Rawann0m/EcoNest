@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import PhotosUI
+import SDWebImageSwiftUI
 
 struct SettingsView: View {
     @State var isEdit: Bool = false
@@ -15,8 +17,14 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = "Guest"
+    @State var name: String = ""
+    @State var email: String = ""
+    @State var profileImage: String = ""
     @State var login: Bool = false
+    @StateObject var viewModel = SettingsViewModel()
+    @State var selectedImage: UIImage? = nil
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State var showImagePicker: Bool = false
     var body: some View {
         NavigationStack{
             VStack {
@@ -31,19 +39,28 @@ struct SettingsView: View {
                         .frame(width: 350, height: 135)
                         .offset(y: 100)
                     
-                    // check if there is no profuile image put this
-                    Image("profile")
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(50)
-                        .background{
-                            Circle()
-                                .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
+                    
+                    VStack {
+                        if let selectedImage = selectedImage {
+                            Image(uiImage: selectedImage)
+                                .resizable()
+                        } else if let imageURL = URL(string: profileImage) {
+                            WebImage(url: imageURL)
+                                .resizable()
+                        } else {
+                            Image("profile")
+                                .resizable()
                         }
-                        .offset(y: 30)
+                    }
+                    .frame(width: 80, height: 80)
+                    .cornerRadius(50)
+                    .background {
+                        Circle()
+                            .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
+                    }
+                    .offset(y: 30)
                     
-                    
-                   if isEdit {
+                    if isEdit {
                         ZStack {
                             Circle()
                                 .fill(Color("DarkGreen"))
@@ -57,6 +74,9 @@ struct SettingsView: View {
                                 .foregroundColor(.white)
                         }
                         .offset(x: 30 ,y: 60)
+                        .onTapGesture {
+                            showImagePicker.toggle()
+                        }
                     }
                     
                     if FirebaseManager.shared.isLoggedIn {
@@ -66,6 +86,12 @@ struct SettingsView: View {
                             .foregroundColor(Color("DarkGreen"))
                             .offset(x: 150, y: 50)
                             .onTapGesture {
+                                
+                                if isEdit {
+                                    viewModel.updateUserInformation(user: User(username: name, email: email, profileImage: profileImage), newImage: selectedImage)
+                                    print("edit")
+                                }
+                                
                                 isEdit.toggle()
                             }
                     }
@@ -83,7 +109,7 @@ struct SettingsView: View {
                         }
                         
                         if FirebaseManager.shared.isLoggedIn {
-                            Text("useremail")
+                            Text(email)
                                 .frame(width: 200)
                         } else {
                             Text("Login/Create Account")
@@ -109,15 +135,15 @@ struct SettingsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 
-                    settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
-                        NavigationLink{
-                          // go to orders page
-                            Text("orders")
-                        } label:{
-                            Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
-                                .foregroundColor(Color("LimeGreen"))
-                        }
-                    })
+                settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
+                    NavigationLink{
+                        // go to orders page
+                        Text("orders")
+                    } label:{
+                        Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
+                            .foregroundColor(Color("LimeGreen"))
+                    }
+                })
                 
                 
                 settingRow(icon: "globe", text: "Language".localized(using: currentLanguage), trailingView: {
@@ -187,7 +213,22 @@ struct SettingsView: View {
                 }
                 
                 Spacer()
-
+                
+            }
+            .photosPicker(
+                isPresented: $showImagePicker,
+                selection: $selectedItem,
+                matching: .images
+            )
+            .onChange(of: selectedItem) { _ , newItem in
+                Task { @MainActor in
+                    if let newItem,
+                       let data = try? await newItem.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: data) {
+                        self.selectedImage = uiImage
+                        print("Updated selectedImage: \(uiImage)")
+                    }
+                }
             }
             .fullScreenCover(isPresented: $login, content: {
                 LogInPage()
@@ -198,6 +239,13 @@ struct SettingsView: View {
                 currentLanguage = languageCode
                 if let index = languageManager.supportedLanguages.firstIndex(of: languageCode) {
                     selectedLanguageIndex = index
+                }
+            }
+            .onChange(of: viewModel.user) { newUser, _ in
+                if let user = newUser {
+                    name = user.username
+                    email = user.email
+                    profileImage = user.profileImage
                 }
             }
             .onAppear{
@@ -214,11 +262,17 @@ struct SettingsView: View {
                     }
                 }
                 
-                print(FirebaseManager.shared.auth.currentUser?.uid)
+                let currentUser = viewModel.user
+                if let user = currentUser {
+                    name = user.username
+                    email = user.email
+                    profileImage = user.profileImage
+                }
+                print(FirebaseManager.shared.auth.currentUser?.uid ?? "no user")
             }
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         }
     }
-        
+    
 }
 
