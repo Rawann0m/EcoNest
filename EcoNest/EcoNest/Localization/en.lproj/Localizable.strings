@@ -35,7 +35,12 @@
 "DirectMessages" = "Direct Messages";
 "JoinNow" = "Join Now";
 "Send" = "Send";
-
+"Name" = "Name";
+"Email" = "Email";
+"Password" = "Password";
+"ForgotPassword" = "Forgot Password ?";
+"ConfirmPassword" = "Confirm Password";
+"ResetPassword" = "Reset Password";
 "SignUp" = "Sign up";
 "SignUp2" = "Sign up";
 "LogIn2" = "Log in";

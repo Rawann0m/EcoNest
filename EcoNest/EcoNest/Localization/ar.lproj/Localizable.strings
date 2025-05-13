@@ -35,7 +35,12 @@
 "DirectMessages" = "الرسائل الخاصة";
 "JoinNow" = "انضم الآن";
 "Send" = "ارسال";
-
+"Email" = "الايميل";
+"Name" = "الاسم";
+"Password" = "كلمة المرور";
+"ConfirmPassword" = "تأكيد كلمة المرور ";
+"ForgotPassword" = "نسيت كلمة المرور ؟";
+"ResetPassword" = "اعادة تعيين كلمة المرور";
 "SignUp" = "انشاء حساب جديد";
 "SignUp2" = "سجل الان";
 "HaveAccount" = "هل لديك حساب بالفعل؟";
