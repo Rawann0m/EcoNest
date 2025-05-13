@@ -26,11 +26,12 @@ struct AppBar: View {
                     
                     // Favorite icon with navigation
                     IconNavigationLink(systemImageName: "heart", destination: Text("Favorite"))
-                    
+                        .padding(.horizontal, 10)
                     // Cart icon with navigation
                     IconNavigationLink(systemImageName: "cart", destination: CartView(viewModel: viewModel))
+                    
                 }
-                .font(.system(size: 25))
+                .font(.system(size: 20))
                 
                 // Subtitle text
                 Text("Favoriteplants".localized(using: currentLanguage))
@@ -58,10 +59,9 @@ struct IconNavigationLink<Destination: View>: View {
             Image(systemName: systemImageName)
                 .foregroundStyle(.black)
                 .background {
-                    Rectangle()
+                    Circle()
                         .fill(Color("LimeGreen"))
                         .frame(width: 35, height: 35)
-                        .cornerRadius(8)
                 }
         }
     }

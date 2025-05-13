@@ -24,7 +24,7 @@ struct YourApp: App {
     @StateObject var localizableManager = LanguageManager()
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-
+    @StateObject private var viewModel = LocationViewModel()
 
   var body: some Scene {
     WindowGroup {
@@ -33,6 +33,7 @@ struct YourApp: App {
               .environmentObject(themeManager)
               .environmentObject(AlertManager.shared)
               .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
+              .environmentObject(viewModel)
     }
   }
 }

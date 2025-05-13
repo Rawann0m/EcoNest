@@ -46,16 +46,15 @@ struct HomeView: View {
                         .padding(.horizontal, 16)
                         
                         // Calculate number of columns based on screen width
-                        let screenWidth = UIScreen.main.bounds.width
-                        let columns = max(Int(screenWidth / 200), 1)
-                        let gridLayout = Array(repeating: GridItem(.flexible(), spacing: 20), count: columns)
-                        
-                        // Loading state spinner while products are being fetched
+                        // Use adaptive GridItem to ensure responsiveness on different screen sizes
+                        let gridLayout = [
+                            GridItem(.adaptive(minimum: 150, maximum: 250), spacing: 20)
+                        ]
+
                         if homeViewModel.products.isEmpty {
                             ProgressView()
                         }
-                        
-                        // No results found placeholder after filtering
+
                         else if homeViewModel.filtered.isEmpty {
                             VStack {
                                 Image("Search")
@@ -70,8 +69,7 @@ struct HomeView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                        
-                        // Display filtered product cards in a responsive grid
+
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
                                 ForEach(homeViewModel.filtered) { product in

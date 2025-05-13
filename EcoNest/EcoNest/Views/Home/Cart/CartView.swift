@@ -21,8 +21,12 @@ struct CartView: View {
     
     var body: some View {
         NavigationStack {
+            
+            if viewModel.isLoading {
+                ProgressView()
+            }
             // Show empty state if cart is empty
-            if viewModel.cartProducts.isEmpty {
+            else if viewModel.cartProducts.isEmpty {
                 VStack(spacing: 10) {
                     
                     // Display cart image
@@ -71,9 +75,7 @@ struct CartView: View {
                     Spacer()
                     
                     // Right side: Continue button
-                    Button(action: {
-                        
-                    }) {
+                    NavigationLink(destination: ReviewView(viewModel: viewModel)) {
                         // Localized button label
                         Text("Continue".localized(using: currentLanguage))
                             .font(.title2)
@@ -105,5 +107,7 @@ struct CartView: View {
         .onAppear {
             viewModel.fetchCartData()
         }
+        .navigationBarBackButtonHidden(true)
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }

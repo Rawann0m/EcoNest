@@ -14,9 +14,13 @@ class CartViewModel: ObservableObject {
     
     /// List of cart items currently stored in Firestore for the user.
     @Published var cartProducts: [Cart] = []
-    
+    @Published var isLoading = false
+
     /// Fetches all cart items from Firestore and resolves them into complete `Cart` objects with full `Product` data.
     func fetchCartData() {
+        
+        isLoading = true
+        
         let db = FirebaseManager.shared.firestore
         
         db.collection("users")
@@ -69,6 +73,7 @@ class CartViewModel: ObservableObject {
                             // Ensure updates are performed on the main thread
                             DispatchQueue.main.async {
                                 self.cartProducts.append(cartItem)
+                                self.isLoading = false
                             }
                         }
                     }

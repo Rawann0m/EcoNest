@@ -28,7 +28,7 @@ struct ProductCardView: View {
                     WebImage(url: URL(string: product.image))
                         .resizable()
                         .background(Color.gray.opacity(0.15))
-                        .frame(width: 160, height: 150)
+                        .frame(width: 150, height: 150)
                         .cornerRadius(8)
                     
                     // Product name text
@@ -61,7 +61,7 @@ struct ProductCardView: View {
                 })
             }
         }
-        .frame(width: 180, height: 230)
+        .frame(width: 175, height: 230)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(.gray.opacity(0.3), lineWidth: 2)
