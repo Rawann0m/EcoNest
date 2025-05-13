@@ -6,13 +6,21 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 @ViewBuilder
 func UsersRow(username: String, email: String, image: String, time: String, message: String) -> some View {
     @EnvironmentObject var themeManager: ThemeManager
     HStack {
-        Image(image.isEmpty ? "profile" : image)
-            .resizable()
+        VStack{
+            if image.isEmpty {
+                Image("profile")
+                    .resizable()
+            }  else if let imageURL = URL(string: image){
+                WebImage(url: imageURL)
+                    .resizable()
+            }
+        }
             .frame(width: 60, height: 60)
             .cornerRadius(50)
             .background{

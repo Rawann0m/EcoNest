@@ -8,58 +8,74 @@
 import SwiftUI
 import Firebase
 
-class CommunityListViewModel: ObservableObject {
+class CommunityViewModel: ObservableObject {
     @Published var communities: [Community] = []
     @Published var selectedCommunity: Community?
-   // @Published var memberOfCommunity: Bool = false
+    @Published var isLoading: Bool = false
+    @Published var selectedCommunityMembers: [String] = []
+    
+    var firestoreListener: ListenerRegistration?
+    var selectedCommunityListener: ListenerRegistration?
     
     init() {
         fetchCommunities()
     }
     
+    deinit {
+        firestoreListener?.remove()
+        selectedCommunityListener?.remove()
+    }
+    
     func fetchCommunities() {
-        
         communities = []
+        isLoading = true
+        firestoreListener?.remove()
         
-        FirebaseManager.shared.firestore.collection("community").getDocuments { (snapshot, error) in
+        firestoreListener = FirebaseManager.shared.firestore.collection("community").addSnapshotListener { [weak self] (snapshot, error) in
+            
+            guard let self = self else { return }
             
             if let error = error {
-                
                 print("Error getting documents: \(error)")
-                
+                self.isLoading = false
             } else if let documents = snapshot?.documents {
-                
                 print("Found \(documents.count) documents")
                 
-                for document in documents {
-                    
-                    print("Document ID: \(document.documentID)")
-                    let data = document.data()
-
-                    if data.isEmpty {
-                        
+                snapshot?.documentChanges.forEach { change in
+                    let data = change.document.data()
+                    guard !data.isEmpty else {
                         print("data is empty")
-                        
-                    } else {
-                        // get number of members
-                        let members = data["members"] as! Array<String>
-                        var isMember = false
-                        
-                        for member in members {
-                            if member == FirebaseManager.shared.auth.currentUser!.uid {
-                                isMember = true
-                            }
+                        return
+                    }
+                    
+                    let id = change.document.documentID
+                    let name = data["name"] as? String ?? ""
+                    let description = data["description"] as? String ?? ""
+                    let members = data["members"] as? [String] ?? []
+                    let currentUserId = FirebaseManager.shared.auth.currentUser?.uid ?? ""
+                    let isMember = members.contains(currentUserId)
+                    let community = Community(id: id, name: name, description: description, members: members, memberOfCommunity: isMember)
+                    
+                    switch change.type {
+                    case .added:
+                        if !self.communities.contains(where: { $0.id == id }) {
+                            self.communities.append(community)
                         }
                         
-                        let name = data["name"] as! String
-                        let description = data["description"] as! String
+                    case .modified:
+                        if let index = self.communities.firstIndex(where: { $0.id == id }) {
+                            self.communities[index] = community
+                        }
                         
-                        print("Data: \(data)")
+                    case .removed:
+                        self.communities.removeAll { $0.id == id }
                         
-                        self.communities.append(Community(id: document.documentID,name: name, description: description, members: members, memberOfCommunity: isMember))
-                        
+                    default:
+                        break
                     }
                 }
+                
+                self.isLoading = false
             }
         }
     }
@@ -76,7 +92,6 @@ class CommunityListViewModel: ObservableObject {
                     print("Successfully added userID to member")
                 }
             }
-        fetchCommunities()
     }
     
     func removeUserIDToMembers(communityId: String, userId: String) {
@@ -93,9 +108,42 @@ class CommunityListViewModel: ObservableObject {
             }
     }
     
-    func setMemberStatus(communityId: String, isMember: Bool) {
-        if let index = communities.firstIndex(where: { $0.id == communityId }) {
-            communities[index].memberOfCommunity = isMember
-        }
+    
+    func listenToSelectedCommunity(communityId: String) {
+        selectedCommunityListener?.remove()
+
+        selectedCommunityListener = FirebaseManager.shared.firestore
+            .collection("community")
+            .document(communityId)
+            .addSnapshotListener { [weak self] (documentSnapshot, error) in
+                guard let self = self else { return }
+
+                if let error = error {
+                    print("Error listening to community: \(error)")
+                    return
+                }
+
+                guard let data = documentSnapshot?.data(), let documentID = documentSnapshot?.documentID else {
+                    print("No data found for community")
+                    return
+                }
+
+                let name = data["name"] as? String ?? ""
+                let description = data["description"] as? String ?? ""
+                let members = data["members"] as? [String] ?? []
+                let currentUserId = FirebaseManager.shared.auth.currentUser?.uid ?? ""
+                let isMember = members.contains(currentUserId)
+
+                self.selectedCommunity = Community(
+                    id: documentID,
+                    name: name,
+                    description: description,
+                    members: members,
+                    memberOfCommunity: isMember
+                )
+                self.selectedCommunityMembers = members
+                print("hiiiii \(self.selectedCommunityMembers)")
+            }
     }
+ 
 }
