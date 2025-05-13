@@ -47,6 +47,7 @@
 "LogIn" = "تسجيل الدخول";
 "LogIn2" = "سجّل الدخول";
 "DHaveAccount" = "ليس لديك حساب؟";
+"Success" = "نجاح";
 
 // Home
 "Findyour" = "ابحث عن";
