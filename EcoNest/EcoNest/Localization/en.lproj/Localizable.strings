@@ -43,6 +43,21 @@
 "LogIn" = "Log in";
 "LogIn2" = "Log in";
 "DHaveAccount" = "Don't have an account?";
+
+// Home
+"Findyour" = "Find your";
+"Favoriteplants" = "Favorite plants";
+"Search" = "Search for plants ...";
+"Explore" = "Explore";
+"NoProductsFound" = "No Products Found";
+
+// Cart
+"YourCartEmpty" = "Your Cart is Empty";
+"AddProductsHere" = "Add a products to see it here.";
+"MyCart" = "My Cart";
+"Continue" = "Continue";
+
+
 "Members" = "Members";
 "Posts" = "Posts";
 "UnknownError" = "An unknown error occurred. Please try again.";
@@ -52,3 +67,4 @@
 "2Many" = "Too many attempts. Please wait and try again later.";
 "InternalError" = "An internal error occurred. Please try again later.";
 "PasswordReset" = "Password reset email sent.";
+

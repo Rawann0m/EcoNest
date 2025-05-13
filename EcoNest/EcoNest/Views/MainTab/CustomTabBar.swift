@@ -16,6 +16,8 @@ struct CustomTabBar: View {
     
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         
         // Calculate icon height relative to screen width (responsive design)
@@ -25,8 +27,8 @@ struct CustomTabBar: View {
             
             // Draws the background shape using a custom Bezier curve
             BezierCurvePath()
-                .foregroundStyle(.white)
-                .shadow(radius: 10)
+                .foregroundStyle(themeManager.isDarkMode ? .black : .white)
+                .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
             
             HStack(spacing: 0) {
                 
@@ -55,9 +57,9 @@ struct CustomTabBar: View {
                                     if isMiddle {
                                         // Highlight background circle for middle tab
                                         Circle()
-                                            .fill(.white)
-                                            .shadow(radius: 10)
-                                                  
+                                            .fill(themeManager.isDarkMode ? .black : .white)
+                                            .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
+
                                     }
                                 }
                                 .offset(y: isMiddle ? -iconH / 2 : 0) // Elevate middle icon
@@ -70,7 +72,7 @@ struct CustomTabBar: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .foregroundStyle(isSelected ? Color("DarkGreen") : .gray)
+                        .foregroundStyle(isSelected ? themeManager.isDarkMode ? .white : Color("DarkGreen") : .gray)
                         .offset(y: !isMiddle ? -5 : 0)
                     }
                     .buttonStyle(.plain)
