@@ -32,8 +32,8 @@ struct YourApp: App {
               .environmentObject(localizableManager)
               .environmentObject(themeManager)
               .environmentObject(AlertManager.shared)
-              .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
               .environmentObject(viewModel)
+              .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
     }
   }
 }

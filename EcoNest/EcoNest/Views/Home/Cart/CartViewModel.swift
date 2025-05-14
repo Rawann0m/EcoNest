@@ -5,7 +5,7 @@
 //  Created by Tahani Ayman on 10/11/1446 AH.
 //
 
-import Foundation
+import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
@@ -15,39 +15,43 @@ class CartViewModel: ObservableObject {
     /// List of cart items currently stored in Firestore for the user.
     @Published var cartProducts: [Cart] = []
     @Published var isLoading = false
-
-    /// Fetches all cart items from Firestore and resolves them into complete `Cart` objects with full `Product` data.
+    @Published var selectedDate: Date = Date()
+    /// Fetches all cart items from Firestore and resolves them into complete Cart objects with full Product data.
     func fetchCartData() {
-        
         isLoading = true
-        
         let db = FirebaseManager.shared.firestore
-        
+
         db.collection("users")
-            .document("QhB8R3sqxN96eEfTk1Me")
+            .document("URsr5i4FLISZRfy4Ncm3g2cujVn2")
             .collection("cart")
             .getDocuments { snapshot, error in
-                
+
                 guard let documents = snapshot?.documents else {
                     print("No cart data found.")
+                    DispatchQueue.main.async {
+                        self.cartProducts = []
+                        self.isLoading = false
+                    }
                     return
                 }
-                
+
                 self.cartProducts = [] // Clear previously loaded data
-                
-                // Loop through each cart document
+
+                // Track how many documents are processed
+                var processedCount = 0
+
                 for doc in documents {
                     let data = doc.data()
-                    
-                    // Extract fields from the cart document
+
                     guard let productId = data["productId"] as? String,
                           let quantity = data["quantity"] as? Int,
-                          let price = data["price"] as? Double else { continue }
-                    
-                    // Fetch the full product details from the "ProductTH" collection
+                          let price = data["price"] as? Double else {
+                              processedCount += 1
+                              continue
+                          }
+
                     db.collection("ProductTH").document(productId).getDocument { productDoc, error in
                         if let productData = productDoc?.data() {
-                            // Map Firestore data to the Product model
                             let product = Product(
                                 id: productDoc!.documentID,
                                 name: productData["name"] as? String ?? "",
@@ -61,25 +65,39 @@ class CartViewModel: ObservableObject {
                                 size: productData["size"] as? String ?? "",
                                 isAddedToCart: true
                             )
-                            
-                            // Construct a Cart object with the fetched product
+
                             let cartItem = Cart(
                                 id: doc.documentID,
                                 product: product,
                                 quantity: quantity,
                                 price: price
                             )
-                            
-                            // Ensure updates are performed on the main thread
+
                             DispatchQueue.main.async {
                                 self.cartProducts.append(cartItem)
+                            }
+                        }
+
+                        processedCount += 1
+
+                        // Once all documents are processed, stop loading
+                        if processedCount == documents.count {
+                            DispatchQueue.main.async {
                                 self.isLoading = false
                             }
                         }
                     }
                 }
+
+                // Handle empty cart case immediately
+                if documents.isEmpty {
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                    }
+                }
             }
     }
+
     
     /// Calculates the total price of all items in the cart.
     /// - Returns: The sum of (quantity × unit price) for each cart item.
@@ -105,7 +123,7 @@ class CartViewModel: ObservableObject {
         
         // Reference the Firestore document for the cart item and attempt deletion
         db.collection("users")
-            .document("QhB8R3sqxN96eEfTk1Me")
+            .document("URsr5i4FLISZRfy4Ncm3g2cujVn2")
             .collection("cart")
             .document(cartItem.id)
             .delete { err in
@@ -120,6 +138,71 @@ class CartViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.cartProducts.remove(at: i)
                 }
+            }
+    }
+    
+    /// Adds a new order to the user's "orders" collection in Firestore.
+    /// - Parameter locationId: The ID of the selected pickup location.
+    func addOrder(locationId: String) {
+        
+        // Reference to the Firestore database
+        let db = FirebaseManager.shared.firestore
+        
+        // Prepare cart data in the format expected by Firestore
+        let cartData = cartProducts.map { cart in
+            return [
+                "name": cart.product.name,
+                "price": cart.price,
+                "quantity": cart.quantity,
+                "image": cart.product.image,
+                "category": cart.product.category,
+                "color": cart.product.color,
+                "size": cart.product.size,
+            ]
+        }
+        // Create a new document in the "orders" subcollection under the current user
+        db.collection("users")
+            .document("URsr5i4FLISZRfy4Ncm3g2cujVn2")
+            .collection("orders")
+            .document() // Generate a new document with a unique ID
+            .setData([
+                "products": cartData,
+                "total": calculateTotal(),
+                "date": Timestamp(date: selectedDate),
+                "pickupLocation": locationId,
+                "status" : OrderStatus.awaitingPickup.rawValue
+            ]) { error in
+                if let error = error {
+                    print("Failed to place order: \(error.localizedDescription)")
+                    return
+                }
+
+                // Order placed successfully — now delete all cart items
+                self.clearCartFromFirestore(userId: "URsr5i4FLISZRfy4Ncm3g2cujVn2")
+            }
+    }
+    
+    private func clearCartFromFirestore(userId: String) {
+        let db = FirebaseManager.shared.firestore
+
+        db.collection("users")
+            .document(userId)
+            .collection("cart")
+            .getDocuments { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    print("No cart items found.")
+                    return
+                }
+
+                for doc in documents {
+                    doc.reference.delete()
+                }
+
+                DispatchQueue.main.async {
+                    self.cartProducts.removeAll() // Clear local cart as well
+                }
+
+                print("Cart cleared after order placement.")
             }
     }
 

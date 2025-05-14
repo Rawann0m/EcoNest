@@ -56,6 +56,11 @@
 "MyCart" = "سلتي";
 "Continue" = "استمرار";
 
+// Review
+"ReviewConfirm" = "مراجعة وتأكيد";
+"Confirm" = "تأكيد";
+
+
 "Members" = "الاعضاء";
 "Posts" = "المنشورات";
 "UnknownError" = "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى.";

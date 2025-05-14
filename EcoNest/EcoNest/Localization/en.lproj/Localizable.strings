@@ -57,6 +57,9 @@
 "MyCart" = "My Cart";
 "Continue" = "Continue";
 
+// Review
+"ReviewConfirm" = "Review and Confirm";
+"Confirm" = "Confirm";
 
 "Members" = "Members";
 "Posts" = "Posts";
