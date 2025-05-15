@@ -18,7 +18,6 @@ class MLModelHandler {
             return nil
         }
         
-        // Resize the image to 224x224 (assuming that's what the model expects)
         let targetSize = CGSize(width: 224, height: 224)
         let resizedImage = ciImage.transformed(by: CGAffineTransform(scaleX: targetSize.width / ciImage.extent.width,
                                                                      y: targetSize.height / ciImage.extent.height))
@@ -26,7 +25,6 @@ class MLModelHandler {
     }
     
     func predictPlantType(from image: UIImage) {
-        // Log to check if the model is being loaded correctly
         print("Loading the model...")
         
         guard let model = try? PlantClassifier_KfoldBestB3(configuration: MLModelConfiguration()) else {
@@ -34,7 +32,6 @@ class MLModelHandler {
             return
         }
         
-        // Log to confirm model loading
         print("Model loaded successfully.")
         
         guard let ciImage = preprocessImage(image) else {
@@ -45,13 +42,16 @@ class MLModelHandler {
         let handler = VNImageRequestHandler(ciImage: ciImage)
         let request = VNCoreMLRequest(model: try! VNCoreMLModel(for: model.model)) { request, _ in
             if let results = request.results as? [VNClassificationObservation] {
-                // Sort the results by confidence and get the top 5 predictions
-                let sortedResults = results.sorted { $0.confidence > $1.confidence }
-                let top5 = sortedResults.prefix(5).map { ($0.identifier, $0.confidence) }
+                let identifiers = results.map { $0.identifier }
+                let rawValues = results.map { $0.confidence }
+                let normalized = rawValues.softmax().map { $0 * 100 }
+                
+                let top5 = zip(identifiers, normalized)
+                    .sorted { $0.1 > $1.1 }
+                    .prefix(5)
                 
                 DispatchQueue.main.async {
-                    // Update the UI with top 5 predictions
-                    self.topPredictions?(top5)
+                    self.topPredictions?(Array(top5))
                     for prediction in top5 {
                         print("Prediction: \(prediction.0) - Confidence: \(prediction.1)")
                     }
@@ -62,11 +62,20 @@ class MLModelHandler {
         }
         
         do {
-            // Perform the request and log if successful
             try handler.perform([request])
             print("VNImageRequestHandler performed successfully.")
         } catch {
             print("Failed to perform request: \(error)")
         }
+    }
+}
+
+// MARK: - Softmax Extension
+
+extension Array where Element == Float {
+    func softmax() -> [Float] {
+        let expValues = self.map { exp($0) }
+        let sumExp = expValues.reduce(0, +)
+        return expValues.map { $0 / sumExp }
     }
 }
