@@ -28,6 +28,7 @@ struct MainTabView: View {
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden(true)
         
     }
 }

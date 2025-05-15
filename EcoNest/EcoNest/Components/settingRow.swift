@@ -8,8 +8,7 @@
 import SwiftUI
 
 @ViewBuilder
-func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trailingView: () -> some View = { EmptyView() }) -> some View {
-    @EnvironmentObject var themeManager: ThemeManager
+func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trailingView: () -> some View = { EmptyView() }, color: Color) -> some View {
     HStack(spacing: 16) {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -25,7 +24,7 @@ func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trail
         
         Text(text)
             .bold()
-            .foregroundColor(.black)
+            .foregroundColor(color)
         
         Spacer()
     
@@ -37,7 +36,6 @@ func settingRow(icon: String, text: String, function: (() -> Void)? = nil, trail
     .background{
         RoundedRectangle(cornerRadius: 10)
             .stroke(.gray.opacity(0.3), lineWidth: 2)
-            .fill(Color.white)
             .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
     }
     .onTapGesture {

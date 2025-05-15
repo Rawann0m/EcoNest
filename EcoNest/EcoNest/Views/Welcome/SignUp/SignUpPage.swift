@@ -24,6 +24,7 @@ struct SignUpPage:View {
     var body: some View {
         NavigationStack{
             VStack{
+                ScrollView(.vertical) {
                 ZStack{
                     //bubbles
                     Image("bubbles")
@@ -35,23 +36,30 @@ struct SignUpPage:View {
                         .frame(width: 230,height: 190)
                         .padding(.bottom,30)
                         .padding(.top , 45)
-                }.padding(.top)
+                    Image(systemName:currentLanguage == "ar" ? "chevron.right":"chevron.left")
+                        .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
+                        .offset(x:-170, y:-120)
+                        .onTapGesture {
+                            goToHome = true
+                        }
+                }
+                .padding(.top,-50)
                 ZStack{
                     CustomRoundedRectangle(topLeft: 90, topRight: 0, bottomLeft: 0, bottomRight: 0)
                         .fill(Color("LightGreen").opacity(0.4))
                         .frame(width: 400,height: 550)
                         .padding()
                         .edgesIgnoringSafeArea(.bottom)
-                    ScrollView(.vertical) {
+                    
                         VStack(spacing: 20){
-                            Text("Sign up")
+                            Text("SignUp".localized(using: currentLanguage))
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
-                            CustomTextField(placeholder: "Name", text: $username, isSecure: .constant(false))
-                            CustomTextField(placeholder: "Email", text: $email, isSecure: .constant(false))
+                            CustomTextField(placeholder: "Name".localized(using: currentLanguage), text: $username, isSecure: .constant(false))
+                            CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false))
                             ZStack(alignment: .trailing) {
-                                CustomTextField(placeholder: "Password", text: $password, isSecure: $isPasswordSecure)
+                                CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure)
                                 Button(action: {
                                     isPasswordSecure.toggle()
                                 }) {
@@ -61,7 +69,7 @@ struct SignUpPage:View {
                                 }
                             }
                             ZStack(alignment: .trailing) {
-                                CustomTextField(placeholder: "Confirm Password", text: $confirmPassword, isSecure: $isConPasswordSecure)
+                                CustomTextField(placeholder: "ConfirmPassword".localized(using: currentLanguage), text: $confirmPassword, isSecure: $isConPasswordSecure)
                                 Button(action: {
                                     isConPasswordSecure.toggle()
                                 }) {
@@ -106,7 +114,7 @@ struct SignUpPage:View {
                             
                         }.padding(.horizontal,30)
                     }.padding(.top)
-                }
+                }.padding(.bottom,-60)
                 
             }
             NavigationLink(

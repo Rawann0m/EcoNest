@@ -35,13 +35,19 @@
 "DirectMessages" = "الرسائل الخاصة";
 "JoinNow" = "انضم الآن";
 "Send" = "ارسال";
-
+"Email" = "الايميل";
+"Name" = "الاسم";
+"Password" = "كلمة المرور";
+"ConfirmPassword" = "تأكيد كلمة المرور ";
+"ForgotPassword" = "نسيت كلمة المرور ؟";
+"ResetPassword" = "اعادة تعيين كلمة المرور";
 "SignUp" = "انشاء حساب جديد";
 "SignUp2" = "سجل الان";
 "HaveAccount" = "هل لديك حساب بالفعل؟";
 "LogIn" = "تسجيل الدخول";
 "LogIn2" = "سجّل الدخول";
 "DHaveAccount" = "ليس لديك حساب؟";
+"Success" = "نجاح";
 
 // Home
 "Findyour" = "ابحث عن";
