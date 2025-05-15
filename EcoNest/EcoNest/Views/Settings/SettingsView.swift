@@ -206,8 +206,10 @@ struct SettingsView: View {
                 if FirebaseManager.shared.isLoggedIn {
                     settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
                         // show alert and delete account
+                        handleDeleteAccount(email: email)
+                        
                         print("delete account")
-//                        authViewModel.deleteUserAccount(email: <#T##String#>, password: <#T##String#>, completion: <#T##(Result<String, Error>) -> Void#>)
+                        
                     }, color: themeManager.textColor)
                     
                     settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
@@ -215,6 +217,7 @@ struct SettingsView: View {
                         if FirebaseManager.shared.isLoggedIn{
                             print("logout")
                             authViewModel.logOut()
+                            name="Guest"
                         } else {
                             
                         }
@@ -282,6 +285,25 @@ struct SettingsView: View {
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         }
     }
+    func handleDeleteAccount(email: String) {
+        authViewModel.deleteUserAccount(email: email) { result in
+            switch result {
+            case .success(let message):
+                print(message)
+                AlertManager.shared.showAlert(
+                    title: "Success".localized(using: currentLanguage),
+                    message: message
+                )
+                name="Guest"
+            case .failure(let error):
+                AlertManager.shared.showAlert(
+                    title: "Error".localized(using: currentLanguage),
+                    message: error.localizedDescription
+                )
+            }
+        }
+    }
+
     
 }
 
