@@ -72,3 +72,9 @@
 "InternalError" = "حدث خطأ داخلي. الرجاء المحاولة مرة أخرى لاحقًا.";
 "PasswordReset" = "تم إرسال ايميل إعادة تعيين كلمة المرور.";
 
+
+
+//PhotoInput
+"SelectPhoto" = "اختر صورة";
+"TakePhoto" = "التقط صورة";
+"TopPredictions:" = "أفضل النتائج";

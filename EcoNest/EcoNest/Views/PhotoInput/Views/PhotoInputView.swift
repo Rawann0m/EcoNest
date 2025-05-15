@@ -20,6 +20,7 @@ struct PhotoInputView: View {
     @State private var capturedImage: UIImage? = nil
     @StateObject private var viewModel = PredictionViewModel()
     @State private var uploader = FireStoreUploader()
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     var body: some View {
         ScrollView {
@@ -61,7 +62,7 @@ struct PhotoInputView: View {
                             }
                         } label: {
                             HStack {
-                                Text("Select Photo")
+                                Text("SelectPhoto".localized(using: currentLanguage))
                                 Image(systemName: "photo.tv")
                             }
                             .font(.headline)
@@ -99,7 +100,7 @@ struct PhotoInputView: View {
                             }
                         }) {
                             HStack {
-                                Text("Take Photo")
+                                Text("TakePhoto".localized(using: currentLanguage))
                                 Image(systemName: "camera")
                             }
                             .font(.headline)
@@ -138,15 +139,9 @@ struct PhotoInputView: View {
                         .frame(width: 300, height: 300)
                     
                     VStack {
-                        HStack{
-                            Text("Plant Type")
-                                .font(.body)
-                                .padding()
-                            Spacer()
-                            Text("Confidence")
-                                .font(.body)
-                                .padding()
-                        }
+                        Text("TopPredictions:".localized(using: currentLanguage))
+                            .font(.title)
+                            .padding()
                         ForEach(viewModel.topPredictions, id: \.0) { prediction in
                             HStack {
                                 Text("\(prediction.0)")
