@@ -74,3 +74,8 @@
 "InternalError" = "An internal error occurred. Please try again later.";
 "PasswordReset" = "Password reset email sent.";
 
+//PhotoInput
+"SelectPhoto" = "Select Photo";
+"TakePhoto" = "Take Photo";
+"TopPredictions:" = "Top Predictions:";
+"SelectOrTakePhoto" = "Select Or Take Photo";
