@@ -16,6 +16,7 @@ struct CartProductRow: View {
     
     /// Environment object for theme customization.
     @EnvironmentObject var themeManager: ThemeManager
+    @ObservedObject var viewModel: CartViewModel
     
     var body: some View {
         
@@ -28,6 +29,7 @@ struct CartProductRow: View {
                 .background(.gray.opacity(0.15))
                 .frame(width: 70, height: 70)
                 .cornerRadius(8)
+                .transition(.fade(duration: 0.25))
             
             VStack(alignment: .leading, spacing: 8) {
                 
@@ -50,13 +52,31 @@ struct CartProductRow: View {
             Spacer()
             
             // Quantity adjustment buttons
-            HStack {
-                Image(systemName: "plus.circle.fill")
+            HStack(spacing: 10) {
+                Button {
+                    viewModel.increaseQuantity(cart: cartProduct, change: .increase)
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 24))
+                }
+                
                 
                 Text("\(cartProduct.quantity)")
-                    .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                    .font(.headline)
+                    .foregroundColor(themeManager.isDarkMode ? .white : .black)
                 
-                Image(systemName: "minus.circle.fill")
+                Button {
+                    if cartProduct.quantity > 1 {
+                        viewModel.increaseQuantity(cart: cartProduct, change: .decrease)
+                    } else {
+                        viewModel.removeCartItem(cart: cartProduct)
+                    }
+                } label: {
+                    Image(systemName: cartProduct.quantity > 1 ? "minus.circle.fill" : "trash.circle.fill")
+                        .font(.system(size: 24))
+                }
+                .buttonStyle(.plain) // Prevent default button tap styling
+                .contentShape(Rectangle()) // Ensures buttons only trigger on their shape
                 
             }
             .foregroundStyle(themeManager.isDarkMode ? .white.opacity(0.2) : .black.opacity(0.2))

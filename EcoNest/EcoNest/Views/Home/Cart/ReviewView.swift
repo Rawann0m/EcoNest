@@ -40,22 +40,16 @@ struct ReviewView: View {
                             .onTapGesture {
                                 locViewModel.showMap.toggle()
                             }
-                        
-                        HStack {
-                            Text("Pickup Date:")
-                            Spacer()
-                            DatePicker("", selection: $viewModel.selectedDate, displayedComponents: [.date])
-                        }
-                        .padding(.vertical)
-                        
+                            
+                        Divider()
                         VStack {
                             ForEach(viewModel.cartProducts) { cart in
                                 HStack(spacing: 15) {
                                     Text(cart.product.name)
-                                        .frame(width: 180, alignment: .leading)
+                                        .frame(width: 165, alignment: .leading)
                                     
-                                    Text("qty: \(cart.quantity)")
-                                        .frame(width: 70, alignment: .leading)
+                                    Text(String(format: "qty".localized(using: currentLanguage), "\(cart.quantity)"))
+                                        .frame(width: 85, alignment: .leading)
                                     
                                     HStack {
                                         Text("\(cart.price, specifier: "%.2f")")
@@ -73,12 +67,46 @@ struct ReviewView: View {
                                 Divider()
                             }
                             
-                            Text("Total: \(viewModel.calculateTotal(), specifier: "%.2f")")
-                                .padding()
-                            
-                            Text("\(locViewModel.mapLocation.name)")
-                            Text("\(locViewModel.mapLocation.description)")
                         }
+                        .padding(.bottom)
+                        
+                        VStack {
+                            
+                            HStack(spacing: 30) {
+                                Text("PickupLocation".localized(using: currentLanguage))
+                                    .frame(width: 150, alignment: .leading)
+                                
+                                Text("\(locViewModel.mapLocation.name)")
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            HStack(spacing: 30) {
+                                Text("PickupDate".localized(using: currentLanguage))
+                                    .frame(width: 150, alignment: .leading)
+                                
+                                DatePicker("", selection: $viewModel.selectedDate, in: Date()..., displayedComponents: [.date])
+                                    .labelsHidden()
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            HStack(spacing: 30) {
+                                Text("Total".localized(using: currentLanguage))
+                                    .frame(width: 150, alignment: .leading)
+                                
+                                HStack {
+                                    
+                                    Text("\(viewModel.calculateTotal(), specifier: "%.2f")")
+                                    
+                                    Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                                        .resizable()
+                                        .frame(width: 16, height: 16)
+                                }
+                                
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                        }
+                        
                     }
                 }
                 

@@ -90,6 +90,7 @@ struct MapView: View {
                             .padding(10)
                             .background(.thickMaterial)
                             .cornerRadius(10)
+                            .foregroundStyle(ThemeManager().isDarkMode ? .white: .black)
                             .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 15)
                     }
                 }

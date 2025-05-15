@@ -15,7 +15,7 @@ struct HomeView: View {
     
     // State objects for managing cart and product data
     @StateObject private var cartViewModel = CartViewModel()
-    @StateObject private var homeViewModel = HomeViewModel()
+    @EnvironmentObject private var homeViewModel: HomeViewModel
     
     var body: some View {
         
@@ -31,10 +31,10 @@ struct HomeView: View {
                         AppBar(viewModel: cartViewModel)
                         
                         // Search bar for filtering products
-                        SearchView(viewModel: homeViewModel)
+                        SearchView()
                         
                         // Auto-playing promotional image slider
-                        ImageSliderView(viewModel: homeViewModel)
+                        ImageSliderView()
                         
                         // Section title for product grid
                         HStack {
@@ -60,7 +60,7 @@ struct HomeView: View {
                                 Image("Search")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 220, height: 220)
+                                    .frame(width: 200, height: 200)
                                     .foregroundColor(.gray)
                                 
                                 Text("NoProductsFound".localized(using: currentLanguage))
@@ -73,7 +73,7 @@ struct HomeView: View {
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
                                 ForEach(homeViewModel.filtered) { product in
-                                    ProductCardView(product: product, viewModel: homeViewModel)
+                                    ProductCardView(product: product)
                                 }
                             }
                             .padding(.horizontal, 16)

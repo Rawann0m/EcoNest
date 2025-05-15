@@ -26,7 +26,7 @@ enum Tab: String, CaseIterable {
         case .module:
             return "camera.viewfinder"
         case .community:
-            return "person.3"
+            return "person.2"
         case .setting:
             return "gearshape"
         }

@@ -51,7 +51,7 @@ struct CartView: View {
                 // Display list of cart products when cart is not empty
                 List {
                     ForEach(viewModel.cartProducts) { cart in
-                        CartProductRow(cartProduct: cart)
+                        CartProductRow(cartProduct: cart, viewModel: viewModel)
                             .listRowSeparator(.hidden) // Hide separator for a cleaner look
                     }
                     .onDelete(perform: viewModel.removeFormCart)

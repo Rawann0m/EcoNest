@@ -15,7 +15,7 @@ struct LocationMapAnnotationView: View {
         VStack {
             ZStack {
                 Circle()
-                    .fill(isSelected ? Color("LimeGreen").opacity(0.5) : Color.clear)
+                    .fill(isSelected ? ThemeManager().isDarkMode ? Color("LightGreen").opacity(0.5) : Color("LimeGreen").opacity(0.5) : Color.clear)
                     .frame(width: 45, height: 45)
 
                 Image("MapMarker")

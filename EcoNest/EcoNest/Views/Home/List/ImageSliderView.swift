@@ -15,7 +15,7 @@ struct ImageSliderView: View {
     @State private var currentIndex = 0
     
     @EnvironmentObject var themeManager: ThemeManager
-    @ObservedObject var viewModel: HomeViewModel
+    @EnvironmentObject private var viewModel: HomeViewModel
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -35,6 +35,7 @@ struct ImageSliderView: View {
                                     .stroke(.gray.opacity(0.10), lineWidth: 1)
                                     .background(Color.gray.opacity(0.15).cornerRadius(15))
                             )
+                            
                     } placeholder: {
                         ProgressView()
                             .frame(height: 180)

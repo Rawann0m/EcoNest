@@ -59,7 +59,10 @@
 // Review
 "ReviewConfirm" = "مراجعة وتأكيد";
 "Confirm" = "تأكيد";
-
+"qty" = "الكمية: %@";
+"PickupLocation" = "موقع الاستلام:";
+"PickupDate" = "تاريخ الاستلام:";
+"Total" = "الإجمالي:";
 
 "Members" = "الاعضاء";
 "Posts" = "المنشورات";

@@ -60,6 +60,10 @@
 // Review
 "ReviewConfirm" = "Review and Confirm";
 "Confirm" = "Confirm";
+"qty" = "qty: %@";
+"PickupLocation" = "Pickup Location:";
+"PickupDate" = "Pickup Date:";
+"Total" = "Total:";
 
 "Members" = "Members";
 "Posts" = "Posts";
