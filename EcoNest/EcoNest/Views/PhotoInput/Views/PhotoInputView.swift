@@ -19,33 +19,28 @@ struct PhotoInputView: View {
     @State private var cameraManager = CameraManager()
     @State private var capturedImage: UIImage? = nil
     @StateObject private var viewModel = PredictionViewModel()
-    @State private var uploader = FireStoreUploader()
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject var themeManager: ThemeManager
+    
+    private var selectedColor: Color {
+        colorScheme == .dark ? .black : .white
+    }
+
+    private var defaultColor: Color {
+        colorScheme == .dark ? .white : .black
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                
-//                Button("Check JSON File") {
-//                    if let url = Bundle.main.url(forResource: "plants", withExtension: "json") {
-//                        print("✅ Found JSON file at: \(url)")
-//                    } else {
-//                        print("❌ JSON file not found!")
-//                    }
-//                }
-//                
-//                Button("Upload Plants") {
-//                    if let plants = uploader.loadPlantsFromJSON() {
-//                        uploader.uploadPlantsToFirestore(plants: plants)
-//                    }
-//                }
                 
                 HStack(spacing: 16) {
                     
                     ZStack {
                         if buttonselected {
                             Capsule()
-                                .fill(Color.blue)
+                                .fill(Color("LimeGreen"))
                                 .matchedGeometryEffect(id: "Type", in: namespace)
                                 .frame(width: 160, height: 50)
                         }
@@ -67,7 +62,7 @@ struct PhotoInputView: View {
                             }
                             .font(.headline)
                             .frame(width: 150, height: 50)
-                            .foregroundColor(buttonselected ? .white : .black)
+                            .foregroundColor(buttonselected ? selectedColor : defaultColor)
                         }
                     }
                     
@@ -105,7 +100,9 @@ struct PhotoInputView: View {
                             }
                             .font(.headline)
                             .frame(width: 150, height: 50)
-                            .foregroundColor(!buttonselected ? .white : .black)
+                            .foregroundColor(!buttonselected ? selectedColor : defaultColor)
+
+                            
                             
                             
                             
@@ -165,7 +162,17 @@ struct PhotoInputView: View {
                     Rectangle()
                         .fill(Color.gray.opacity(0.2))
                         .frame(width: 300, height: 300)
-                        .overlay(Text("Choose or Take a Photo"), alignment: .center)
+                        .overlay(
+                                VStack {
+                                    Image("noData")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .padding()
+                                    Text("SelectOrTakePhoto".localized(using: currentLanguage))
+                                        .foregroundColor(themeManager.isDarkMode ? .white : .black)
+                                        .padding()
+                                }
+                            )
                         .cornerRadius(15)
                 }
                 

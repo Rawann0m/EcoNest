@@ -77,4 +77,5 @@
 //PhotoInput
 "SelectPhoto" = "اختر صورة";
 "TakePhoto" = "التقط صورة";
-"TopPredictions:" = "أفضل النتائج";
+"TopPredictions:" = "أفضل النتائج:";
+"SelectOrTakePhoto" = "اختر أو التقط صورة";

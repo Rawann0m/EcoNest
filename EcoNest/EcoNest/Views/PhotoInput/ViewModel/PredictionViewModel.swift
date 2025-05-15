@@ -8,6 +8,7 @@
 import SwiftUI
 
 class PredictionViewModel: ObservableObject {
+    
     @Published var topPredictions: [(String, Float)] = []
 
     func runPrediction(for image: UIImage) {
