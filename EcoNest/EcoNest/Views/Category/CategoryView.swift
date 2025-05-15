@@ -9,18 +9,18 @@ import SwiftUI
 struct CategoryView: View {
     @StateObject private var viewModel = CategoryViewModel()
     @State private var isFilterPresented = false
-
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 headerSection
-                categoryList
+               // categoryList
                 Spacer()
             }
             .edgesIgnoringSafeArea(.top)
         }
     }
-
+    
     // MARK: -  Header (Title + Search + Filter)
     private var headerSection: some View {
         VStack(spacing: 10) {
@@ -43,7 +43,7 @@ struct CategoryView: View {
                 }
             }
             .padding(.horizontal, 20)
-
+            
             // Search Bar
             HStack {
                 TextField("Search", text: $viewModel.searchText)
@@ -67,20 +67,17 @@ struct CategoryView: View {
         .background(Color("LimeGreen"))
         .cornerRadius(25)
     }
-
+    
     // MARK: - Category List
-    private var categoryList: some View {
-        ScrollView {
-            LazyVStack(spacing: 12) {
-                ForEach(viewModel.filteredCategories) { category in
-                    CategoryRowView(category: category)
-                }
-            }
-            .padding(.top, 10)
-        }
-    }
-}
-
-#Preview {
-    CategoryView()
+    //    private var categoryList: some View {
+    //        ScrollView {
+    //            LazyVStack(spacing: 12) {
+    //                ForEach(viewModel.filteredCategories) { category in
+    //                    CategoryRowView(category: category)
+    //                }
+    //            }
+    //            .padding(.top, 10)
+    //        }
+    //    }
+    //}
 }

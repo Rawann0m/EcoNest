@@ -14,10 +14,11 @@ struct SettingsView: View {
     @State private var isArabic: Bool = false
     @EnvironmentObject var themeManager: ThemeManager
     @EnvironmentObject var languageManager: LanguageManager
+    @StateObject private var authViewModel = AuthViewModel()
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = ""
+    @State var name: String = "Guest"
     @State var email: String = ""
     @State var profileImage: String = ""
     @State var login: Bool = false
@@ -34,10 +35,11 @@ struct SettingsView: View {
                         .frame(height: 200)
                     
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(.white)
+                        .fill(themeManager.isDarkMode ? Color.black: Color.white)
                         .shadow(color: .black.opacity(0.2)  , radius: 10)
                         .frame(width: 350, height: 135)
                         .offset(y: 100)
+                        .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
                     
                     
                     VStack {
@@ -101,16 +103,21 @@ struct SettingsView: View {
                             TextField("Name", text: $name)
                                 .frame(width: 200)
                                 .multilineTextAlignment(.center)
+                                .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                            
                         } else {
                             TextField("Name", text: $name)
                                 .frame(width: 200)
                                 .multilineTextAlignment(.center)
+                                .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                 .disabled(true)
+                            
                         }
                         
                         if FirebaseManager.shared.isLoggedIn {
                             Text(email)
                                 .frame(width: 200)
+                                .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                         } else {
                             Text("Login/Create Account")
                                 .foregroundColor(.white)
@@ -143,7 +150,7 @@ struct SettingsView: View {
                         Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                             .foregroundColor(Color("LimeGreen"))
                     }
-                })
+                }, color: themeManager.textColor)
                 
                 
                 settingRow(icon: "globe", text: "Language".localized(using: currentLanguage), trailingView: {
@@ -176,7 +183,7 @@ struct SettingsView: View {
                         isArabic.toggle()
                         
                     }
-                })
+                }, color: themeManager.textColor)
                 
                 settingRow(icon: "sun.max", text: "DarkMode".localized(using: currentLanguage), function: {
                     // toggle dark mode
@@ -187,31 +194,33 @@ struct SettingsView: View {
                         .onChange(of: themeManager.isDarkMode) { _, isOn in
                             UserDefaults.standard.set(isOn, forKey: "isDarkMode")
                         }
-                })
+                }, color: themeManager.textColor)
                 
                 settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
                     // go to customer suport website
                     print("Customer Support")
-                    openURL(URL(string: "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--fb0c4daf.local-credentialless.webcontainer-api.io/")!)
-                })
+                    openURL(URL(string: "https://econestsupport.netlify.app/")!)
+                }, color: themeManager.textColor)
                 
                 
                 if FirebaseManager.shared.isLoggedIn {
                     settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
                         // show alert and delete account
                         print("delete account")
-                    })
+//                        authViewModel.deleteUserAccount(email: <#T##String#>, password: <#T##String#>, completion: <#T##(Result<String, Error>) -> Void#>)
+                    }, color: themeManager.textColor)
                     
                     settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
                         // log out
                         if FirebaseManager.shared.isLoggedIn{
                             print("logout")
+                            authViewModel.logOut()
                         } else {
                             
                         }
-                    })
+                    }, color: themeManager.textColor)
                 }
-                
+                NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
                 Spacer()
                 
             }

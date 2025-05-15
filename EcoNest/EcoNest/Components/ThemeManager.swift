@@ -37,10 +37,4 @@ class ThemeManager: ObservableObject {
         isDarkMode ? Color.gray.opacity(0.4) : Color.gray.opacity(0.15)
     }
 
-    
-    var gradient: LinearGradient {
-        isDarkMode ? 
-        LinearGradient(colors: [Color.white, Color.gray.opacity(0.7)], startPoint: .top, endPoint: .bottom) :
-            LinearGradient(colors: [Color.gray.opacity(0.7), Color.white], startPoint: .top, endPoint: .bottom)
-    }
 }
