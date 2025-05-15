@@ -18,11 +18,16 @@ struct CartView: View {
     
     /// Stores and observes the current language preference (used for localization).
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var locationViewModel: LocationViewModel
     
     var body: some View {
         NavigationStack {
+            if viewModel.isLoading {
+                ProgressView()
+            }
             // Show empty state if cart is empty
-            if viewModel.cartProducts.isEmpty {
+            else if viewModel.cartProducts.isEmpty {
                 VStack(spacing: 10) {
                     
                     // Display cart image
@@ -46,7 +51,7 @@ struct CartView: View {
                 // Display list of cart products when cart is not empty
                 List {
                     ForEach(viewModel.cartProducts) { cart in
-                        CartProductRow(cartProduct: cart)
+                        CartProductRow(cartProduct: cart, viewModel: viewModel)
                             .listRowSeparator(.hidden) // Hide separator for a cleaner look
                     }
                     .onDelete(perform: viewModel.removeFormCart)
@@ -71,9 +76,7 @@ struct CartView: View {
                     Spacer()
                     
                     // Right side: Continue button
-                    Button(action: {
-                        
-                    }) {
+                    NavigationLink(destination: ReviewView(viewModel: viewModel, currentLanguage: currentLanguage) .environmentObject(locationViewModel)) {
                         // Localized button label
                         Text("Continue".localized(using: currentLanguage))
                             .font(.title2)
@@ -89,10 +92,11 @@ struct CartView: View {
                 .padding([.top, .bottom]) 
             }
         }
-        // Navigation title at the top of the screen
-        .navigationTitle("MyCart".localized(using: currentLanguage))
         .padding(.top)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: {dismiss()})
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                 }) {
@@ -105,5 +109,7 @@ struct CartView: View {
         .onAppear {
             viewModel.fetchCartData()
         }
+        .navigationBarBackButtonHidden(true)
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
