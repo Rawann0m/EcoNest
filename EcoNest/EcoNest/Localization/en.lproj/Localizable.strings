@@ -35,7 +35,12 @@
 "DirectMessages" = "Direct Messages";
 "JoinNow" = "Join Now";
 "Send" = "Send";
-
+"Name" = "Name";
+"Email" = "Email";
+"Password" = "Password";
+"ForgotPassword" = "Forgot Password ?";
+"ConfirmPassword" = "Confirm Password";
+"ResetPassword" = "Reset Password";
 "SignUp" = "Sign up";
 "SignUp2" = "Sign up";
 "LogIn2" = "Log in";
@@ -43,6 +48,7 @@
 "LogIn" = "Log in";
 "LogIn2" = "Log in";
 "DHaveAccount" = "Don't have an account?";
+"Success" = "Success";
 
 // Home
 "Findyour" = "Find your";
@@ -57,6 +63,13 @@
 "MyCart" = "My Cart";
 "Continue" = "Continue";
 
+// Review
+"ReviewConfirm" = "Review and Confirm";
+"Confirm" = "Confirm";
+"qty" = "qty: %@";
+"PickupLocation" = "Pickup Location:";
+"PickupDate" = "Pickup Date:";
+"Total" = "Total:";
 
 "Members" = "Members";
 "Posts" = "Posts";
@@ -68,3 +81,8 @@
 "InternalError" = "An internal error occurred. Please try again later.";
 "PasswordReset" = "Password reset email sent.";
 
+//PhotoInput
+"SelectPhoto" = "Select Photo";
+"TakePhoto" = "Take Photo";
+"TopPredictions:" = "Top Predictions:";
+"SelectOrTakePhoto" = "Select Or Take Photo";

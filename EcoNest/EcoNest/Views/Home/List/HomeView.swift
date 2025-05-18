@@ -15,7 +15,7 @@ struct HomeView: View {
     
     // State objects for managing cart and product data
     @StateObject private var cartViewModel = CartViewModel()
-    @StateObject private var homeViewModel = HomeViewModel()
+    @EnvironmentObject private var homeViewModel: HomeViewModel
     
     var body: some View {
         
@@ -31,10 +31,10 @@ struct HomeView: View {
                         AppBar(viewModel: cartViewModel)
                         
                         // Search bar for filtering products
-                        SearchView(viewModel: homeViewModel)
+                        SearchView()
                         
                         // Auto-playing promotional image slider
-                        ImageSliderView(viewModel: homeViewModel)
+                        ImageSliderView()
                         
                         // Section title for product grid
                         HStack {
@@ -46,22 +46,21 @@ struct HomeView: View {
                         .padding(.horizontal, 16)
                         
                         // Calculate number of columns based on screen width
-                        let screenWidth = UIScreen.main.bounds.width
-                        let columns = max(Int(screenWidth / 200), 1)
-                        let gridLayout = Array(repeating: GridItem(.flexible(), spacing: 20), count: columns)
-                        
-                        // Loading state spinner while products are being fetched
+                        // Use adaptive GridItem to ensure responsiveness on different screen sizes
+                        let gridLayout = [
+                            GridItem(.adaptive(minimum: 150, maximum: 250), spacing: 20)
+                        ]
+
                         if homeViewModel.products.isEmpty {
                             ProgressView()
                         }
-                        
-                        // No results found placeholder after filtering
+
                         else if homeViewModel.filtered.isEmpty {
                             VStack {
                                 Image("Search")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 220, height: 220)
+                                    .frame(width: 200, height: 200)
                                     .foregroundColor(.gray)
                                 
                                 Text("NoProductsFound".localized(using: currentLanguage))
@@ -70,12 +69,11 @@ struct HomeView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                        
-                        // Display filtered product cards in a responsive grid
+
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
                                 ForEach(homeViewModel.filtered) { product in
-                                    ProductCardView(product: product, viewModel: homeViewModel)
+                                    ProductCardView(product: product)
                                 }
                             }
                             .padding(.horizontal, 16)

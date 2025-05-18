@@ -15,7 +15,7 @@ struct ImageSliderView: View {
     @State private var currentIndex = 0
     
     @EnvironmentObject var themeManager: ThemeManager
-    @ObservedObject var viewModel: HomeViewModel
+    @EnvironmentObject private var viewModel: HomeViewModel
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -27,11 +27,15 @@ struct ImageSliderView: View {
                     WebImage(url: URL(string: viewModel.sliderImages[currentIndex])) { image in
                         image
                             .resizable()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 220)
+                            .frame(width: 180, height: 220)
                             .scaledToFit()
-                            .background(Color.gray.opacity(0.15))
-                            .cornerRadius(15)
+                            .frame(maxWidth: .infinity)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(.gray.opacity(0.10), lineWidth: 1)
+                                    .background(Color.gray.opacity(0.15).cornerRadius(15))
+                            )
+                            
                     } placeholder: {
                         ProgressView()
                             .frame(height: 180)

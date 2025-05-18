@@ -14,20 +14,23 @@ struct MainTabView: View {
     @State private var selectedTabIndex = 1
     
     var body: some View {
-        
         TabView(selection: $selectedTabIndex) {
-            HomeView().tag(1)
-            CategoryView().tag(2)
-            Text("Third Tab").tag(3)
+            HomeView().tag(1).toolbar(.hidden, for: .tabBar)
+            CategoryView().tag(2).toolbar(.hidden, for: .tabBar)
+            Text("Third Tab").tag(3) .toolbar(.hidden, for: .tabBar)
             CommunityAndMessagesView().tag(4)
-            SettingsView().tag(5)
+            SettingsView().tag(5).toolbar(.hidden, for: .tabBar)
         }
+        
         .overlay(alignment: .bottom) {
             // Overlay the custom tab bar at the bottom of the screen
             CustomTabBar(selectedIndex: $selectedTabIndex)
         }
+        
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        .navigationBarBackButtonHidden(true)
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden(true)
         
     }
 }

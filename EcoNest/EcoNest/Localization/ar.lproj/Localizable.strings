@@ -35,13 +35,19 @@
 "DirectMessages" = "الرسائل الخاصة";
 "JoinNow" = "انضم الآن";
 "Send" = "ارسال";
-
+"Email" = "الايميل";
+"Name" = "الاسم";
+"Password" = "كلمة المرور";
+"ConfirmPassword" = "تأكيد كلمة المرور ";
+"ForgotPassword" = "نسيت كلمة المرور ؟";
+"ResetPassword" = "اعادة تعيين كلمة المرور";
 "SignUp" = "انشاء حساب جديد";
 "SignUp2" = "سجل الان";
 "HaveAccount" = "هل لديك حساب بالفعل؟";
 "LogIn" = "تسجيل الدخول";
 "LogIn2" = "سجّل الدخول";
 "DHaveAccount" = "ليس لديك حساب؟";
+"Success" = "نجاح";
 
 // Home
 "Findyour" = "ابحث عن";
@@ -56,6 +62,14 @@
 "MyCart" = "سلتي";
 "Continue" = "استمرار";
 
+// Review
+"ReviewConfirm" = "مراجعة وتأكيد";
+"Confirm" = "تأكيد";
+"qty" = "الكمية: %@";
+"PickupLocation" = "موقع الاستلام:";
+"PickupDate" = "تاريخ الاستلام:";
+"Total" = "الإجمالي:";
+
 "Members" = "الاعضاء";
 "Posts" = "المنشورات";
 "UnknownError" = "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى.";
@@ -66,3 +80,10 @@
 "InternalError" = "حدث خطأ داخلي. الرجاء المحاولة مرة أخرى لاحقًا.";
 "PasswordReset" = "تم إرسال ايميل إعادة تعيين كلمة المرور.";
 
+
+
+//PhotoInput
+"SelectPhoto" = "اختر صورة";
+"TakePhoto" = "التقط صورة";
+"TopPredictions:" = "أفضل النتائج:";
+"SelectOrTakePhoto" = "اختر أو التقط صورة";

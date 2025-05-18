@@ -14,21 +14,22 @@ struct SettingsView: View {
     @State private var isArabic: Bool = false
     @EnvironmentObject var themeManager: ThemeManager
     @EnvironmentObject var languageManager: LanguageManager
+    @StateObject private var authViewModel = AuthViewModel()
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = ""
-    @State var oldName = ""
+    @State var name: String = "Guest"
     @State var email: String = ""
     @State var profileImage: String = ""
     @State var login: Bool = false
+    @State var oldName = ""
     @StateObject var viewModel = SettingsViewModel()
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
     var body: some View {
         NavigationStack{
-            GeometryReader { _ in
+            GeometryReader{ _ in
                 VStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 25)
@@ -36,10 +37,11 @@ struct SettingsView: View {
                             .frame(height: 200)
                         
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(.white)
+                            .fill(themeManager.isDarkMode ? Color.black: Color.white)
                             .shadow(color: .black.opacity(0.2)  , radius: 10)
                             .frame(width: 350, height: 135)
                             .offset(y: 100)
+                            .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
                         
                         
                         VStack {
@@ -103,16 +105,21 @@ struct SettingsView: View {
                                 TextField("Name", text: $name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                                
                             } else {
                                 TextField("Name", text: $name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                     .disabled(true)
+                                
                             }
                             
                             if FirebaseManager.shared.isLoggedIn {
                                 Text(email)
                                     .frame(width: 200)
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                             } else {
                                 Text("Login/Create Account")
                                     .foregroundColor(.white)
@@ -127,8 +134,6 @@ struct SettingsView: View {
                             }
                         }
                         .offset(y: 110)
-                        .ignoresSafeArea(.keyboard, edges: .all)
-                        //                        .scrollDismissesKeyboard(.interactively)
                         
                     }
                     .ignoresSafeArea(.all)
@@ -147,7 +152,7 @@ struct SettingsView: View {
                             Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                 .foregroundColor(Color("LimeGreen"))
                         }
-                    })
+                    }, color: themeManager.textColor)
                     
                     
                     settingRow(icon: "globe", text: "Language".localized(using: currentLanguage), trailingView: {
@@ -180,7 +185,7 @@ struct SettingsView: View {
                             isArabic.toggle()
                             
                         }
-                    })
+                    }, color: themeManager.textColor)
                     
                     settingRow(icon: "sun.max", text: "DarkMode".localized(using: currentLanguage), function: {
                         // toggle dark mode
@@ -191,31 +196,36 @@ struct SettingsView: View {
                             .onChange(of: themeManager.isDarkMode) { _, isOn in
                                 UserDefaults.standard.set(isOn, forKey: "isDarkMode")
                             }
-                    })
+                    }, color: themeManager.textColor)
                     
                     settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
                         // go to customer suport website
                         print("Customer Support")
-                        openURL(URL(string: "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--fb0c4daf.local-credentialless.webcontainer-api.io/")!)
-                    })
+                        openURL(URL(string: "https://econestsupport.netlify.app/")!)
+                    }, color: themeManager.textColor)
                     
                     
                     if FirebaseManager.shared.isLoggedIn {
                         settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
                             // show alert and delete account
+                            handleDeleteAccount(email: email)
+                            
                             print("delete account")
-                        })
+                            
+                        }, color: themeManager.textColor)
                         
                         settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
                             // log out
                             if FirebaseManager.shared.isLoggedIn{
                                 print("logout")
+                                authViewModel.logOut()
+                                name="Guest"
                             } else {
                                 
                             }
-                        })
+                        }, color: themeManager.textColor)
                     }
-                    
+                    NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
                     Spacer()
                     
                 }
@@ -265,6 +275,8 @@ struct SettingsView: View {
                             languageManager.setLanguage(defaultLanguage)
                         }
                     }
+                    // to check
+                    viewModel.fetchCurrentUser()
                     
                     let currentUser = viewModel.user
                     if let user = currentUser {
@@ -273,6 +285,11 @@ struct SettingsView: View {
                         email = user.email
                         profileImage = user.profileImage
                     }
+                    
+                    if !FirebaseManager.shared.isLoggedIn {
+                        name = "Gest"
+                    }
+                    
                     print(FirebaseManager.shared.auth.currentUser?.uid ?? "no user")
                 }
                 .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
@@ -280,5 +297,22 @@ struct SettingsView: View {
             .ignoresSafeArea(.keyboard)
         }
     }
+    func handleDeleteAccount(email: String) {
+        authViewModel.deleteUserAccount(email: email) { result in
+            switch result {
+            case .success(let message):
+                print(message)
+                AlertManager.shared.showAlert(
+                    title: "Success".localized(using: currentLanguage),
+                    message: message
+                )
+                name="Guest"
+            case .failure(let error):
+                AlertManager.shared.showAlert(
+                    title: "Error".localized(using: currentLanguage),
+                    message: error.localizedDescription
+                )
+            }
+        }
+    }
 }
-

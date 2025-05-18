@@ -7,13 +7,18 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import FirebaseAuth
 
 // A reusable view that displays a product card for a product plant.
 struct ProductCardView: View {
     
     @EnvironmentObject var themeManager: ThemeManager
+    @EnvironmentObject private var viewModel: HomeViewModel
+    @State private var showLoginAlert = false
+    @StateObject var alertManager = AlertManager.shared
+    @State private var navigateToLogin = false
+    
     var product: Product
-    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         
@@ -28,9 +33,9 @@ struct ProductCardView: View {
                     WebImage(url: URL(string: product.image))
                         .resizable()
                         .background(Color.gray.opacity(0.15))
-                        .frame(width: 160, height: 150)
+                        .frame(width: 150, height: 150)
                         .cornerRadius(8)
-                    
+                        
                     // Product name text
                     Text(product.name)
                         .font(.subheadline)
@@ -52,21 +57,39 @@ struct ProductCardView: View {
                 
                 // Add-to-cart button
                 Button(action: {
-                    viewModel.addToCart(product: product)
+                    if FirebaseManager.shared.isLoggedIn {
+                        viewModel.addToCart(product: product)
+                    } else {
+                        AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
+                    }
+                    
                 }, label: {
-                    Image(systemName: product.isAddedToCart ? "checkmark.circle.fill" : "plus.circle.fill")
+                    Image(systemName: "plus.circle.fill")
                         .resizable()
-                        .foregroundStyle(product.isAddedToCart ? Color("LightGreen") : Color("LimeGreen"))
+                        .foregroundStyle(Color("LimeGreen"))
                         .frame(width: 35, height: 35)
                 })
+                .alert(isPresented: $alertManager.alertState.isPresented) {
+                    Alert(
+                        title: Text(alertManager.alertState.title),
+                        message: Text(alertManager.alertState.message),
+                        primaryButton: .default(Text("Login")) {
+                            navigateToLogin = true
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
         }
-        .frame(width: 180, height: 230)
+        .frame(width: 175, height: 230)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(.gray.opacity(0.3), lineWidth: 2)
                 .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
         )
+        .fullScreenCover(isPresented: $navigateToLogin) {
+            LogInPage()
+        }
     }
 }
 

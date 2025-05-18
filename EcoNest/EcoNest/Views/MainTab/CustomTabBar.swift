@@ -38,6 +38,7 @@ struct CustomTabBar: View {
                     let tab = Tab.allCases[index]
                     let isSelected = selectedIndex == index + 1
                     let isMiddle = index == Tab.allCases.count / 2
+                    //let isMiddle2 = index == (Tab.allCases.count / 2) + 1
                     
                     Button {
                         // Animate tab selection

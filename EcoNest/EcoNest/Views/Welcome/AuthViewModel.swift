@@ -15,6 +15,10 @@ class AuthViewModel:ObservableObject {
     //MARK: - Variables
     @Published var isAuthenticated: Bool = false
     @Published var isLoading: Bool = false
+    @Published var alertMessage: String = ""
+    @Published var showAlert: Bool = false
+    @Published var resetError: String?
+    @Published var resetSuccessMessage: String?
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     // MARK: - Initialization
@@ -51,7 +55,7 @@ class AuthViewModel:ObservableObject {
             completion(false, "Invalid email")
             return
         }
-
+        
         isLoading = true
         FirebaseManager.shared.auth.signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let self = self else { return }
@@ -127,7 +131,7 @@ class AuthViewModel:ObservableObject {
             completion(false, "Weak password")
             return
         }
-
+        
         isLoading = true
         // Create user
         FirebaseManager.shared.auth.createUser(withEmail: email, password: password) { [weak self] result, error in
@@ -163,7 +167,7 @@ class AuthViewModel:ObservableObject {
     
     /// Handles logic after a successful login.
     private func handleSuccessfulLogin(uid: String, completion: @escaping (Bool, String?) -> Void) {
- 
+        
         fetchUserFromFirestore(uid: uid) { success in
             DispatchQueue.main.async {
                 if success {
@@ -217,15 +221,15 @@ class AuthViewModel:ObservableObject {
             
             let username = data["username"] as? String ?? ""
             let email = data["email"] as? String ?? ""
-//            let user = User(
-//                username: username,
-//                email: email,
-//                password: "",
-//                image: nil,
-//                transactions: [],
-//                budgets: [],
-//                categories: []
-//            )
+            //            let user = User(
+            //                username: username,
+            //                email: email,
+            //                password: "",
+            //                image: nil,
+            //                transactions: [],
+            //                budgets: [],
+            //                categories: []
+            //            )
             completion(true)
         }
     }
@@ -233,13 +237,14 @@ class AuthViewModel:ObservableObject {
     // MARK: - Delete User
     
     /// Deletes a user's account from Firebase Auth and Firestore after reauthentication.
-    func deleteUserAccount(email: String, password: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func deleteUserAccount(email: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let user = FirebaseManager.shared.auth.currentUser else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No logged-in user found."])))
             return
         }
-        
-        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        let service = "com.EcoNest"
+        let savedPassword = KeychainHelper.shared.read(service: service, account: email)
+        let credential = EmailAuthProvider.credential(withEmail: email, password: savedPassword ?? "")
         
         // Re-authenticate - firebase wont allow user to delete until it reauthenticated
         user.reauthenticate(with: credential) { result, error in
@@ -270,42 +275,72 @@ class AuthViewModel:ObservableObject {
             }
         }
     }
-    // MARK: - Reset Password
     
-    func sendPasswordReset(email: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let sanitizedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    func savePasswordIfNeeded(account: String, newPassword: String) {
+        let service = "com.EcoNest"
 
-        FirebaseAuth.Auth.auth().fetchSignInMethods(forEmail: sanitizedEmail) { methods, error in
-            if let error = error {
-                // Log the error to understand it better
-                print("Error while checking email existence: \(error.localizedDescription)")
-                let errorMessage = self.mapPasswordResetError(error)
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+        if let existingPassword = KeychainHelper.shared.read(service: service, account: account) {
+            // Check if it's already the same
+            if existingPassword == newPassword {
+                print("Password is the same, no need to update.")
                 return
             }
+        }
 
-            guard let methods = methods, !methods.isEmpty else {
-                let userNotFoundMessage = "No user found with this email."
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: userNotFoundMessage])))
-                return
-            }
+        // Save or update the password
+        KeychainHelper.shared.save(service: service, account: account, password: newPassword)
+        print("Password saved or updated.")
+    }
 
-            // If user exists, attempt to send the reset email
-            FirebaseManager.shared.auth.sendPasswordReset(withEmail: sanitizedEmail) { error in
+    
+    // MARK: - Reset Password
+    private let db = Firestore.firestore()
+    func resetPasswordWithEmailLookup(for email: String) {
+        
+        db.collection("users")
+            .whereField("email", isEqualTo: email)
+            .getDocuments { snapshot, error in
                 if let error = error {
-                    print("Error while sending password reset email: \(error.localizedDescription)") // Log the error
-                    completion(.failure(error)) // Pass the error back to the caller
-                } else {
-                    completion(.success(())) // Successfully sent reset email
+                    print("Error fetching user: \(error.localizedDescription)")
+                    let message = "Something went wrong."
+                    AlertManager.shared.showAlert(title: "Error".localized(using: self.currentLanguage), message: message)
+                    return
                 }
+                
+                guard let doc = snapshot?.documents.first else {
+                    print("No matching email found in Firestore.")
+                    let message = "No user found with this email."
+                    AlertManager.shared.showAlert(title: "Error".localized(using: self.currentLanguage), message: message)
+                    return
+                }
+                
+                if let correctEmail = doc.get("email") as? String {
+                    print("Exact email found: \(correctEmail)")
+                    self.sendResetEmail(to: correctEmail)
+                } else {
+                    let message = "Invalid email format."
+                    AlertManager.shared.showAlert(title: "Error".localized(using: self.currentLanguage), message: message)
+                }
+            }
+    }
+    
+    private func sendResetEmail(to email: String) {
+        print("Sending password reset email to: \(email)")
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                print("Reset error: \(error.localizedDescription)")
+                let message = error.localizedDescription
+                AlertManager.shared.showAlert(title: "Error".localized(using: self.currentLanguage), message: message)
+            } else {
+                let message = "Password reset email sent."
+                AlertManager.shared.showAlert(title: "Success".localized(using: self.currentLanguage), message: message)
             }
         }
     }
-
     // MARK: - Validation Helpers
     
     /// Validates if an email string matches proper format.
-    private func isValidEmail(_ email: String) -> Bool {
+    func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: email)
@@ -357,58 +392,7 @@ class AuthViewModel:ObservableObject {
             return "UnknownError".localized(using: self.currentLanguage)
         }
     }
-    
-//    func mapPasswordResetError(_ error: Error) -> String {
-//        guard let errorCode = AuthErrorCode(rawValue: (error as NSError).code) else {
-//            return "An unexpected error occurred. Please try again later." //"حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
-//        }
-//
-//        switch errorCode {
-//        case .invalidEmail:
-//            return "Invalid email address." //"البريد الإلكتروني غير صالح."
-//        case .userNotFound:
-//            return "No user found with this email." //"لم يتم العثور على مستخدم بهذا البريد الإلكتروني."
-//        case .networkError:
-//            return "Network error. Please try again." //            "حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى."
-//        case .tooManyRequests:
-//            return "Too many requests. Try again later." // "تم إرسال عدد كبير جدًا من الطلبات. يرجى المحاولة لاحقًا."
-//        default:
-//            return "An unexpected error occurred. Please try again later." //"حدث خطأ غير متوقع. يرجى المحاولة لاحقًا."
-//        }
-//    }
-//    
-
-    
-    
- // MARK: - Password Reset Error Mapping
-    
-    func mapPasswordResetError(_ error: Error) -> String {
-        let nsError = error as NSError
-        print("Error received: \(error.localizedDescription)")
-        
-        switch nsError.code {
-        case 17008:
-            return "Invalid email address."
-        case 17011:
-            return "No user found with this email."
-        case 17010:
-            return "Too many requests. Please try again later."
-        case 17020:
-            return "Network error. Please check your connection."
-        case AuthErrorCode.invalidEmail.rawValue:
-            return "Invalid email address format."
-        case AuthErrorCode.userNotFound.rawValue:
-            return "No user found with this email."
-        case AuthErrorCode.networkError.rawValue:
-            return "Network error. Please try again."
-        case AuthErrorCode.tooManyRequests.rawValue:
-            return "Too many requests. Please try again later."
-        default:
-            print("Unknown error code: \(nsError.code)")  
-            return "An unknown error occurred. Please try again."
-        }
-    }
-
 }
+
 
 

@@ -19,6 +19,4 @@ struct Product: Identifiable, Codable {
     var careLevel: String
     var color: String
     var size: String
-    
-    var isAddedToCart: Bool = false
 }

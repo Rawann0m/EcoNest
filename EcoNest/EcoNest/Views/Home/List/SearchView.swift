@@ -12,7 +12,7 @@ import SwiftUI
 struct SearchView: View {
     
     /// The view model responsible for handling the search input and filtered product list
-    @ObservedObject var viewModel: HomeViewModel
+    @EnvironmentObject private var viewModel: HomeViewModel
     
     /// Stores the current language setting for localization
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
