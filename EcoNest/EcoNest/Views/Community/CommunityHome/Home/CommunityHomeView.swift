@@ -66,16 +66,28 @@ struct CommunityHomeView: View {
                                                 if community.memberOfCommunity {
                                                     if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
                                                         
-                                                        communityViewModel.removeUserIDToMembers(communityId: communityId, userId: userId)
+                                                        communityViewModel.removeUserIDFromMembers(communityId: communityId, userId: userId)
                                                         
-                                                        communityViewModel.listenToSelectedCommunity(communityId: communityId)
+//                                                        communityViewModel.listenToSelectedCommunity(communityId: communityId)
+                                                        
+                                                        if var updatedCommunity = communityViewModel.selectedCommunity {
+                                                            updatedCommunity.memberOfCommunity = false
+                                                            updatedCommunity.members.removeAll { $0 == userId }
+                                                            communityViewModel.selectedCommunity = updatedCommunity
+                                                        }
                                                     }
                                                 } else {
                                                     if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
                                                         
                                                         communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
                                                         
-                                                        communityViewModel.listenToSelectedCommunity(communityId: communityId)
+//                                                        communityViewModel.listenToSelectedCommunity(communityId: communityId)
+                                                        
+                                                        if var updatedCommunity = communityViewModel.selectedCommunity {
+                                                            updatedCommunity.memberOfCommunity = true
+                                                            updatedCommunity.members.append( userId)
+                                                            communityViewModel.selectedCommunity = updatedCommunity
+                                                        }
                                                     }
                                                 }
                                             } else {

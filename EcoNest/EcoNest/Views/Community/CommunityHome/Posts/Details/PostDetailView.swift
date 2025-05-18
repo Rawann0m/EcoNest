@@ -41,7 +41,7 @@ struct PostDetailView: View {
                         ForEach(viewModel.postReplies.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })) { reply in
                             if let user = reply.user {
                                 Posts(post: reply, user: user, communityId: communityId, viewModel: viewModel, isReplay: true, postId: post.id)
-                                    //.padding(.horizontal)
+                                //.padding(.horizontal)
                             }
                         }
                     } else {
@@ -65,6 +65,7 @@ struct PostDetailView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
+                if FirebaseManager.shared.isLoggedIn {
                 VStack{
                     ScrollView(.horizontal) {
                         HStack {
@@ -76,7 +77,7 @@ struct PostDetailView: View {
                                         .frame(width: 100, height: 100)
                                         .clipped()
                                         .cornerRadius(10)
-
+                                    
                                     Button(action: {
                                         selectedImages.remove(at: index)
                                         selectedItems.remove(at: index)
@@ -91,55 +92,56 @@ struct PostDetailView: View {
                         }
                         .padding(.vertical)
                     }
-                HStack {
-                    Image(systemName: "photo.on.rectangle")
-                        .font(.system(size: 32))
-                        .foregroundColor(Color("DarkGreen"))
-                        .onTapGesture {
-                            showImagePicker.toggle()
-                        }
-                    
-                    ZStack{
-                        Text("Type a replay...")
-                            .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity,alignment: .leading)
-                        TextEditor(text: $newReply)
-                            .frame(height: 25)
-                            .opacity(newReply.isEmpty ? 0.5 : 1)
-                    }
-                    
-                    Button("Reply") {
-                        if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                            viewModel.uploadImages(images: selectedImages) { result in
-                                switch result {
-                                case .success(let urls):
-                                    let contentArray = [newReply] + urls.map { $0.absoluteString }
-                                    if let postId = self.post.id{
-                                        viewModel.addReplyToPost(communityId: communityId, postId: postId, replay: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
-                        
-                                    }
-                                case .failure(let error):
-                                    print("Image upload failed: \(error.localizedDescription)")
-                                }
-                                newReply = ""
-                                selectedImages.removeAll()
-                                selectedItems.removeAll()
+                    HStack {
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.system(size: 28))
+                            .foregroundColor(Color("DarkGreen"))
+                            .onTapGesture {
+                                showImagePicker.toggle()
                             }
+                        
+                        ZStack{
+                            Text("Type a replay...")
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity,alignment: .leading)
+                            TextEditor(text: $newReply)
+                                .frame(height: 25)
+                                .opacity(newReply.isEmpty ? 0.5 : 1)
                         }
-
-                    }
-                    .disabled(textEmpty)
-                    .padding(10)
-                    .foregroundColor(.white)
-                    .background{
-                        RoundedRectangle(cornerRadius: 5)
-                            .fill(textEmpty ? .gray : Color("LimeGreen"))
+                        
+                        Button("Reply") {
+                            if let userId = FirebaseManager.shared.auth.currentUser?.uid {
+                                viewModel.uploadImages(images: selectedImages) { result in
+                                    switch result {
+                                    case .success(let urls):
+                                        let contentArray = [newReply] + urls.map { $0.absoluteString }
+                                        if let postId = self.post.id{
+                                            viewModel.addReplyToPost(communityId: communityId, postId: postId, replay: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
+                                            
+                                        }
+                                    case .failure(let error):
+                                        print("Image upload failed: \(error.localizedDescription)")
+                                    }
+                                    newReply = ""
+                                    selectedImages.removeAll()
+                                    selectedItems.removeAll()
+                                }
+                            }
+                            
+                        }
+                        .disabled(textEmpty)
+                        .padding(10)
+                        .foregroundColor(.white)
+                        .background{
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(textEmpty ? .gray : Color("LimeGreen"))
+                        }
                     }
                 }
-            }
                 .padding()
                 .background(.white)
             }
+        }
         }
         .onAppear{
             if let postId = self.post.id{

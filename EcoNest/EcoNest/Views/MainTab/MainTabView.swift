@@ -17,7 +17,7 @@ struct MainTabView: View {
         
         TabView(selection: $selectedTabIndex) {
             HomeView().tag(1)
-            Text("Sec Tab").tag(2)
+            CategoryView().tag(2)
             Text("Third Tab").tag(3)
             CommunityAndMessagesView().tag(4)
             SettingsView().tag(5)

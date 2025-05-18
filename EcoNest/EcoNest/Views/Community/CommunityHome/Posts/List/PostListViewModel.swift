@@ -100,14 +100,14 @@ class PostsListViewModel: ObservableObject {
     
     func listenToRepliesCount(communityId: String, postId: String, docRef: DocumentReference, completion: @escaping (Int) -> Void) {
         let subcollectionRef = docRef.collection("replies")
-
+        
         repliesListeners = subcollectionRef.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error listening to replies: \(error.localizedDescription)")
                 completion(0)
                 return
             }
-
+            
             let count = snapshot?.documents.count ?? 0
             completion(count)
         }
@@ -139,7 +139,7 @@ class PostsListViewModel: ObservableObject {
         
         for image in images {
             group.enter()
-            uploadSingleImage(image: image) { result in
+            uploadImages(image: image) { result in
                 switch result {
                 case .success(let url):
                     uploadedURLs.append(url)
@@ -159,7 +159,7 @@ class PostsListViewModel: ObservableObject {
         }
     }
     
-    func uploadSingleImage(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+    func uploadImages(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             completion(.failure(NSError(domain: "Invalid image data", code: 0, userInfo: nil)))
             return
@@ -202,7 +202,7 @@ class PostsListViewModel: ObservableObject {
             }
     }
     
-
+    
     func getPostsReplies(communityId: String, postId: String) {
         
         postReplies = []
@@ -313,7 +313,7 @@ class PostsListViewModel: ObservableObject {
             }
     }
     
-    func removeUserIDToFavorite(communityId: String, userId: String, postId: String) {
+    func removeUserIDFromFavorite(communityId: String, userId: String, postId: String) {
         FirebaseManager.shared.firestore.collection("community")
             .document(communityId)
             .collection("posts")
@@ -364,7 +364,7 @@ class PostsListViewModel: ObservableObject {
     
     func listenToSelectedPost(communityId: String ,postId: String) {
         selectedPostListener?.remove()
-
+        
         let postsRef = FirebaseManager.shared.firestore
             .collection("community")
             .document(communityId)
@@ -372,34 +372,33 @@ class PostsListViewModel: ObservableObject {
             .document(postId)
         
         selectedPostListener =  postsRef.addSnapshotListener { [weak self] (documentSnapshot, error) in
-                guard let self = self else { return }
-
-                if let error = error {
-                    print("Error listening to post: \(error)")
-                    return
-                }
-
-                guard let data = documentSnapshot?.data(), let documentID = documentSnapshot?.documentID else {
-                    print("No data found for post")
-                    return
-                }
-
-                self.listenToRepliesCount(communityId: communityId, postId: postId, docRef: postsRef) { numberOfReplies in
-                    
-                    print("number of replies: \(numberOfReplies)")
-                    
-                    let likes = data["likes"] as? [String] ?? []
-                    
-                    let isLiked = likes.contains(FirebaseManager.shared.auth.currentUser?.uid ?? "")
-                    
-                    self.selectedPost?.likedByCurrentUser = isLiked
-                    self.selectedPost?.likes = likes
-                    self.selectedPost?.numberOfReplies = numberOfReplies
-                    
-                }
-                
-               
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Error listening to post: \(error)")
+                return
             }
+            
+            guard let data = documentSnapshot?.data(), let documentID = documentSnapshot?.documentID else {
+                print("No data found for post")
+                return
+            }
+            
+            self.listenToRepliesCount(communityId: communityId, postId: postId, docRef: postsRef) { numberOfReplies in
+                
+                print("number of replies: \(numberOfReplies)")
+                
+                let likes = data["likes"] as? [String] ?? []
+                
+                let isLiked = likes.contains(FirebaseManager.shared.auth.currentUser?.uid ?? "")
+                
+                self.selectedPost?.likedByCurrentUser = isLiked
+                self.selectedPost?.likes = likes
+                self.selectedPost?.numberOfReplies = numberOfReplies
+                
+            }
+            
+        }
     }
-
+    
 }
