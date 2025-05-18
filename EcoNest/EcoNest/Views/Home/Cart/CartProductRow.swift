@@ -23,7 +23,7 @@ struct CartProductRow: View {
         HStack(spacing: 20) {
             
             // Product image loaded from a URL using SDWebImageSwiftUI
-            WebImage(url: URL(string: cartProduct.product.image))
+            WebImage(url: URL(string: cartProduct.product.image ?? ""))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .background(.gray.opacity(0.15))
@@ -34,7 +34,7 @@ struct CartProductRow: View {
             VStack(alignment: .leading, spacing: 8) {
                 
                 // Product name
-                Text(cartProduct.product.name)
+                Text(cartProduct.product.name ?? "")
                 
                 // Price with currency icon
                 HStack {

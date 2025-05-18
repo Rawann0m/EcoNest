@@ -22,54 +22,44 @@ class HomeViewModel: ObservableObject {
     
     /// Computed property returning the first few product image URLs for slider
     var sliderImages: [String] {
-        return products.prefix(4).map { $0.image }
+        return products.prefix(4).map { $0.image ?? "" }
     }
     
     /// Fetches product data from the "ProductTH" collection in Firestore
     func fetchProductData() {
         let db = FirebaseManager.shared.firestore
         
-        db.collection("ProductTH").getDocuments { (snapshot, error) in
-            guard let itemData = snapshot else { return }
-            
-            // Convert Firestore documents into Product models
-            self.products = itemData.documents.compactMap { document in
-                let id = document.documentID
-                let name = document.get("name") as? String ?? ""
-                let description = document.get("description") as? String ?? ""
-                let price = document.get("price") as? Double ?? 0.0
-                let image = document.get("image") as? String ?? ""
-                let category = document.get("category") as? String ?? ""
-                let quantity = document.get("quantity") as? Int ?? 0
-                let careLevel = document.get("careLevel") as? String ?? ""
-                let color = document.get("color") as? String ?? ""
-                let size = document.get("size") as? String ?? ""
+        db.collection("ProductTH")
+            .whereField("quantity", isGreaterThan: 0) // Only fetch if quantity > 0
+            .getDocuments { (snapshot, error) in
+                guard let itemData = snapshot else { return }
                 
-                // Construct and return a Product instance
-                return Product(
-                    id: id,
-                    name: name,
-                    description: description,
-                    price: price,
-                    image: image,
-                    category: category,
-                    quantity: quantity,
-                    careLevel: careLevel,
-                    color: color,
-                    size: size
-                )
+                self.products = itemData.documents.compactMap { document in
+                    let id = document.documentID
+                    let name = document.get("name") as? String ?? ""
+                    let price = document.get("price") as? Double ?? 0.0
+                    let image = document.get("image") as? String ?? ""
+                    let quantity = document.get("quantity") as? Int ?? 0
+                    
+                    return Product(
+                        id: id,
+                        name: name,
+                        price: price,
+                        image: image,
+                        quantity: quantity
+                    )
+                }
+                
+                self.filtered = self.products
             }
-            
-            // Initialize the filtered list to show all products
-            self.filtered = self.products
-        }
     }
+
     
     /// Filters the product list based on the current search query
     func filterData() {
         withAnimation(.spring) {
             self.filtered = self.products.filter {
-                $0.name.lowercased().contains(self.search.lowercased())
+                ($0.name?.lowercased().contains(self.search.lowercased()))!
             }
        }
     }
@@ -90,9 +80,9 @@ class HomeViewModel: ObservableObject {
             .collection("cart")
             .document()
             .setData([
-                "productId": product.id,
+                "productId": product.id ?? "",
                 "quantity": 1,
-                "price": product.price
+                "price": product.price ?? ""
             ]) { err in
                 if let err = err {
                     print("Error adding to cart: \(err.localizedDescription)")
