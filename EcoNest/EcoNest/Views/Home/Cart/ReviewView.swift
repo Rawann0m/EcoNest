@@ -45,7 +45,7 @@ struct ReviewView: View {
                         VStack {
                             ForEach(viewModel.cartProducts) { cart in
                                 HStack(spacing: 15) {
-                                    Text(cart.product.name)
+                                    Text(cart.product.name ?? "")
                                         .frame(width: 165, alignment: .leading)
                                     
                                     Text(String(format: "qty".localized(using: currentLanguage), "\(cart.quantity)"))
@@ -111,10 +111,17 @@ struct ReviewView: View {
                 }
                 
                 Button {
-                
                     viewModel.addOrder(locationId: locViewModel.mapLocation.id)
+                    NotificationManager.shared.requestPermission { granted in
+                        if granted {
+                            NotificationManager.shared.scheduleNotification (
+                                title: "New order",
+                                body: "hi",
+                                date: viewModel.selectedDate
+                            )
+                        }
+                    }
                     show.toggle()
-                    
                 } label: {
                     Text("Confirm".localized(using: currentLanguage))
                         .font(.title2)

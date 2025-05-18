@@ -30,21 +30,21 @@ struct ProductCardView: View {
                     
                     // Product image with styling
                     //Image(product.image)
-                    WebImage(url: URL(string: product.image))
+                    WebImage(url: URL(string: product.image ?? ""))
                         .resizable()
                         .background(Color.gray.opacity(0.15))
                         .frame(width: 150, height: 150)
                         .cornerRadius(8)
                         
                     // Product name text
-                    Text(product.name)
+                    Text(product.name ?? "")
                         .font(.subheadline)
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                         .padding(.vertical, 1)
                     
                     // Price and currency image
                     HStack {
-                        Text("\(product.price, specifier: "%.2f")")
+                        Text("\(product.price ?? 0.0, specifier: "%.2f")")
                             .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                             .bold()
                         
