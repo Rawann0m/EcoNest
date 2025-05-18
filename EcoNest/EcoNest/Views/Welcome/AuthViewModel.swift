@@ -237,13 +237,14 @@ class AuthViewModel:ObservableObject {
     // MARK: - Delete User
     
     /// Deletes a user's account from Firebase Auth and Firestore after reauthentication.
-    func deleteUserAccount(email: String, password: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func deleteUserAccount(email: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let user = FirebaseManager.shared.auth.currentUser else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No logged-in user found."])))
             return
         }
-        
-        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        let service = "com.EcoNest"
+        let savedPassword = KeychainHelper.shared.read(service: service, account: email)
+        let credential = EmailAuthProvider.credential(withEmail: email, password: savedPassword ?? "")
         
         // Re-authenticate - firebase wont allow user to delete until it reauthenticated
         user.reauthenticate(with: credential) { result, error in
@@ -275,6 +276,22 @@ class AuthViewModel:ObservableObject {
         }
     }
     
+    func savePasswordIfNeeded(account: String, newPassword: String) {
+        let service = "com.EcoNest"
+
+        if let existingPassword = KeychainHelper.shared.read(service: service, account: account) {
+            // Check if it's already the same
+            if existingPassword == newPassword {
+                print("Password is the same, no need to update.")
+                return
+            }
+        }
+
+        // Save or update the password
+        KeychainHelper.shared.save(service: service, account: account, password: newPassword)
+        print("Password saved or updated.")
+    }
+
     
     // MARK: - Reset Password
     private let db = Firestore.firestore()

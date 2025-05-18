@@ -10,9 +10,9 @@ struct ForgotPasswordPage:View {
     @EnvironmentObject var themeManager: ThemeManager
     @State private var email: String = ""
     @State private var isLoading = false
-    @State private var goToHome = false
     @StateObject private var authViewModel = AuthViewModel()
     @StateObject private var alertManager = AlertManager.shared
+    @Environment(\.dismiss) var dismiss
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
         NavigationStack{
@@ -33,7 +33,7 @@ struct ForgotPasswordPage:View {
                             .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
                             .offset(x:-170, y:-120)
                             .onTapGesture {
-                                goToHome = true
+                               dismiss()
                             }
                     }.padding(.top,-50)
                     
@@ -56,15 +56,7 @@ struct ForgotPasswordPage:View {
                         .padding(.top,70)
                 }
             }
-            
-            NavigationLink(
-                destination: LogInPage(),
-                isActive: $goToHome,
-                label: {
-                    EmptyView()
-                }
-            )
-        }.alert(isPresented: $alertManager.alertState.isPresented) {
+            }.alert(isPresented: $alertManager.alertState.isPresented) {
             Alert(
                 title: Text(alertManager.alertState.title),
                 message: Text(alertManager.alertState.message),

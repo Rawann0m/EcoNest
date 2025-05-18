@@ -61,7 +61,6 @@ struct CommuintyListView: View {
                                                     communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
                                                 }
                                                 
-                                                
                                             } else {
                                                 AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
                                             }
@@ -76,8 +75,11 @@ struct CommuintyListView: View {
                     }
                 }
             }
+            .onAppear{
+                communityViewModel.fetchCommunities()
+            }
             .onDisappear{
-                communityViewModel.firestoreListener?.remove()
+                communityViewModel.communityListener?.remove()
             }
             .alert(isPresented: $alertManager.alertState.isPresented) {
                 Alert(

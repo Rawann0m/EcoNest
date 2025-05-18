@@ -34,7 +34,7 @@ class CreatePostViewModel: ObservableObject {
     
             for image in images {
                 group.enter()
-                uploadSingleImage(image: image) { result in
+                uploadImages(image: image) { result in
                     switch result {
                     case .success(let url):
                         uploadedURLs.append(url)
@@ -54,7 +54,7 @@ class CreatePostViewModel: ObservableObject {
             }
         }
     
-        func uploadSingleImage(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+        func uploadImages(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
             guard let imageData = image.jpegData(compressionQuality: 0.8) else {
                 completion(.failure(NSError(domain: "Invalid image data", code: 0, userInfo: nil)))
                 return

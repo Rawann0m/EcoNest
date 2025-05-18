@@ -36,6 +36,7 @@ struct YourApp: App {
               .environmentObject(locationviewModel)
               .environmentObject(homeViewModel)
               .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
+
     }
   }
 }
