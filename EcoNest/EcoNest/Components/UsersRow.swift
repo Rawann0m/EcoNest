@@ -13,7 +13,7 @@ func UsersRow(username: String, email: String, image: String, time: String, mess
     @EnvironmentObject var themeManager: ThemeManager
     HStack {
         VStack{
-            if image.isEmpty {
+            if image == "" {
                 Image("profile")
                     .resizable()
             }  else if let imageURL = URL(string: image){

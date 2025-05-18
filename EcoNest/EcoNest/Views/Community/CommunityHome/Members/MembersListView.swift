@@ -34,8 +34,11 @@ struct MembersListView: View {
                                         savedId = member.id
                                     }
                                     .onTapGesture {
-                                        if FirebaseManager.shared.isLoggedIn {
-                                            showChat.toggle()
+                                        if FirebaseManager.shared.isLoggedIn{
+                                            viewModel.selectedMember = member
+                                            if  member.id != FirebaseManager.shared.auth.currentUser?.uid{
+                                                showChat.toggle()
+                                            }
                                         } else {
                                             AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
                                         }
@@ -52,7 +55,7 @@ struct MembersListView: View {
             }
         }
         .fullScreenCover(isPresented: $showChat) {
-            ChatView()
+            ChatView(chatUser: viewModel.selectedMember )
         }
         .alert(isPresented: $alertManager.alertState.isPresented) {
             Alert(

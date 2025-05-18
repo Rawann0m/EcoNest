@@ -14,7 +14,7 @@ class CommunityViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedCommunityMembers: [String] = []
     
-    var firestoreListener: ListenerRegistration?
+    var communityListener: ListenerRegistration?
     var selectedCommunityListener: ListenerRegistration?
     
     init() {
@@ -22,16 +22,16 @@ class CommunityViewModel: ObservableObject {
     }
     
     deinit {
-        firestoreListener?.remove()
+        communityListener?.remove()
         selectedCommunityListener?.remove()
     }
     
     func fetchCommunities() {
         communities = []
         isLoading = true
-        firestoreListener?.remove()
+        communityListener?.remove()
         
-        firestoreListener = FirebaseManager.shared.firestore.collection("community").addSnapshotListener { [weak self] (snapshot, error) in
+        communityListener = FirebaseManager.shared.firestore.collection("community").addSnapshotListener { [weak self] (snapshot, error) in
             
             guard let self = self else { return }
             
@@ -94,7 +94,7 @@ class CommunityViewModel: ObservableObject {
             }
     }
     
-    func removeUserIDToMembers(communityId: String, userId: String) {
+    func removeUserIDFromMembers(communityId: String, userId: String) {
         FirebaseManager.shared.firestore.collection("community")
             .document(communityId)
             .updateData([
@@ -111,29 +111,29 @@ class CommunityViewModel: ObservableObject {
     
     func listenToSelectedCommunity(communityId: String) {
         selectedCommunityListener?.remove()
-
+        
         selectedCommunityListener = FirebaseManager.shared.firestore
             .collection("community")
             .document(communityId)
             .addSnapshotListener { [weak self] (documentSnapshot, error) in
                 guard let self = self else { return }
-
+                
                 if let error = error {
                     print("Error listening to community: \(error)")
                     return
                 }
-
+                
                 guard let data = documentSnapshot?.data(), let documentID = documentSnapshot?.documentID else {
                     print("No data found for community")
                     return
                 }
-
+                
                 let name = data["name"] as? String ?? ""
                 let description = data["description"] as? String ?? ""
                 let members = data["members"] as? [String] ?? []
                 let currentUserId = FirebaseManager.shared.auth.currentUser?.uid ?? ""
                 let isMember = members.contains(currentUserId)
-
+                
                 self.selectedCommunity = Community(
                     id: documentID,
                     name: name,
@@ -145,5 +145,5 @@ class CommunityViewModel: ObservableObject {
                 print("hiiiii \(self.selectedCommunityMembers)")
             }
     }
- 
+    
 }

@@ -25,7 +25,7 @@ struct CreatePost: View {
                 HStack(alignment: .top){
                     
                     VStack{
-                        if settingsViewModel.user?.profileImage == nil {
+                        if settingsViewModel.user?.profileImage == "" {
                             Image("profile")
                                 .resizable()
                         }  else if let imageURL = URL(string: settingsViewModel.user?.profileImage ?? ""){
@@ -103,7 +103,7 @@ struct CreatePost: View {
                             viewModel.uploadImages(images: selectedImages) { result in
                                 switch result {
                                 case .success(let urls):
-                                    let contentArray = [message] + urls.map { $0.absoluteString }
+                                    let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
                                     viewModel.addPost(communityId: communityId, post: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
                                     dismiss()
                                 case .failure(let error):

@@ -11,6 +11,7 @@ import FirebaseFirestore
 class MembersListViewModel: ObservableObject {
     @Published var members: [User] = []
     @Published var isLoading: Bool = false
+    @Published var selectedMember: User?
     
     init(members: [String]){
         fetchMembers(members: members)

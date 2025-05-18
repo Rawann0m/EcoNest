@@ -103,7 +103,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         .font(.callout)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.removeUserIDToFavorite(communityId: communityId, userId: userId, postId: post.id ?? "")
+                                viewModel.removeUserIDFromFavorite(communityId: communityId, userId: userId, postId: post.id ?? "")
                             }
                             
                         }
