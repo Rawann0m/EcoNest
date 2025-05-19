@@ -165,11 +165,4 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
     .padding(.bottom, 0)
     
     Divider()
-    //    .background{
-    //        RoundedRectangle(cornerRadius: 10)
-    //            .fill(.white)
-    //            .stroke(.gray.opacity(0.3), lineWidth: 1)
-    //            .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
-    //            .frame(maxWidth: .infinity)
-    //    }
 }

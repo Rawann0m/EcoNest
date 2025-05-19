@@ -53,7 +53,7 @@
 // Home
 "Findyour" = "Find your";
 "Favoriteplants" = "Favorite plants";
-"Search" = "Search for plants ...";
+"Search" = "Search ...";
 "Explore" = "Explore";
 "NoProductsFound" = "No Products Found";
 
@@ -86,3 +86,15 @@
 "TakePhoto" = "Take Photo";
 "TopPredictions:" = "Top Predictions:";
 "SelectOrTakePhoto" = "Select Or Take Photo";
+"TypeMessage" = "Type a message...";
+"Replies" = "Replies";
+"Norepliesyet" = "No replies yet.";
+"PostDetails" = "Post Details";
+"TypeReplay" = "Type a replay...";
+"Reply" = "Reply";
+"Nomembersfound" = "No members found";
+"NoPostsfound" = "No Posts found";
+"Leave" = "Leave";
+"Cancel" = "Cancel";
+"Post" ="Post";
+"Join" ="Join";

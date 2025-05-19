@@ -10,12 +10,18 @@ struct CommunityAndMessagesView: View {
     @State var isCommunity: Bool = true
     @Namespace var namespace
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
         NavigationStack {
             VStack {
+                Text(isCommunity ? "Community".localized(using: currentLanguage) : "DirectMessages".localized(using: currentLanguage))
+                    .font(.largeTitle.bold())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding([.leading, .top])
+                
                 HStack {
                     Text("Community".localized(using: currentLanguage))
-                        .foregroundColor(isCommunity ? .white : .black)
+                        .foregroundColor(themeManager.isDarkMode ? .white : (isCommunity ? .white : .black))
                         .frame(width: 170, height: 50, alignment: .center)
                         .background {
                             if isCommunity {
@@ -32,7 +38,7 @@ struct CommunityAndMessagesView: View {
                         .frame(maxWidth: 200)
 
                     Text("DirectMessages".localized(using: currentLanguage))
-                        .foregroundColor(!isCommunity ? .white : .black)
+                        .foregroundColor(themeManager.isDarkMode ? .white : (!isCommunity ? .white : .black))
                         .frame(width: 170, height: 50, alignment: .center)
                         .background {
                             if !isCommunity {
@@ -59,7 +65,6 @@ struct CommunityAndMessagesView: View {
                 
                 Spacer()
             }
-            .navigationTitle(isCommunity ? "Community".localized(using: currentLanguage) : "DirectMessages".localized(using: currentLanguage))
         }
     }
 }
