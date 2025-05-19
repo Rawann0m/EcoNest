@@ -21,6 +21,7 @@ struct PlantsListView: View {
                     HStack {
                         Text("🌿 All Plants")
                             .font(.title)
+                            .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
                             .fontWeight(.bold)
                         Spacer()
                         Button {
@@ -28,6 +29,8 @@ struct PlantsListView: View {
                         } label: {
                             Image(systemName: "line.horizontal.3.decrease.circle")
                                 .font(.title2)
+                                .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
+
                         }
                     }
                     
