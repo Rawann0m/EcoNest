@@ -11,6 +11,9 @@ import SDWebImageSwiftUI
 import PhotosUI
 
 struct CreatePost: View {
+    var initialMessage: String = ""
+    var initialImages: [UIImage] = []
+    
     @State var message: String = ""
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = CreatePostViewModel()
@@ -19,7 +22,16 @@ struct CreatePost: View {
     @State var selectedImages: [UIImage] = []
     @State private var selectedItems: [PhotosPickerItem] = []
     @State var showImagePicker: Bool = false
+<<<<<<< Updated upstream
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+=======
+    
+    init(initialMessage: String = "", initialImages: [UIImage] = [], communityId: String) {
+        self._message = State(initialValue: initialMessage)
+        self._selectedImages = State(initialValue: initialImages)
+        self.communityId = communityId
+    }
+>>>>>>> Stashed changes
     
     var body: some View {
         NavigationStack{
@@ -60,7 +72,7 @@ struct CreatePost: View {
                                     .frame(width: 100, height: 100)
                                     .clipped()
                                     .cornerRadius(10)
-
+                                
                                 Button(action: {
                                     selectedImages.remove(at: index)
                                     selectedItems.remove(at: index)
@@ -89,6 +101,7 @@ struct CreatePost: View {
                     }
                     .padding()
             }
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Text("Cancel".localized(using: currentLanguage))
@@ -112,7 +125,7 @@ struct CreatePost: View {
                                 }
                             }
                         }
-    
+                        
                         dismiss()
                         
                     } label: {
