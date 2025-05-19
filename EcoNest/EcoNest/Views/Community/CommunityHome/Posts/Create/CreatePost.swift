@@ -19,11 +19,12 @@ struct CreatePost: View {
     @State var selectedImages: [UIImage] = []
     @State private var selectedItems: [PhotosPickerItem] = []
     @State var showImagePicker: Bool = false
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading){
                 HStack(alignment: .top){
-                    
                     VStack{
                         if settingsViewModel.user?.profileImage == "" {
                             Image("profile")
@@ -90,7 +91,7 @@ struct CreatePost: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Text("Cancel")
+                    Text("Cancel".localized(using: currentLanguage))
                         .onTapGesture {
                             dismiss()
                         }
@@ -100,7 +101,7 @@ struct CreatePost: View {
                     
                     Button{
                         if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                            viewModel.uploadImages(images: selectedImages) { result in
+                            PhotoUploaderManager.shared.uploadImages(images: selectedImages) { result in
                                 switch result {
                                 case .success(let urls):
                                     let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
@@ -115,7 +116,7 @@ struct CreatePost: View {
                         dismiss()
                         
                     } label: {
-                        Text("Post")
+                        Text("Post".localized(using: currentLanguage))
                             .padding(10)
                             .bold()
                             .foregroundColor(.white)
@@ -147,6 +148,7 @@ struct CreatePost: View {
                 }
             }
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
     
     var textEmpty: Bool {

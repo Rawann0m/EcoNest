@@ -52,7 +52,7 @@
 // Home
 "Findyour" = "ابحث عن";
 "Favoriteplants" = "نباتاتك المفضلة";
-"Search" = "ابحث عن النباتات ...";
+"Search" = "ابحث ...";
 "Explore" = "استكشاف";
 "NoProductsFound" = "لم يتم العثور على منتجات";
 
@@ -87,3 +87,15 @@
 "TakePhoto" = "التقط صورة";
 "TopPredictions:" = "أفضل النتائج:";
 "SelectOrTakePhoto" = "اختر أو التقط صورة";
+"TypeMessage" = "اكتب رسالة...";
+"Replies" = "الردود";
+"Norepliesyet" = "لا توجد ردود";
+"PostDetails" = "تفاصيل المنشور";
+"TypeReplay" = "اكتب رد...";
+"Reply" = "ارسال";
+"Nomembersfound" = "لا يوجد اعضاء";
+"NoPostsfound" = "لا توجد منشورات";
+"Leave" = "المغادرة";
+"Cancel" = "الغاء";
+"Post" ="نشر";
+"Join" = "انضمام";

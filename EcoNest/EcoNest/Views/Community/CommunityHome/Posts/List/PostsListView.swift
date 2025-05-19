@@ -12,7 +12,7 @@ struct PostsListView: View {
     @ObservedObject var viewModel: PostsListViewModel
     var communityId: String
     @State private var savedId: String?
-    
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
         NavigationStack{
             if viewModel.isLoading{
@@ -20,7 +20,7 @@ struct PostsListView: View {
                     .frame(height: 300, alignment: .center)
             } else {
                 if viewModel.posts.isEmpty {
-                    Text("No Posts found")
+                    Text("NoPostsfound".localized(using: currentLanguage))
                         .frame(height: 300, alignment: .center)
                 } else {
                     ScrollViewReader{ scrollProxy in
@@ -28,7 +28,6 @@ struct PostsListView: View {
                             ForEach(viewModel.posts.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })) { post in
                                 if let user = post.user {
                                     Posts(post: post, user: user, communityId: communityId, viewModel: viewModel)
-                                    // .padding(.horizontal)
                                         .onTapGesture {
                                             viewModel.selectedPost = post
                                             showPostDetails.toggle()
