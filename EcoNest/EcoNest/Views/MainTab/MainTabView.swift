@@ -18,7 +18,7 @@ struct MainTabView: View {
                 TabView(selection: $selectedTabIndex) {
                     HomeView().tag(1).toolbar(.hidden, for: .tabBar)
                     PlantsListView().tag(2).toolbar(.hidden, for: .tabBar)
-                    Text("Third Tab").tag(3) .toolbar(.hidden, for: .tabBar)
+                    PredictionView().tag(3) .toolbar(.hidden, for: .tabBar)
                     CommunityAndMessagesView().tag(4)
                     SettingsView().tag(5).toolbar(.hidden, for: .tabBar)
                 }
