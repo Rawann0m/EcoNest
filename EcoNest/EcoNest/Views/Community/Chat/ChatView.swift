@@ -16,7 +16,6 @@ struct ChatView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
     @ObservedObject var viewModel: ChatViewModel
-    @ObservedObject var postViewModel = CreatePostViewModel()
     let chatUser: User?
     @State var showPic: Bool = false
     init(chatUser: User?){
@@ -147,7 +146,7 @@ struct ChatView: View {
                             }
                         
                         ZStack{
-                            Text("Type a message...")
+                            Text("TypeMessage".localized(using: currentLanguage))
                                 .foregroundColor(.gray)
                                 .frame(maxWidth: .infinity,alignment: .leading)
                             TextEditor(text: $viewModel.chatText)
@@ -159,7 +158,7 @@ struct ChatView: View {
                             let trimmedText = viewModel.chatText.trimmingCharacters(in: .whitespacesAndNewlines)
                             
                             if let image = selectedImage {
-                                postViewModel.uploadImages(image: image) { result in
+                                PhotoUploaderManager.shared.uploadImages(image: image) { result in
                                     switch result {
                                     case .success(let url):
                                         let contentArray = [trimmedText, url.absoluteString].filter { !$0.isEmpty }

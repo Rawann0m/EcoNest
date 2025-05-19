@@ -15,7 +15,6 @@ struct DirectMessageListView: View {
     
     var body: some View {
         NavigationStack{
-           
                 if viewModel.recentMessages.isEmpty {
                     Text("No messages yet")
                         .frame(height: 500)
