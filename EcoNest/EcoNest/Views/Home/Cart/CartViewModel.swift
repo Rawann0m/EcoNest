@@ -95,7 +95,7 @@ class CartViewModel: ObservableObject {
         // Iterate through each cart item
         cartProducts.forEach { cartItem in
             // Multiply quantity by the product's price, then add to total
-            price += Double(cartItem.quantity) * cartItem.product.price
+            price += Double(cartItem.quantity) * (cartItem.product.price ?? 0)
         }
         return price
     }
@@ -143,13 +143,13 @@ class CartViewModel: ObservableObject {
         }
         let cartData = cartProducts.map { cart in
             return [
-                "name": cart.product.name,
+                "name": cart.product.name ?? "",
                 "price": cart.price,
                 "quantity": cart.quantity,
-                "image": cart.product.image,
-                "category": cart.product.category,
-                "color": cart.product.color,
-                "size": cart.product.size,
+                "image": cart.product.image ?? "",
+                "category": cart.product.category ?? "",
+                "color": cart.product.color ?? "",
+                "size": cart.product.size ?? "",
             ]
         }
 
@@ -171,7 +171,7 @@ class CartViewModel: ObservableObject {
 
                 // Reduce product quantities
                 for cart in self.cartProducts {
-                    let productRef = db.collection("ProductTH").document(cart.product.id)
+                    let productRef = db.collection("ProductTH").document(cart.product.id ?? "")
                     
                     productRef.getDocument { document, error in
                         if let document = document, document.exists,
