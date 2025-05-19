@@ -22,16 +22,13 @@ struct CreatePost: View {
     @State var selectedImages: [UIImage] = []
     @State private var selectedItems: [PhotosPickerItem] = []
     @State var showImagePicker: Bool = false
-<<<<<<< Updated upstream
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-=======
     
     init(initialMessage: String = "", initialImages: [UIImage] = [], communityId: String) {
         self._message = State(initialValue: initialMessage)
         self._selectedImages = State(initialValue: initialImages)
         self.communityId = communityId
     }
->>>>>>> Stashed changes
     
     var body: some View {
         NavigationStack{
