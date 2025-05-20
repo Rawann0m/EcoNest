@@ -148,8 +148,7 @@ struct SettingsView: View {
                         
                         settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
                             NavigationLink{
-                                // go to orders page
-                                Text("orders")
+                                OrderView()
                             } label:{
                                 Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                     .foregroundColor(Color("LimeGreen"))

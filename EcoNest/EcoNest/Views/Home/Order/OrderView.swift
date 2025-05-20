@@ -14,55 +14,22 @@ struct OrderView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var themeManager: ThemeManager
     
+    @StateObject private var viewModel = OrderViewModel()
+    
     var body: some View {
+        
         NavigationStack {
+            
             ScrollView {
+                
                 LazyVStack {
                     CustomSegmentedControl()
                         .padding(.vertical, 12)
                     
-                    HStack(spacing: 12){
-                        
-                        VStack {
-                            Text("Scheduled :")
-                            Text("5 May 2025")
-                        }
-                        .padding()
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .frame(maxHeight: .infinity)
-                        .background(Color("LimeGreen"))
-                                                
-                        VStack(alignment: .leading, spacing: 8, content: {
-                            Text("Plant: Sansevieria, Snake plan, Cactus Trio, Peace Lily")
-                                .foregroundStyle(.primary)
-                            
-                            HStack {
-                                Text("Total: 300.00")
-                                    .foregroundStyle(.primary)
-                                    .bold()
-                                
-                                Image("RiyalB")
-                                    .resizable()
-                                    .frame(width: 16, height: 16)
-                            }
-                            
-                            Text("Cancel")
-                                .foregroundStyle(.red)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                            
-                        })
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical)
-                        
+                    ForEach(viewModel.orders) { order in
+                        OrderCardView(order: order)
                     }
-                    .padding(.trailing)
-                    .background(Color.white, in: RoundedRectangle(cornerRadius: 10))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color("LimeGreen"), lineWidth: 2)
-                    )
-                    .padding(.horizontal)
+                    
                 }
             }
             .toolbar {
@@ -72,7 +39,10 @@ struct OrderView: View {
             }
             .navigationBarBackButtonHidden(true)
         }
-
+        .onAppear {
+            viewModel.fetchOrders()
+            print(viewModel.fetchOrders())
+        }
     }
     
     @ViewBuilder
@@ -105,12 +75,5 @@ struct OrderView: View {
         )
         .padding()
     }
-
+    
 }
-
-//Text("Plant: Sansevieria, Snake plan, Cactus Trio, Peace Lily")
-//    .foregroundStyle(.primary)
-//    .lineLimit(nil)
-//    .fixedSize(horizontal: false, vertical: true)
-//
-
