@@ -16,8 +16,11 @@ class OrderViewModel: ObservableObject {
     @Published var isLoading = false
     
     func fetchOrders() {
+        
         isLoading = true
+        
         let db = FirebaseManager.shared.firestore
+        
         guard let userId = Auth.auth().currentUser?.uid else {
             print("User not logged in")
             isLoading = false
@@ -27,7 +30,8 @@ class OrderViewModel: ObservableObject {
         db.collection("users")
             .document(userId)
             .collection("orders")
-            .getDocuments { snapshot, error in
+            .addSnapshotListener { snapshot, error in
+                
                 if let error = error {
                     print("Failed to fetch orders: \(error.localizedDescription)")
                     self.isLoading = false
@@ -109,6 +113,29 @@ class OrderViewModel: ObservableObject {
                 group.notify(queue: .main) {
                     self.orders = fetchedOrders
                     self.isLoading = false
+                }
+            }
+    }
+    
+    func cancelOrders(order: Order) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User must be logged in to cancel orders.")
+            return
+        }
+
+        let db = FirebaseManager.shared.firestore
+        
+        db.collection("users")
+            .document(userId)
+            .collection("orders")
+            .document(order.id)
+            .updateData([
+                "status": OrderStatus.cancelled.rawValue
+            ]) { error in
+                if let error = error {
+                    print("Failed to cancel order: \(error.localizedDescription)")
+                } else {
+                    print("Order successfully cancelled.")
                 }
             }
     }

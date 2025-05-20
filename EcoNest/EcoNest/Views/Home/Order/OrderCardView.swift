@@ -10,7 +10,9 @@ import SwiftUI
 struct OrderCardView: View {
     
     var order: Order
-    
+    @ObservedObject var viewModel: OrderViewModel
+    @State private var showCancelAlert = false
+
     var body: some View {
         HStack(spacing: 12){
             
@@ -38,10 +40,24 @@ struct OrderCardView: View {
                         .frame(width: 16, height: 16)
                 }
                 
-                Text("Cancel")
-                    .foregroundStyle(.red)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                
+                if order.status == .awaitingPickup {
+                    Button(action: {
+                        showCancelAlert = true
+                    }) {
+                        Text("Cancel")
+                            .foregroundStyle(.red)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+                    .alert("Cancel Order", isPresented: $showCancelAlert) {
+                        Button("Yes", role: .destructive) {
+                            viewModel.cancelOrders(order: order)
+                        }
+                        Button("No", role: .cancel) { }
+                    } message: {
+                        Text("Are you sure you want to cancel this order?")
+                    }
+                }
+
             })
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical)

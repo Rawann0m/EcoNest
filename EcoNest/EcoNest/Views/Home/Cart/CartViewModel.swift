@@ -225,7 +225,9 @@ class CartViewModel: ObservableObject {
     }
     
     func increaseQuantity(cart: Cart, change: upQuantity) {
+        
         guard let index = cartProducts.firstIndex(where: { $0.id == cart.id }) else { return }
+        
         guard let userId = Auth.auth().currentUser?.uid else {
             print("User must be logged in to add to cart.")
             return

@@ -26,8 +26,8 @@ struct OrderView: View {
                     CustomSegmentedControl()
                         .padding(.vertical, 12)
                     
-                    ForEach(viewModel.orders) { order in
-                        OrderCardView(order: order)
+                    ForEach(viewModel.orders.filter({$0.status.rawValue == selectedCategory.rawValue})) { order in
+                        OrderCardView(order: order, viewModel: viewModel)
                     }
                     
                 }
@@ -41,7 +41,6 @@ struct OrderView: View {
         }
         .onAppear {
             viewModel.fetchOrders()
-            print(viewModel.fetchOrders())
         }
     }
     
