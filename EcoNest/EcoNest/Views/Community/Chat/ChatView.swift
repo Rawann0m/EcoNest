@@ -15,12 +15,12 @@ struct ChatView: View {
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
-    @ObservedObject var viewModel: ChatViewModel
+    @StateObject var viewModel: ChatViewModel
     let chatUser: User?
     @State var showPic: Bool = false
     init(chatUser: User?){
         self.chatUser = chatUser
-        self.viewModel = .init(chatUser: chatUser)
+        _viewModel = StateObject(wrappedValue: ChatViewModel(chatUser: chatUser))
     }
     var body: some View {
         ZStack{
@@ -56,18 +56,25 @@ struct ChatView: View {
                                             }
                                         } else {
                                             HStack {
-                                                if contentItem.lowercased().hasPrefix("http"),
+                                                if contentItem.lowercased().hasPrefix("https://firebasestorage"),
                                                    let url = URL(string: contentItem) {
                                                     WebImage(url: url)
                                                         .resizable()
                                                         .scaledToFill()
                                                         .frame(width: 350 ,height: 200)
                                                         .clipped()
+                                                        .contentShape(Rectangle())
                                                         .cornerRadius(10)
                                                         .onTapGesture {
                                                             viewModel.selectedPic = contentItem
                                                             showPic.toggle()
                                                         }
+                                                }  else if contentItem.lowercased().hasPrefix("https"){
+                                                    Link(contentItem, destination: URL(string: contentItem)!)
+                                                        .foregroundColor(.black)
+                                                        .padding()
+                                                        .background(Color.white)
+                                                        .cornerRadius(8)
                                                 } else {
                                                     Text(contentItem)
                                                         .foregroundColor(.black)

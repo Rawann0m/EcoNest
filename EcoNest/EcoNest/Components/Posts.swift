@@ -103,7 +103,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         .font(.callout)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.removeUserIDFromFavorite(communityId: communityId, userId: userId, postId: post.id ?? "")
+                                viewModel.removeUserIDFromFavorite(communityId: communityId, userId: userId, postId: postId ?? "",  replayId: post.id ?? "", isReply: isReplay)
                             }
                             
                         }
@@ -114,7 +114,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         .font(.body)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.addUserIDToFavorite(communityId: communityId, userId: userId, postId: post.id ?? "")
+                                viewModel.addUserIDToFavorite(communityId: communityId, userId: userId, postId: postId ?? "",  replayId: post.id ?? "", isReply: isReplay)
                             }
                         }
                 }

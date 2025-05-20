@@ -25,9 +25,18 @@ struct PostsListView: View {
                 } else {
                     ScrollViewReader{ scrollProxy in
                         LazyVStack {
-                            ForEach(viewModel.posts.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })) { post in
+                            TextField("Search", text: $viewModel.searchText)
+                                .padding(12)
+                                .background(.gray.opacity(0.1), in: .rect(cornerRadius: 25))
+                                .foregroundColor(.gray)
+                                .frame(height: 25)
+                                .padding()
+                                .disableAutocorrection(true) // Prevent autocorrect suggestions
+                                .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
+//                            viewModel.posts.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })
+                            ForEach(getPosts()) { post in
                                 if let user = post.user {
-                                    Posts(post: post, user: user, communityId: communityId, viewModel: viewModel)
+                                    Posts(post: post, user: user, communityId: communityId, viewModel: viewModel, postId: post.id)
                                         .onTapGesture {
                                             viewModel.selectedPost = post
                                             showPostDetails.toggle()
@@ -51,6 +60,23 @@ struct PostsListView: View {
         .fullScreenCover(isPresented: $showPostDetails){
             if let post = viewModel.selectedPost {
                 PostDetailView(post: post, communityId: communityId, viewModel: viewModel)
+            }
+        }
+    }
+    
+    func getPosts() -> [Post]{
+        let text = viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.isEmpty {
+            return viewModel.posts.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })
+        } else {
+            return viewModel.posts.filter { post in
+                let contentMatches = post.content.contains {
+                    $0.lowercased().contains(text.lowercased())
+                }
+                
+                let usernameMatches = post.user?.username.lowercased().contains(text.lowercased()) ?? false
+                
+                return contentMatches || usernameMatches
             }
         }
     }

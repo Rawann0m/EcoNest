@@ -11,7 +11,6 @@ import Firebase
 class DirectMessageViewModel: ObservableObject {
     
     @Published var errorMessage = ""
-    @Published var user: User?
     @Published var isUserLogOut: Bool = false
     @Published var recentMessages: [RecentMessage] = []
     
