@@ -9,9 +9,8 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 @ViewBuilder
-func UsersRow(username: String, email: String, image: String, time: String, message: String) -> some View {
-    @EnvironmentObject var themeManager: ThemeManager
-    HStack {
+func UsersRow(username: String, image: String) -> some View {
+    HStack (alignment: .center){
         VStack{
             if image == "" {
                 Image("profile")
@@ -21,30 +20,17 @@ func UsersRow(username: String, email: String, image: String, time: String, mess
                     .resizable()
             }
         }
-            .frame(width: 60, height: 60)
-            .cornerRadius(50)
-            .background{
-                Circle()
-                    .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
-            }
-        
-        VStack(alignment: .leading) {
-            
-            HStack{
-                Text(username)
-                    .font(.headline)
-                
-                Spacer()
-                
-                Text(time)
-                    .font(.caption)
-            }
-            Text(message)
-                .font(.caption)
-                .foregroundColor(.secondary)
+        .frame(width: 60, height: 60)
+        .cornerRadius(50)
+        .background{
+            Circle()
+                .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
         }
         
-        Spacer()
+        Text(username)
+            .font(.headline)
+            
     }
-    .padding(11)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(.horizontal)
 }

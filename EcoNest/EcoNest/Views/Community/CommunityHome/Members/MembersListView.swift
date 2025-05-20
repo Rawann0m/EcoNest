@@ -39,7 +39,7 @@ struct MembersListView: View {
                                 .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
                             
                             ForEach(getMembers()){ member in
-                                UsersRow(username: member.username, email: member.email, image: member.profileImage, time: "", message: "")
+                                UsersRow(username: member.username, image: member.profileImage)
                                     .id(member.id)
                                     .onAppear {
                                         savedId = member.id

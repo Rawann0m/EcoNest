@@ -18,7 +18,7 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = "Guest"
+    @State var name: String = ""
     @State var email: String = ""
     @State var profileImage: String = ""
     @State var login: Bool = false
@@ -27,14 +27,38 @@ struct SettingsView: View {
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
+    private let smallDeviceWidth: CGFloat = 375
     var body: some View {
         NavigationStack{
             GeometryReader{ Geometry in
                 VStack {
+                    
+                    //                    ZStack{
+                    //                        Color("LimeGreen")
+                    //                            .mask(
+                    //                                RoundedRectangle(cornerRadius: 30)
+                    //                                    .padding(.top, -50) // Top corners = 0, Bottom corners = 30
+                    //                            )
+                    //                            .frame(height: Geometry.size.height * 0.20)
+                    //
+                    //                        //                        RoundedRectangle(cornerRadius: 15)
+                    //                        //                            .fill(themeManager.isDarkMode ? Color.black: Color.white)
+                    //                        //                            .shadow(color: .black.opacity(0.2)  , radius: 10)
+                    //                        //                            .frame(width: Geometry.size.width * 0.85, height: Geometry.size.height * 0.18)
+                    //                        //                            .offset(y: Geometry.size.height * 0.12)
+                    //                        //                            .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
+                    //
+                    //                    }
                     ZStack {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color("LimeGreen"))
-                            //.frame(height: 200)
+                        //                        RoundedRectangle(cornerRadius: 25)
+                        //                            .fill(Color("LimeGreen"))
+                        //                            //.frame(height: 200)
+                        //                            .frame(height: Geometry.size.height * 0.25)
+                        Color("LimeGreen")
+                            .mask(
+                                RoundedRectangle(cornerRadius: 30)
+                                    .padding(.top, -50)
+                            )
                             .frame(height: Geometry.size.height * 0.25)
                         
                         RoundedRectangle(cornerRadius: 15)
@@ -63,7 +87,7 @@ struct SettingsView: View {
                             Circle()
                                 .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
                         }
-                        .offset(y: Geometry.size.height * 0.036)
+                        .offset(y: Geometry.size.height * 0.030)
                         
                         if isEdit {
                             ZStack {
@@ -78,7 +102,7 @@ struct SettingsView: View {
                                     .frame(width: 15, height: 15)
                                     .foregroundColor(.white)
                             }
-                            .offset(x: Geometry.size.height * 0.036 ,y: Geometry.size.height * 0.072)
+                            .offset(x: Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.040 : Geometry.size.height * 0.045 ,y: Geometry.size.height * 0.066)
                             .onTapGesture {
                                 showImagePicker.toggle()
                             }
@@ -89,11 +113,11 @@ struct SettingsView: View {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                                 .foregroundColor(themeManager.isDarkMode ? .white : Color("DarkGreen"))
-                                .offset(x: Geometry.size.height * 0.18, y: Geometry.size.height * 0.06)
+                                .offset(x: Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.19 :  Geometry.size.height * 0.22, y: Geometry.size.height * 0.06)
                                 .onTapGesture {
                                     if oldName != name || selectedImage != nil {
                                         if isEdit {
-                                            viewModel.updateUserInformation(user: User(username: name, email: email, profileImage: profileImage), newImage: selectedImage)
+                                            viewModel.updateUserInformation(user: User(username: name.trimmingCharacters(in: .whitespacesAndNewlines), email: email, profileImage: profileImage), newImage: selectedImage)
                                             print("edit")
                                         }
                                     }
@@ -101,13 +125,14 @@ struct SettingsView: View {
                                 }
                         }
                         
-                        VStack(spacing: 10){
+                        VStack(spacing: 5){
                             if isEdit{
                                 TextField("Name", text: $name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
-                                
+                                    .accessibilityIdentifier("Name")
+            
                             } else {
                                 TextField("Name", text: $name)
                                     .frame(width: 200)
@@ -116,28 +141,44 @@ struct SettingsView: View {
                                     .disabled(true)
                                 
                             }
+                  
                             
                             if FirebaseManager.shared.isLoggedIn {
                                 Text(email)
                                     .frame(width: 200)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                                
                             } else {
-                                Text("Login/Create Account")
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .background{
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .fill(Color("LimeGreen"))
-                                    }
-                                    .onTapGesture {
-                                        login.toggle()
-                                    }
+//                                Text("Login/Create Account")
+//                                    .foregroundColor(.white)
+//                                    .padding(5)
+//                                    .background{
+//                                        RoundedRectangle(cornerRadius: 5)
+//                                            .fill(Color("LimeGreen"))
+//                                    }
+//                                    .onTapGesture {
+//                                        login.toggle()
+//                                    }
+                                
+                                Button(action: {
+                                    login.toggle()
+                                }) {
+                                    Text("Login/Create Account")
+                                        .foregroundColor(.white)
+                                        .padding(5)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .fill(Color("LimeGreen"))
+                                        )
+                                }
+                                .accessibilityIdentifier("loginButton")
                             }
                         }
-                        .offset(y:  Geometry.size.height * 0.132)
+                        .offset(y:   Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.135 : Geometry.size.height * 0.145)
                         
                     }
                     .ignoresSafeArea(.all)
+                    .padding(.bottom, Geometry.size.width > smallDeviceWidth ? 0 : 30)
                     
                     ScrollView{
                         Text("General".localized(using: currentLanguage))
@@ -221,6 +262,7 @@ struct SettingsView: View {
                                 if FirebaseManager.shared.isLoggedIn{
                                     print("logout")
                                     authViewModel.logOut()
+                                    profileImage = ""
                                     name="Guest"
                                 } else {
                                     
@@ -232,6 +274,8 @@ struct SettingsView: View {
                         
                     }
                     .scrollIndicators(.hidden)
+                    .padding(.bottom, 85)
+        
                 }
                 .photosPicker(
                     isPresented: $showImagePicker,
