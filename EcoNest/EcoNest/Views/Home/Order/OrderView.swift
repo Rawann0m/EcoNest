@@ -26,10 +26,34 @@ struct OrderView: View {
                     CustomSegmentedControl()
                         .padding(.vertical, 12)
                     
-                    ForEach(viewModel.orders.filter({$0.status.rawValue == selectedCategory.rawValue})) { order in
-                        OrderCardView(order: order, viewModel: viewModel)
+                    if viewModel.isLoading {
+                        ProgressView()
                     }
-                    
+                    else if viewModel.orders.isEmpty {
+                        VStack(spacing: 10) {
+                            
+                            // Display cart image
+                            Image("Cart")
+                                .resizable()
+                                .frame(width: 230, height: 230)
+                            
+                            // Localized message when the cart is empty
+                            Text("Your Order List is Empty")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            
+                            // Localized instruction to add products
+                            Text("Add Order Here")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            
+                        }
+                        .padding()
+                    } else {
+                        ForEach(viewModel.orders.filter({$0.status.rawValue == selectedCategory.rawValue})) { order in
+                            OrderCardView(order: order, viewModel: viewModel)
+                        }
+                    }
                 }
             }
             .toolbar {

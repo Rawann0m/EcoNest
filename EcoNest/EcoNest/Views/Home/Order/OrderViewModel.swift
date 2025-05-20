@@ -64,9 +64,7 @@ class OrderViewModel: ObservableObject {
                             name: productData["name"] as? String ?? "",
                             price: productData["price"] as? Double ?? 0.0,
                             image: productData["image"] as? String ?? "",
-                            category: productData["category"] as? String ?? "",
                             quantity: productData["quantity"] as? Int ?? 1,
-                            color: productData["color"] as? String ?? "",
                             size: productData["size"] as? String ?? ""
                         )
                         products.append(product)

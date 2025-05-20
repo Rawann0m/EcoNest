@@ -25,11 +25,11 @@ class HomeViewModel: ObservableObject {
         return products.prefix(4).map { $0.image ?? "" }
     }
     
-    /// Fetches product data from the "ProductTH" collection in Firestore
+    /// Fetches product data from the "product" collection in Firestore
     func fetchProductData() {
         let db = FirebaseManager.shared.firestore
         
-        db.collection("ProductTH")
+        db.collection("product")
             .whereField("quantity", isGreaterThan: 0) // Only fetch if quantity > 0
             .getDocuments { (snapshot, error) in
                 guard let itemData = snapshot else { return }
