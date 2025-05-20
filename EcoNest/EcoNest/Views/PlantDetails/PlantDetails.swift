@@ -42,7 +42,7 @@ struct PlantDetails: View {
                     .fill(Color("DarkGreen"))
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    Image()
+//                    Image()
                     Text("Details for \(plantName)")
                         .font(.title)
                 }
