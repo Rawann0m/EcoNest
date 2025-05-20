@@ -69,6 +69,7 @@ struct ProductCardView: View {
                         .foregroundStyle(Color("LimeGreen"))
                         .frame(width: 35, height: 35)
                 })
+                .accessibilityIdentifier("AddToCart_\(product.name ?? "Unknown")")
                 .alert(isPresented: $alertManager.alertState.isPresented) {
                     Alert(
                         title: Text(alertManager.alertState.title),
@@ -88,7 +89,7 @@ struct ProductCardView: View {
                 .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
         )
         .fullScreenCover(isPresented: $navigateToLogin) {
-            LogInPage()
+            AuthViewPage()
         }
     }
 }

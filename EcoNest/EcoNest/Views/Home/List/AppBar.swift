@@ -12,7 +12,6 @@ struct AppBar: View {
     
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @ObservedObject var viewModel: CartViewModel
-    
     var body: some View {
 
             VStack(alignment: .leading) {
@@ -29,6 +28,7 @@ struct AppBar: View {
                         .padding(.horizontal, 10)
                     // Cart icon with navigation
                     IconNavigationLink(systemImageName: "cart", destination: CartView(viewModel: viewModel))
+
                     
                 }
                 .font(.system(size: 20))
