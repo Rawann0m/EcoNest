@@ -82,9 +82,10 @@ struct PredictionView: View {
                             
                             NavigationLink(
                                 destination: CreatePost(
-                                    initialMessage: shareText,
-                                    initialImages: [image],
-                                    communityId: "0ScXYeMDgcTz0pcDpkin"
+                                    message: shareText,
+                                    communityId: "0ScXYeMDgcTz0pcDpkin",
+                                    selectedImages: [image]
+                                    
                                 ),
                                 isActive: $navigateToCreatePost
                             ) {
