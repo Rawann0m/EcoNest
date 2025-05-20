@@ -13,13 +13,9 @@ class PlantViewModel: ObservableObject {
     @Published var filteredPlants: [Plant] = []         // Filtered result to display
     @Published var searchText = ""                      // Search query
     @Published var selectedCategories: [String] = []    // Categories selected in filter
-    
-    let allCategories = [ // Available categories
-        "🌿 Foliage Plants", "🌸 Flowering Plants", "🌴 Palms & Palm-like",
-        "🌵 Succulents & Cacti", "🍃 Ferns", "🪴 Air-Purifying",
-        "🧪 Toxic to Pets", "🧤 Easy-care / Beginner-friendly", "🌱 Specialty / Unique"
-    ]
-    
+    @Published var allCategories: [String] = []  
+
+
     init() {
         fetchPlants()
     }
@@ -30,12 +26,18 @@ class PlantViewModel: ObservableObject {
         db.collection("plantsDetails").getDocuments { snapshot, error in
             guard let documents = snapshot?.documents, error == nil else { return }
             let fetchedPlants = documents.compactMap { try? $0.data(as: Plant.self) }
+
+            let categoriesSet = Set(fetchedPlants.flatMap { $0.category })
+            let sortedCategories = Array(categoriesSet).sorted()
+
             DispatchQueue.main.async {
                 self.allPlants = fetchedPlants
+                self.allCategories = sortedCategories
                 self.applyFilters()
             }
         }
     }
+
     
     // Apply search and category filters
     func applyFilters() {
