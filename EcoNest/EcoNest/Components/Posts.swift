@@ -54,7 +54,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         WebImage(url: url)
                             .resizable()
                             .scaledToFill()
-                            .frame(maxWidth: .infinity, minHeight: 200)
+                            .frame(maxWidth: .infinity, maxHeight: 300)
                             .clipped()
                             .cornerRadius(10)
                     }
@@ -67,7 +67,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                     WebImage(url: url)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(maxWidth: 188, minHeight: 200)
+                                        .frame(maxWidth: 188, minHeight: 200, maxHeight: 300)
                                         .clipped()
                                         .cornerRadius(10)
                                 }
@@ -83,7 +83,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                     WebImage(url: url)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(maxWidth: 185, minHeight: 100)
+                                        .frame(maxWidth: 185, minHeight: 100, maxHeight: 300)
                                         .clipped()
                                         .cornerRadius(10)
                                 }

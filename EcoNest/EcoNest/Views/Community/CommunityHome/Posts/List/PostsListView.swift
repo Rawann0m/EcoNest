@@ -33,7 +33,6 @@ struct PostsListView: View {
                                 .padding()
                                 .disableAutocorrection(true) // Prevent autocorrect suggestions
                                 .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
-//                            viewModel.posts.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })
                             ForEach(getPosts()) { post in
                                 if let user = post.user {
                                     Posts(post: post, user: user, communityId: communityId, viewModel: viewModel, postId: post.id)
@@ -50,7 +49,7 @@ struct PostsListView: View {
                         }
                         .onAppear {
                             if let id = savedId {
-                                scrollProxy.scrollTo(id, anchor: .bottom)
+                                scrollProxy.scrollTo(id, anchor: .center)
                             }
                         }
                     }

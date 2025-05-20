@@ -8,6 +8,9 @@
 import SwiftUI
 
 class CameraManager: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    static let shared = CameraManager()
+    
     var onImagePicked: ((UIImage) -> Void)?
 
     func presentCamera(from root: UIViewController) {

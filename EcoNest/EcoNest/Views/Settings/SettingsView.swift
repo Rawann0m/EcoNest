@@ -132,7 +132,7 @@ struct SettingsView: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                     .accessibilityIdentifier("Name")
-            
+                                
                             } else {
                                 TextField("Name", text: $name)
                                     .frame(width: 200)
@@ -141,7 +141,7 @@ struct SettingsView: View {
                                     .disabled(true)
                                 
                             }
-                  
+                            
                             
                             if FirebaseManager.shared.isLoggedIn {
                                 Text(email)
@@ -149,17 +149,6 @@ struct SettingsView: View {
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                 
                             } else {
-//                                Text("Login/Create Account")
-//                                    .foregroundColor(.white)
-//                                    .padding(5)
-//                                    .background{
-//                                        RoundedRectangle(cornerRadius: 5)
-//                                            .fill(Color("LimeGreen"))
-//                                    }
-//                                    .onTapGesture {
-//                                        login.toggle()
-//                                    }
-                                
                                 Button(action: {
                                     login.toggle()
                                 }) {
@@ -171,7 +160,7 @@ struct SettingsView: View {
                                                 .fill(Color("LimeGreen"))
                                         )
                                 }
-                                .accessibilityIdentifier("loginButton")
+                                
                             }
                         }
                         .offset(y:   Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.135 : Geometry.size.height * 0.145)
@@ -275,7 +264,7 @@ struct SettingsView: View {
                     }
                     .scrollIndicators(.hidden)
                     .padding(.bottom, 85)
-        
+                    
                 }
                 .photosPicker(
                     isPresented: $showImagePicker,
