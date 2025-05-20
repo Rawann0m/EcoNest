@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OrderView: View {
     
-    @State private var selectedCategory: Category2 = .income
+    @State private var selectedCategory: OrderStatus = .awaitingPickup
     @Namespace private var animation
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var themeManager: ThemeManager
@@ -30,9 +30,9 @@ struct OrderView: View {
                         .padding()
                         .font(.headline)
                         .foregroundStyle(.white)
-                        .frame(height: 130)
+                        .frame(maxHeight: .infinity)
                         .background(Color("LimeGreen"))
-                        
+                                                
                         VStack(alignment: .leading, spacing: 8, content: {
                             Text("Plant: Sansevieria, Snake plan, Cactus Trio, Peace Lily")
                                 .foregroundStyle(.primary)
@@ -53,6 +53,7 @@ struct OrderView: View {
                             
                         })
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical)
                         
                     }
                     .padding(.trailing)
@@ -77,7 +78,7 @@ struct OrderView: View {
     @ViewBuilder
     func CustomSegmentedControl() -> some View {
         HStack {
-            ForEach(Category2.allCases, id: \.rawValue){ category in
+            ForEach(OrderStatus.allCases, id: \.rawValue){ category in
                 Text(category.rawValue)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 10)
@@ -107,12 +108,9 @@ struct OrderView: View {
 
 }
 
-#Preview {
-    OrderView()
-}
+//Text("Plant: Sansevieria, Snake plan, Cactus Trio, Peace Lily")
+//    .foregroundStyle(.primary)
+//    .lineLimit(nil)
+//    .fixedSize(horizontal: false, vertical: true)
+//
 
-enum Category2: String, CaseIterable{
-    case income = "Upcoming"
-    case expense = "Previous"
-    
-}

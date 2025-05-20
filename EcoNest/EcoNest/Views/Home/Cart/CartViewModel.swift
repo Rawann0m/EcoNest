@@ -19,12 +19,17 @@ class CartViewModel: ObservableObject {
     
     /// Fetches all cart items from Firestore and resolves them into complete Cart objects with full Product data.
     func fetchCartData() {
+        
         isLoading = true
+        
         let db = FirebaseManager.shared.firestore
+        
         guard let userId = Auth.auth().currentUser?.uid else {
             print("User must be logged in to add to cart.")
+            isLoading = false
             return
         }
+        
         db.collection("users")
             .document(userId)
             .collection("cart")

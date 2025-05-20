@@ -22,7 +22,9 @@ struct CartView: View {
     @EnvironmentObject private var locationViewModel: LocationViewModel
     
     var body: some View {
+        
         NavigationStack {
+            
             if viewModel.isLoading {
                 ProgressView()
             }
@@ -98,8 +100,7 @@ struct CartView: View {
                 CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: {dismiss()})
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                }) {
+                NavigationLink (destination: OrderView()) {
                     Image(systemName: "bag")
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                 }

@@ -9,9 +9,9 @@ import SwiftUI
 
 struct DirectMessageListView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    @State var showChat: Bool = false
     @State var showLogOutOptions: Bool = false
     @StateObject var viewModel = DirectMessageViewModel()
+    @State private var selectedUser: User?
     
     var body: some View {
         NavigationStack{
@@ -25,20 +25,17 @@ struct DirectMessageListView: View {
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     let uid = FirebaseManager.shared.auth.currentUser!.uid == message.fromId ? message.toId : message.fromId
-                                    viewModel.user = User(id: uid, username: message.username, email: "", profileImage: message.profileImage ?? "")
-                                    showChat.toggle()
+                                    selectedUser = User(id: uid, username: message.username, email: "", profileImage: message.profileImage ?? "")
                                 }
                         }
                         .onDelete(perform: viewModel.DeleteMessage)
-                        //}
-                        
                     }
                     .listStyle(.plain)
                     .padding(0)
                 }
         }
-        .fullScreenCover(isPresented: $showChat) {
-            ChatView(chatUser: viewModel.user)
+        .fullScreenCover(item: $selectedUser) { user in
+            ChatView(chatUser: user)
         }
         .onDisappear{
             viewModel.firestoreListener?.remove()

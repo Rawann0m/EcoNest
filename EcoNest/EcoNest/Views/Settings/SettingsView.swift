@@ -18,7 +18,7 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = "Guest"
+    @State var name: String = ""
     @State var email: String = ""
     @State var profileImage: String = ""
     @State var login: Bool = false
