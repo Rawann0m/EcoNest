@@ -16,7 +16,18 @@
 		DF4CE6A42DCBF9F500A7B0F9 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DF4CE6A32DCBF9F500A7B0F9 /* SDWebImageSwiftUI */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		36E7827B2DDC4DBD000B3C55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 992113672DC7C19700F80334 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9921136E2DC7C19700F80334;
+			remoteInfo = EcoNest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		36E782752DDC4DBD000B3C55 /* EcoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EcoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9921136F2DC7C19700F80334 /* EcoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -29,6 +40,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		36E782722DDC4DBD000B3C55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9921136C2DC7C19700F80334 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -59,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				9921136F2DC7C19700F80334 /* EcoNest.app */,
+				36E782752DDC4DBD000B3C55 /* EcoNestUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,6 +92,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		36E782742DDC4DBD000B3C55 /* EcoNestUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36E7827D2DDC4DBD000B3C55 /* Build configuration list for PBXNativeTarget "EcoNestUITests" */;
+			buildPhases = (
+				36E782712DDC4DBD000B3C55 /* Sources */,
+				36E782722DDC4DBD000B3C55 /* Frameworks */,
+				36E782732DDC4DBD000B3C55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				36E7827C2DDC4DBD000B3C55 /* PBXTargetDependency */,
+			);
+			name = EcoNestUITests;
+			packageProductDependencies = (
+			);
+			productName = EcoNestUITests;
+			productReference = 36E782752DDC4DBD000B3C55 /* EcoNestUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		9921136E2DC7C19700F80334 /* EcoNest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9921137D2DC7C19A00F80334 /* Build configuration list for PBXNativeTarget "EcoNest" */;
@@ -112,6 +151,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					36E782742DDC4DBD000B3C55 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 9921136E2DC7C19700F80334;
+					};
 					9921136E2DC7C19700F80334 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -137,11 +180,19 @@
 			projectRoot = "";
 			targets = (
 				9921136E2DC7C19700F80334 /* EcoNest */,
+				36E782742DDC4DBD000B3C55 /* EcoNestUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		36E782732DDC4DBD000B3C55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9921136D2DC7C19700F80334 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -152,6 +203,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		36E782712DDC4DBD000B3C55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9921136B2DC7C19700F80334 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -161,7 +219,47 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		36E7827C2DDC4DBD000B3C55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9921136E2DC7C19700F80334 /* EcoNest */;
+			targetProxy = 36E7827B2DDC4DBD000B3C55 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		36E7827E2DDC4DBD000B3C55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EcoNest;
+			};
+			name = Debug;
+		};
+		36E7827F2DDC4DBD000B3C55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EcoNest;
+			};
+			name = Release;
+		};
 		9921137B2DC7C19A00F80334 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -289,6 +387,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = EcoNest/EcoNest.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
@@ -306,8 +405,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdullahTeam.EcoNest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -320,6 +420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = EcoNest/EcoNest.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
@@ -337,8 +438,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdullahTeam.EcoNest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -348,6 +450,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		36E7827D2DDC4DBD000B3C55 /* Build configuration list for PBXNativeTarget "EcoNestUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36E7827E2DDC4DBD000B3C55 /* Debug */,
+				36E7827F2DDC4DBD000B3C55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9921136A2DC7C19700F80334 /* Build configuration list for PBXProject "EcoNest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

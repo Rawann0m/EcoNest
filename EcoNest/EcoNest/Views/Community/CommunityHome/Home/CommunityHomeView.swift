@@ -18,13 +18,13 @@ struct CommunityHomeView: View {
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     @ObservedObject var communityViewModel: CommunityViewModel
-    @ObservedObject var viewModel: PostsListViewModel
+    @StateObject var viewModel: PostsListViewModel
     @ObservedObject var memberViewModel: MembersListViewModel
     @EnvironmentObject var themeManager: ThemeManager
     
     init(communityViewModel: CommunityViewModel){
         self.communityViewModel = communityViewModel
-        self.viewModel = .init(communityId: communityViewModel.selectedCommunity?.id ?? "")
+        _viewModel = StateObject(wrappedValue: PostsListViewModel(communityId: communityViewModel.selectedCommunity?.id ?? ""))
         self.memberViewModel = .init(members: communityViewModel.selectedCommunity?.members ?? [])
     }
     

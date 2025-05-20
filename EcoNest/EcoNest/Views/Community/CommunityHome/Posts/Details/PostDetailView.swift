@@ -26,7 +26,7 @@ struct PostDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     if let user = post.user, let post = viewModel.selectedPost  {
-                        Posts(post: post, user: user, communityId: communityId, viewModel: viewModel)
+                        Posts(post: post, user: user, communityId: communityId, viewModel: viewModel, postId: post.id)
                             .onChange(of: viewModel.didDeleteSelectedPost) { _, deleted in
                                 if deleted {
                                     dismiss()
@@ -99,6 +99,7 @@ struct PostDetailView: View {
                             }
                             .padding(.vertical)
                         }
+                        
                         HStack {
                             Image(systemName: "photo.on.rectangle")
                                 .font(.system(size: 28))
@@ -145,7 +146,9 @@ struct PostDetailView: View {
                             }
                         }
                     }
-                    .padding()
+                    .frame(height: selectedImages.isEmpty ? 30: 150)
+                    .padding(.horizontal)
+                    .padding(.bottom, 30)
                     .background(themeManager.isDarkMode ? .black : .white)
                 }
             }

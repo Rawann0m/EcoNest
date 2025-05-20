@@ -14,6 +14,7 @@ class PostsListViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var postReplies: [Post] = []
     @Published var didDeleteSelectedPost = false
+    @Published var searchText: String = ""
     
     var firestoreListener: ListenerRegistration?
     var postRepliesListener: ListenerRegistration?
@@ -42,7 +43,6 @@ class PostsListViewModel: ObservableObject {
             .collection("community")
             .document(communityId)
             .collection("posts")
-        
         
         firestoreListener = postsRef.addSnapshotListener { (snapshot, error) in
             if let error = error {
@@ -92,6 +92,9 @@ class PostsListViewModel: ObservableObject {
                                 self.isLoading = false
                             }
                         }
+                    }
+                    if change.type == .removed {
+                        self.posts.removeAll { $0.id == change.document.documentID }
                     }
                 }
             }
@@ -245,11 +248,20 @@ class PostsListViewModel: ObservableObject {
         }
     }
     
-    func addUserIDToFavorite(communityId: String, userId: String,  postId: String) {
-        FirebaseManager.shared.firestore.collection("community")
+    func addUserIDToFavorite(communityId: String, userId: String,  postId: String, replayId: String? = nil, isReply: Bool = false) {
+        
+        let documentRef = FirebaseManager.shared.firestore.collection("community")
             .document(communityId)
             .collection("posts")
             .document(postId)
+        
+        var ref = documentRef
+        if isReply{
+            if let replayId = replayId {
+                ref = ref.collection("replies").document(replayId)
+            }
+        }
+        ref
             .updateData([
                 "likes": FieldValue.arrayUnion([userId])
             ]) { error in
@@ -261,11 +273,19 @@ class PostsListViewModel: ObservableObject {
             }
     }
     
-    func removeUserIDFromFavorite(communityId: String, userId: String, postId: String) {
-        FirebaseManager.shared.firestore.collection("community")
+    func removeUserIDFromFavorite(communityId: String, userId: String, postId: String, replayId: String? = nil, isReply: Bool = false) {
+        let documentRef = FirebaseManager.shared.firestore.collection("community")
             .document(communityId)
             .collection("posts")
             .document(postId)
+        
+        var ref = documentRef
+        if isReply{
+            if let replayId = replayId {
+                ref = ref.collection("replies").document(replayId)
+            }
+        }
+        ref
             .updateData([
                 "likes": FieldValue.arrayRemove([userId])
             ]) { error in
@@ -349,5 +369,4 @@ class PostsListViewModel: ObservableObject {
             
         }
     }
-    
 }

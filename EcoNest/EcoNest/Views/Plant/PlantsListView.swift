@@ -10,6 +10,10 @@ import SDWebImageSwiftUI
 struct PlantsListView: View {
     @StateObject private var viewModel = PlantViewModel()
     @State private var showFilterSheet = false
+    @EnvironmentObject var themeManager: ThemeManager
+    // Stores and observes the current language preference
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
 
     var body: some View {
         NavigationView {
@@ -17,8 +21,9 @@ struct PlantsListView: View {
                 // Green header with title, filter button, and search bar
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("🌿 All Plants")
+                        Text("AllPlants".localized(using: currentLanguage))
                             .font(.title)
+                            .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
                             .fontWeight(.bold)
                         Spacer()
                         Button {
@@ -26,13 +31,15 @@ struct PlantsListView: View {
                         } label: {
                             Image(systemName: "line.horizontal.3.decrease.circle")
                                 .font(.title2)
+                                .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
+
                         }
                     }
                     
                     // Search bar
                     TextField("🔍 Search plants...", text: $viewModel.searchText)
                         .padding(10)
-                        .background(Color.white)
+                        .background(themeManager.isDarkMode ? Color.black : Color.white)
                         .cornerRadius(10)
                         .onChange(of: viewModel.searchText) { _ in
                             viewModel.applyFilters()
@@ -48,7 +55,7 @@ struct PlantsListView: View {
                                 .padding(.top, -30) // Top corners = 0, Bottom corners = 30
                         )
                 )
-                .foregroundColor(.white)
+                .foregroundColor(themeManager.isDarkMode ? Color.white : Color.black)
 
                 // Plant list
                 List(viewModel.filteredPlants) { plant in
@@ -72,6 +79,7 @@ struct PlantsListView: View {
                         }
                     }
                 }
+                .id(currentLanguage)
                 .listStyle(.plain)
                 .padding(.bottom , 30)
             }
@@ -82,7 +90,7 @@ struct PlantsListView: View {
         }
     }
 }
-
-#Preview {
-    PlantsListView()
-}
+//
+//#Preview {
+//    PlantsListView()
+//}
