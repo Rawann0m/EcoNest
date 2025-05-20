@@ -11,7 +11,9 @@ struct PlantsListView: View {
     @StateObject private var viewModel = PlantViewModel()
     @State private var showFilterSheet = false
     @EnvironmentObject var themeManager: ThemeManager
-
+    // Stores and observes the current language preference
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
 
     var body: some View {
         NavigationView {
@@ -19,7 +21,7 @@ struct PlantsListView: View {
                 // Green header with title, filter button, and search bar
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("🌿 All Plants")
+                        Text("AllPlants".localized(using: currentLanguage))
                             .font(.title)
                             .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
                             .fontWeight(.bold)
@@ -77,6 +79,7 @@ struct PlantsListView: View {
                         }
                     }
                 }
+                .id(currentLanguage)
                 .listStyle(.plain)
                 .padding(.bottom , 30)
             }
