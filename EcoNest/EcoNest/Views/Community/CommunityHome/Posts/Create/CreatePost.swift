@@ -11,8 +11,6 @@ import SDWebImageSwiftUI
 import PhotosUI
 
 struct CreatePost: View {
-    var initialMessage: String = ""
-    var initialImages: [UIImage] = []
     
     @State var message: String = ""
     @Environment(\.dismiss) var dismiss
@@ -23,12 +21,6 @@ struct CreatePost: View {
     @State private var selectedItems: [PhotosPickerItem] = []
     @State var showImagePicker: Bool = false
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    
-    init(initialMessage: String = "", initialImages: [UIImage] = [], communityId: String) {
-        self._message = State(initialValue: initialMessage)
-        self._selectedImages = State(initialValue: initialImages)
-        self.communityId = communityId
-    }
     
     var body: some View {
         NavigationStack{
@@ -72,7 +64,11 @@ struct CreatePost: View {
                                 
                                 Button(action: {
                                     selectedImages.remove(at: index)
-                                    selectedItems.remove(at: index)
+                                    
+                                    if !selectedItems.isEmpty {
+                                        selectedItems.remove(at: index)
+                                    }
+                                    
                                 }) {
                                     Image(systemName: "xmark.circle.fill")
                                         .foregroundColor(.white)
