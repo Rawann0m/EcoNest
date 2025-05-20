@@ -46,7 +46,6 @@ class HomeViewModel: ObservableObject {
                         id: id,
                         name: name,
                         price: price,
-                        plantId: plantId,
                         image: image,
                         quantity: quantity
                     )

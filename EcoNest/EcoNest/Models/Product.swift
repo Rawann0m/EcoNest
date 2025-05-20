@@ -14,7 +14,6 @@ struct Product: Identifiable, Codable {
     var name: String?
     var description: String?
     var price: Double?
-    let plantId: String?
     var image: String?
     var category: [String]?
     var quantity: Int?
