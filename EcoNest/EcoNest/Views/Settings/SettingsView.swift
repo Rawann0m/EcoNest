@@ -18,7 +18,7 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = "Guest"
+    @State var name: String = ""
     @State var email: String = ""
     @State var profileImage: String = ""
     @State var login: Bool = false
@@ -27,20 +27,45 @@ struct SettingsView: View {
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
+    private let smallDeviceWidth: CGFloat = 375
     var body: some View {
         NavigationStack{
-            GeometryReader{ _ in
+            GeometryReader{ Geometry in
                 VStack {
+                    
+                    //                    ZStack{
+                    //                        Color("LimeGreen")
+                    //                            .mask(
+                    //                                RoundedRectangle(cornerRadius: 30)
+                    //                                    .padding(.top, -50) // Top corners = 0, Bottom corners = 30
+                    //                            )
+                    //                            .frame(height: Geometry.size.height * 0.20)
+                    //
+                    //                        //                        RoundedRectangle(cornerRadius: 15)
+                    //                        //                            .fill(themeManager.isDarkMode ? Color.black: Color.white)
+                    //                        //                            .shadow(color: .black.opacity(0.2)  , radius: 10)
+                    //                        //                            .frame(width: Geometry.size.width * 0.85, height: Geometry.size.height * 0.18)
+                    //                        //                            .offset(y: Geometry.size.height * 0.12)
+                    //                        //                            .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
+                    //
+                    //                    }
                     ZStack {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color("LimeGreen"))
-                            .frame(height: 200)
+                        //                        RoundedRectangle(cornerRadius: 25)
+                        //                            .fill(Color("LimeGreen"))
+                        //                            //.frame(height: 200)
+                        //                            .frame(height: Geometry.size.height * 0.25)
+                        Color("LimeGreen")
+                            .mask(
+                                RoundedRectangle(cornerRadius: 30)
+                                    .padding(.top, -50)
+                            )
+                            .frame(height: Geometry.size.height * 0.25)
                         
                         RoundedRectangle(cornerRadius: 15)
                             .fill(themeManager.isDarkMode ? Color.black: Color.white)
                             .shadow(color: .black.opacity(0.2)  , radius: 10)
-                            .frame(width: 350, height: 135)
-                            .offset(y: 100)
+                            .frame(width: Geometry.size.width * 0.85, height: Geometry.size.height * 0.18)
+                            .offset(y: Geometry.size.height * 0.12)
                             .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
                         
                         
@@ -62,7 +87,7 @@ struct SettingsView: View {
                             Circle()
                                 .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
                         }
-                        .offset(y: 30)
+                        .offset(y: Geometry.size.height * 0.030)
                         
                         if isEdit {
                             ZStack {
@@ -77,7 +102,7 @@ struct SettingsView: View {
                                     .frame(width: 15, height: 15)
                                     .foregroundColor(.white)
                             }
-                            .offset(x: 30 ,y: 60)
+                            .offset(x: Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.040 : Geometry.size.height * 0.045 ,y: Geometry.size.height * 0.066)
                             .onTapGesture {
                                 showImagePicker.toggle()
                             }
@@ -87,12 +112,12 @@ struct SettingsView: View {
                             Image(systemName: isEdit ? "checkmark" : "pencil")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(Color("DarkGreen"))
-                                .offset(x: 150, y: 50)
+                                .foregroundColor(themeManager.isDarkMode ? .white : Color("DarkGreen"))
+                                .offset(x: Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.19 :  Geometry.size.height * 0.22, y: Geometry.size.height * 0.06)
                                 .onTapGesture {
                                     if oldName != name || selectedImage != nil {
                                         if isEdit {
-                                            viewModel.updateUserInformation(user: User(username: name, email: email, profileImage: profileImage), newImage: selectedImage)
+                                            viewModel.updateUserInformation(user: User(username: name.trimmingCharacters(in: .whitespacesAndNewlines), email: email, profileImage: profileImage), newImage: selectedImage)
                                             print("edit")
                                         }
                                     }
@@ -100,12 +125,13 @@ struct SettingsView: View {
                                 }
                         }
                         
-                        VStack(spacing: 10){
+                        VStack(spacing: 5){
                             if isEdit{
                                 TextField("Name", text: $name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                                    .accessibilityIdentifier("Name")
                                 
                             } else {
                                 TextField("Name", text: $name)
@@ -116,117 +142,127 @@ struct SettingsView: View {
                                 
                             }
                             
+                            
                             if FirebaseManager.shared.isLoggedIn {
                                 Text(email)
                                     .frame(width: 200)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                                
                             } else {
-                                Text("Login/Create Account")
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .background{
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .fill(Color("LimeGreen"))
-                                    }
-                                    .onTapGesture {
-                                        login.toggle()
-                                    }
+                                Button(action: {
+                                    login.toggle()
+                                }) {
+                                    Text("Login/Create Account")
+                                        .foregroundColor(.white)
+                                        .padding(5)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .fill(Color("LimeGreen"))
+                                        )
+                                }
+                                
                             }
                         }
-                        .offset(y: 110)
+                        .offset(y:   Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.135 : Geometry.size.height * 0.145)
                         
                     }
                     .ignoresSafeArea(.all)
+                    .padding(.bottom, Geometry.size.width > smallDeviceWidth ? 0 : 30)
                     
-                    Text("General".localized(using: currentLanguage))
-                        .font(.title)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                    
-                    settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
-                        NavigationLink{
-                            // go to orders page
-                            Text("orders")
-                        } label:{
-                            Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
-                                .foregroundColor(Color("LimeGreen"))
-                        }
-                    }, color: themeManager.textColor)
-                    
-                    
-                    settingRow(icon: "globe", text: "Language".localized(using: currentLanguage), trailingView: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.gray.opacity(0.2))
-                                .frame(width: 120, height: 40)
-                            
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(themeManager.isDarkMode ? .white : Color("LimeGreen"))
-                                .frame(width: 60, height: 40)
-                                .offset(x: isArabic ? -30 : 30)
-                                .animation(.easeInOut(duration: 0.3), value: isArabic)
-                            
-                            HStack {
-                                Text("AR")
-                                    .foregroundColor(isArabic ? themeManager.isDarkMode ? Color("LimeGreen") : .white : .gray)
-                                    .frame(maxWidth: .infinity)
-                                
-                                Text("EN")
-                                    .foregroundColor(isArabic ? .gray : themeManager.isDarkMode ? Color("LimeGreen") : .white)
-                                    .frame(maxWidth: .infinity)
+                    ScrollView{
+                        Text("General".localized(using: currentLanguage))
+                            .font(.title)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                        
+                        settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
+                            NavigationLink{
+                                OrderView()
+                            } label:{
+                                Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
+                                    .foregroundColor(Color("LimeGreen"))
                             }
-                            .font(.subheadline)
-                            .frame(width: 120, height: 40)
-                            
-                            
-                        }
-                        .onTapGesture {
-                            isArabic.toggle()
-                            
-                        }
-                    }, color: themeManager.textColor)
-                    
-                    settingRow(icon: "sun.max", text: "DarkMode".localized(using: currentLanguage), function: {
-                        // toggle dark mode
-                        print("toggle dark mode")
-                    }, trailingView: {
-                        Toggle("", isOn: $themeManager.isDarkMode)
-                            .tint(Color("LimeGreen"))
-                            .onChange(of: themeManager.isDarkMode) { _, isOn in
-                                UserDefaults.standard.set(isOn, forKey: "isDarkMode")
-                            }
-                    }, color: themeManager.textColor)
-                    
-                    settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
-                        // go to customer suport website
-                        print("Customer Support")
-                        openURL(URL(string: "https://econestsupport.netlify.app/")!)
-                    }, color: themeManager.textColor)
-                    
-                    
-                    if FirebaseManager.shared.isLoggedIn {
-                        settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
-                            // show alert and delete account
-                            handleDeleteAccount(email: email)
-                            
-                            print("delete account")
-                            
                         }, color: themeManager.textColor)
                         
-                        settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
-                            // log out
-                            if FirebaseManager.shared.isLoggedIn{
-                                print("logout")
-                                authViewModel.logOut()
-                                name="Guest"
-                            } else {
+                        
+                        settingRow(icon: "globe", text: "Language".localized(using: currentLanguage), trailingView: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(width: 120, height: 40)
+                                
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(themeManager.isDarkMode ? .white : Color("LimeGreen"))
+                                    .frame(width: 60, height: 40)
+                                    .offset(x: isArabic ? -30 : 30)
+                                    .animation(.easeInOut(duration: 0.3), value: isArabic)
+                                
+                                HStack {
+                                    Text("AR")
+                                        .foregroundColor(isArabic ? themeManager.isDarkMode ? Color("LimeGreen") : .white : .gray)
+                                        .frame(maxWidth: .infinity)
+                                    
+                                    Text("EN")
+                                        .foregroundColor(isArabic ? .gray : themeManager.isDarkMode ? Color("LimeGreen") : .white)
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .font(.subheadline)
+                                .frame(width: 120, height: 40)
+                                
+                                
+                            }
+                            .onTapGesture {
+                                isArabic.toggle()
                                 
                             }
                         }, color: themeManager.textColor)
+                        
+                        settingRow(icon: "sun.max", text: "DarkMode".localized(using: currentLanguage), function: {
+                            // toggle dark mode
+                            print("toggle dark mode")
+                        }, trailingView: {
+                            Toggle("", isOn: $themeManager.isDarkMode)
+                                .tint(Color("LimeGreen"))
+                                .onChange(of: themeManager.isDarkMode) { _, isOn in
+                                    UserDefaults.standard.set(isOn, forKey: "isDarkMode")
+                                }
+                        }, color: themeManager.textColor)
+                        
+                        settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
+                            // go to customer suport website
+                            print("Customer Support")
+                            openURL(URL(string: "https://econestsupport.netlify.app/")!)
+                        }, color: themeManager.textColor)
+                        
+                        
+                        if FirebaseManager.shared.isLoggedIn {
+                            settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
+                                // show alert and delete account
+                                handleDeleteAccount(email: email)
+                                
+                                print("delete account")
+                                
+                            }, color: themeManager.textColor)
+                            
+                            settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
+                                // log out
+                                if FirebaseManager.shared.isLoggedIn{
+                                    print("logout")
+                                    authViewModel.logOut()
+                                    profileImage = ""
+                                    name="Guest"
+                                } else {
+                                    
+                                }
+                            }, color: themeManager.textColor)
+                        }
+                        NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
+                        Spacer()
+                        
                     }
-                    NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
-                    Spacer()
+                    .scrollIndicators(.hidden)
+                    .padding(.bottom, 85)
                     
                 }
                 .photosPicker(
@@ -298,6 +334,7 @@ struct SettingsView: View {
             .ignoresSafeArea(.keyboard)
         }
     }
+    
     func handleDeleteAccount(email: String) {
         authViewModel.deleteUserAccount(email: email) { result in
             switch result {

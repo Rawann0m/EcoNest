@@ -54,7 +54,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         WebImage(url: url)
                             .resizable()
                             .scaledToFill()
-                            .frame(maxWidth: .infinity, minHeight: 200)
+                            .frame(maxWidth: .infinity, maxHeight: 300)
                             .clipped()
                             .cornerRadius(10)
                     }
@@ -67,7 +67,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                     WebImage(url: url)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(maxWidth: 188, minHeight: 200)
+                                        .frame(maxWidth: 188, minHeight: 200, maxHeight: 300)
                                         .clipped()
                                         .cornerRadius(10)
                                 }
@@ -83,7 +83,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                     WebImage(url: url)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(maxWidth: 185, minHeight: 100)
+                                        .frame(maxWidth: 185, minHeight: 100, maxHeight: 300)
                                         .clipped()
                                         .cornerRadius(10)
                                 }
@@ -103,7 +103,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         .font(.callout)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.removeUserIDFromFavorite(communityId: communityId, userId: userId, postId: post.id ?? "")
+                                viewModel.removeUserIDFromFavorite(communityId: communityId, userId: userId, postId: postId ?? "",  replayId: post.id ?? "", isReply: isReplay)
                             }
                             
                         }
@@ -114,7 +114,7 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         .font(.body)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.addUserIDToFavorite(communityId: communityId, userId: userId, postId: post.id ?? "")
+                                viewModel.addUserIDToFavorite(communityId: communityId, userId: userId, postId: postId ?? "",  replayId: post.id ?? "", isReply: isReplay)
                             }
                         }
                 }
@@ -165,11 +165,4 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
     .padding(.bottom, 0)
     
     Divider()
-    //    .background{
-    //        RoundedRectangle(cornerRadius: 10)
-    //            .fill(.white)
-    //            .stroke(.gray.opacity(0.3), lineWidth: 1)
-    //            .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
-    //            .frame(maxWidth: .infinity)
-    //    }
 }

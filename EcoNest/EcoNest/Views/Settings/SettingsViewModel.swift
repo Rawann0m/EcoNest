@@ -37,31 +37,6 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    func uploadImage(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            completion(.failure(NSError(domain: "Invalid image data", code: 0, userInfo: nil)))
-            return
-        }
-
-        let imageID = UUID().uuidString
-        let storageRef = FirebaseManager.shared.storage.reference().child("UserProfile/\(imageID).jpg")
-
-        storageRef.putData(imageData, metadata: nil) { _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-
-            storageRef.downloadURL { url, error in
-                if let url = url {
-                    completion(.success(url))
-                } else {
-                    completion(.failure(error ?? NSError(domain: "URL error", code: 0, userInfo: nil)))
-                }
-            }
-        }
-    }
-    
     func updateUserInformation(user: User, newImage: UIImage?) {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             print("No authenticated user.")
@@ -83,7 +58,7 @@ class SettingsViewModel: ObservableObject {
                     }
                 }
         } else {
-            uploadImage(image: newImage!) { result in
+            PhotoUploaderManager.shared.uploadUserImage(image: newImage!) { result in
                 switch result {
                 case .success(let url):
                     FirebaseManager.shared.firestore.collection("users")

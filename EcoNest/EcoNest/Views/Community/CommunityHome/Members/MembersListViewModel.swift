@@ -12,6 +12,7 @@ class MembersListViewModel: ObservableObject {
     @Published var members: [User] = []
     @Published var isLoading: Bool = false
     @Published var selectedMember: User?
+    @Published var searchText: String = ""
     
     init(members: [String]){
         fetchMembers(members: members)

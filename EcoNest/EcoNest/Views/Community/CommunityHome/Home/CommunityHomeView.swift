@@ -18,12 +18,13 @@ struct CommunityHomeView: View {
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     @ObservedObject var communityViewModel: CommunityViewModel
-    @ObservedObject var viewModel: PostsListViewModel
+    @StateObject var viewModel: PostsListViewModel
     @ObservedObject var memberViewModel: MembersListViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     
     init(communityViewModel: CommunityViewModel){
         self.communityViewModel = communityViewModel
-        self.viewModel = .init(communityId: communityViewModel.selectedCommunity?.id ?? "")
+        _viewModel = StateObject(wrappedValue: PostsListViewModel(communityId: communityViewModel.selectedCommunity?.id ?? ""))
         self.memberViewModel = .init(members: communityViewModel.selectedCommunity?.members ?? [])
     }
     
@@ -40,7 +41,7 @@ struct CommunityHomeView: View {
                                 .clipped()
                                 .overlay(alignment: .bottom) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(.white)
+                                        .fill(themeManager.isDarkMode ? .black : .white)
                                         .frame(height: 50)
                                         .offset(y: 20)
                                 }
@@ -53,7 +54,7 @@ struct CommunityHomeView: View {
                                     
                                     Spacer()
                                     
-                                    Text(community.memberOfCommunity ? "Leave": "Join")
+                                    Text(community.memberOfCommunity ? "Leave".localized(using: currentLanguage): "Join".localized(using: currentLanguage))
                                         .frame(width: 70)
                                         .padding()
                                         .bold()
@@ -68,7 +69,6 @@ struct CommunityHomeView: View {
                                                         
                                                         communityViewModel.removeUserIDFromMembers(communityId: communityId, userId: userId)
                                                         
-//                                                        communityViewModel.listenToSelectedCommunity(communityId: communityId)
                                                         
                                                         if var updatedCommunity = communityViewModel.selectedCommunity {
                                                             updatedCommunity.memberOfCommunity = false
@@ -81,7 +81,6 @@ struct CommunityHomeView: View {
                                                         
                                                         communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
                                                         
-//                                                        communityViewModel.listenToSelectedCommunity(communityId: communityId)
                                                         
                                                         if var updatedCommunity = communityViewModel.selectedCommunity {
                                                             updatedCommunity.memberOfCommunity = true
@@ -116,7 +115,7 @@ struct CommunityHomeView: View {
                                 
                                 HStack {
                                     Text("Posts".localized(using: currentLanguage))
-                                        .foregroundColor(showPosts ? .white : .black)
+                                        .foregroundColor(themeManager.isDarkMode ? .white : (showPosts ? .white : .black))
                                         .frame(width: 170, height: 50, alignment: .center)
                                         .background {
                                             if showPosts {
@@ -133,7 +132,7 @@ struct CommunityHomeView: View {
                                         .frame(maxWidth: 200)
                                     
                                     Text("Members".localized(using: currentLanguage))
-                                        .foregroundColor(!showPosts ? .white : .black)
+                                        .foregroundColor(themeManager.isDarkMode ? .white : (!showPosts ? .white : .black))
                                         .frame(width: 170, height: 50, alignment: .center)
                                         .background {
                                             if !showPosts {
@@ -221,6 +220,7 @@ struct CommunityHomeView: View {
                 }
             }
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
 

@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct Product: Identifiable, Codable {
     var id: String?
+    var plantId: String?
     var name: String?
     var description: String?
     var price: Double?

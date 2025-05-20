@@ -15,13 +15,12 @@ struct ChatView: View {
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
-    @ObservedObject var viewModel: ChatViewModel
-    @ObservedObject var postViewModel = CreatePostViewModel()
+    @StateObject var viewModel: ChatViewModel
     let chatUser: User?
     @State var showPic: Bool = false
     init(chatUser: User?){
         self.chatUser = chatUser
-        self.viewModel = .init(chatUser: chatUser)
+        _viewModel = StateObject(wrappedValue: ChatViewModel(chatUser: chatUser))
     }
     var body: some View {
         ZStack{
@@ -57,18 +56,25 @@ struct ChatView: View {
                                             }
                                         } else {
                                             HStack {
-                                                if contentItem.lowercased().hasPrefix("http"),
+                                                if contentItem.lowercased().hasPrefix("https://firebasestorage"),
                                                    let url = URL(string: contentItem) {
                                                     WebImage(url: url)
                                                         .resizable()
                                                         .scaledToFill()
                                                         .frame(width: 350 ,height: 200)
                                                         .clipped()
+                                                        .contentShape(Rectangle())
                                                         .cornerRadius(10)
                                                         .onTapGesture {
                                                             viewModel.selectedPic = contentItem
                                                             showPic.toggle()
                                                         }
+                                                }  else if contentItem.lowercased().hasPrefix("https"){
+                                                    Link(contentItem, destination: URL(string: contentItem)!)
+                                                        .foregroundColor(.black)
+                                                        .padding()
+                                                        .background(Color.white)
+                                                        .cornerRadius(8)
                                                 } else {
                                                     Text(contentItem)
                                                         .foregroundColor(.black)
@@ -147,7 +153,7 @@ struct ChatView: View {
                             }
                         
                         ZStack{
-                            Text("Type a message...")
+                            Text("TypeMessage".localized(using: currentLanguage))
                                 .foregroundColor(.gray)
                                 .frame(maxWidth: .infinity,alignment: .leading)
                             TextEditor(text: $viewModel.chatText)
@@ -159,7 +165,7 @@ struct ChatView: View {
                             let trimmedText = viewModel.chatText.trimmingCharacters(in: .whitespacesAndNewlines)
                             
                             if let image = selectedImage {
-                                postViewModel.uploadImages(image: image) { result in
+                                PhotoUploaderManager.shared.uploadImages(image: image) { result in
                                     switch result {
                                     case .success(let url):
                                         let contentArray = [trimmedText, url.absoluteString].filter { !$0.isEmpty }

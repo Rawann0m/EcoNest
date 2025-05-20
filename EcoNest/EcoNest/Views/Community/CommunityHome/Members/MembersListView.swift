@@ -14,7 +14,8 @@ struct MembersListView: View {
     var members: [String] = []
     @ObservedObject var viewModel: MembersListViewModel
     @State private var savedId: String?
-     
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
     var body: some View {
         VStack{
             if viewModel.isLoading {
@@ -22,13 +23,23 @@ struct MembersListView: View {
                     .frame(height: 300, alignment: .center)
             } else{
                 if viewModel.members.isEmpty {
-                    Text("No members found")
+                    Text("Nomembersfound".localized(using: currentLanguage))
                         .frame(height: 300, alignment: .center)
                 } else {
                     ScrollViewReader{ scrollProxy in
                         LazyVStack{
-                            ForEach(viewModel.members){ member in
-                                UsersRow(username: member.username, email: member.email, image: member.profileImage, time: "", message: "")
+                            // Text field for user input
+                            TextField("Search", text: $viewModel.searchText)
+                                .padding(12)
+                                .background(.gray.opacity(0.1), in: .rect(cornerRadius: 25))
+                                .foregroundColor(.gray)
+                                .frame(height: 25)
+                                .padding()
+                                .disableAutocorrection(true) // Prevent autocorrect suggestions
+                                .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
+                            
+                            ForEach(getMembers()){ member in
+                                UsersRow(username: member.username, image: member.profileImage)
                                     .id(member.id)
                                     .onAppear {
                                         savedId = member.id
@@ -66,6 +77,14 @@ struct MembersListView: View {
                 },
                 secondaryButton: .cancel()
             )
+        }
+    }
+    
+    func getMembers() -> [User]{
+        if viewModel.searchText.isEmpty {
+            return viewModel.members
+        } else {
+            return viewModel.members.filter { $0.username.lowercased().contains(viewModel.searchText.lowercased()) }
         }
     }
 }

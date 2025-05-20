@@ -19,11 +19,13 @@ struct CreatePost: View {
     @State var selectedImages: [UIImage] = []
     @State private var selectedItems: [PhotosPickerItem] = []
     @State var showImagePicker: Bool = false
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @State private var showCamera: Bool = false
+    var imagecount = 4
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading){
-                HStack(alignment: .top){
-                    
+                HStack(alignment: .center){
                     VStack{
                         if settingsViewModel.user?.profileImage == "" {
                             Image("profile")
@@ -41,11 +43,17 @@ struct CreatePost: View {
                     }
                     
                     Text(settingsViewModel.user?.username ?? "User")
-                    
-                    Spacer()
+                        .bold()
                 }
                 
-                TextEditor(text: $message)
+                
+                ZStack(alignment: .topLeading){
+                    Text("TypeMessage".localized(using: currentLanguage))
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity,alignment: .leading)
+                    TextEditor(text: $message)
+                        .opacity(message.isEmpty ? 0.5 : 1)
+                }
                 
                 Spacer()
                 
@@ -59,10 +67,14 @@ struct CreatePost: View {
                                     .frame(width: 100, height: 100)
                                     .clipped()
                                     .cornerRadius(10)
-
+                                
                                 Button(action: {
                                     selectedImages.remove(at: index)
-                                    selectedItems.remove(at: index)
+                                    
+                                    if !selectedItems.isEmpty {
+                                        selectedItems.remove(at: index)
+                                    }
+                                    
                                 }) {
                                     Image(systemName: "xmark.circle.fill")
                                         .foregroundColor(.white)
@@ -75,22 +87,29 @@ struct CreatePost: View {
                     .padding(.vertical)
                 }
                 
-                Image(systemName: "camera.fill")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
-                    .onTapGesture {
+                Menu {
+                    Button("Camera") {
+                        showCamera.toggle()
+                    }
+                    Button("Photo Picker") {
                         showImagePicker.toggle()
                     }
-                    .background{
-                        Circle()
-                            .fill(Color("LimeGreen"))
-                            .frame(width: 50, height: 50)
-                    }
-                    .padding()
+                } label: {
+                    Image(systemName: "camera.fill")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.white)
+                        .background{
+                            Circle()
+                                .fill(Color("LimeGreen"))
+                                .frame(width: 50, height: 50)
+                        }
+                        .padding()
+                }
             }
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Text("Cancel")
+                    Text("Cancel".localized(using: currentLanguage))
                         .onTapGesture {
                             dismiss()
                         }
@@ -100,7 +119,7 @@ struct CreatePost: View {
                     
                     Button{
                         if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                            viewModel.uploadImages(images: selectedImages) { result in
+                            PhotoUploaderManager.shared.uploadImages(images: selectedImages) { result in
                                 switch result {
                                 case .success(let urls):
                                     let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
@@ -111,11 +130,11 @@ struct CreatePost: View {
                                 }
                             }
                         }
-    
+                        
                         dismiss()
                         
                     } label: {
-                        Text("Post")
+                        Text("Post".localized(using: currentLanguage))
                             .padding(10)
                             .bold()
                             .foregroundColor(.white)
@@ -130,10 +149,17 @@ struct CreatePost: View {
             }
             .padding()
         }
+        .fullScreenCover(isPresented: $showCamera) {
+            ImagePicker(sourceType: .camera) { image in
+                if selectedImages.count < 4 {
+                    selectedImages.append(image)
+                }
+            }
+        }
         .photosPicker(
             isPresented: $showImagePicker,
             selection: $selectedItems,
-            maxSelectionCount: 4,
+            maxSelectionCount: imagecount - selectedImages.count,
             matching: .images
         )
         .onChange(of: selectedItems) { _, newItems in
@@ -147,6 +173,7 @@ struct CreatePost: View {
                 }
             }
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
     
     var textEmpty: Bool {

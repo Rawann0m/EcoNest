@@ -13,6 +13,8 @@ class PostsListViewModel: ObservableObject {
     @Published var selectedPost: Post?
     @Published var isLoading: Bool = false
     @Published var postReplies: [Post] = []
+    @Published var didDeleteSelectedPost = false
+    @Published var searchText: String = ""
     
     var firestoreListener: ListenerRegistration?
     var postRepliesListener: ListenerRegistration?
@@ -41,7 +43,6 @@ class PostsListViewModel: ObservableObject {
             .collection("community")
             .document(communityId)
             .collection("posts")
-        
         
         firestoreListener = postsRef.addSnapshotListener { (snapshot, error) in
             if let error = error {
@@ -92,6 +93,9 @@ class PostsListViewModel: ObservableObject {
                             }
                         }
                     }
+                    if change.type == .removed {
+                        self.posts.removeAll { $0.id == change.document.documentID }
+                    }
                 }
             }
         }
@@ -129,59 +133,6 @@ class PostsListViewModel: ObservableObject {
                 print("successfully saved post data")
             }
         
-    }
-    
-    
-    func uploadImages(images: [UIImage], completion: @escaping (Result<[URL], Error>) -> Void) {
-        let group = DispatchGroup()
-        var uploadedURLs: [URL] = []
-        var uploadError: Error?
-        
-        for image in images {
-            group.enter()
-            uploadImages(image: image) { result in
-                switch result {
-                case .success(let url):
-                    uploadedURLs.append(url)
-                case .failure(let error):
-                    uploadError = error
-                }
-                group.leave()
-            }
-        }
-        
-        group.notify(queue: .main) {
-            if let error = uploadError {
-                completion(.failure(error))
-            } else {
-                completion(.success(uploadedURLs))
-            }
-        }
-    }
-    
-    func uploadImages(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            completion(.failure(NSError(domain: "Invalid image data", code: 0, userInfo: nil)))
-            return
-        }
-        
-        let imageID = UUID().uuidString
-        let storageRef = FirebaseManager.shared.storage.reference().child("Posts/\(imageID).jpg")
-        
-        storageRef.putData(imageData, metadata: nil) { _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            storageRef.downloadURL { url, error in
-                if let url = url {
-                    completion(.success(url))
-                } else {
-                    completion(.failure(error ?? NSError(domain: "URL error", code: 0, userInfo: nil)))
-                }
-            }
-        }
     }
     
     func addReplyToPost(communityId: String, postId: String, replay: Post){
@@ -297,11 +248,20 @@ class PostsListViewModel: ObservableObject {
         }
     }
     
-    func addUserIDToFavorite(communityId: String, userId: String,  postId: String) {
-        FirebaseManager.shared.firestore.collection("community")
+    func addUserIDToFavorite(communityId: String, userId: String,  postId: String, replayId: String? = nil, isReply: Bool = false) {
+        
+        let documentRef = FirebaseManager.shared.firestore.collection("community")
             .document(communityId)
             .collection("posts")
             .document(postId)
+        
+        var ref = documentRef
+        if isReply{
+            if let replayId = replayId {
+                ref = ref.collection("replies").document(replayId)
+            }
+        }
+        ref
             .updateData([
                 "likes": FieldValue.arrayUnion([userId])
             ]) { error in
@@ -313,11 +273,19 @@ class PostsListViewModel: ObservableObject {
             }
     }
     
-    func removeUserIDFromFavorite(communityId: String, userId: String, postId: String) {
-        FirebaseManager.shared.firestore.collection("community")
+    func removeUserIDFromFavorite(communityId: String, userId: String, postId: String, replayId: String? = nil, isReply: Bool = false) {
+        let documentRef = FirebaseManager.shared.firestore.collection("community")
             .document(communityId)
             .collection("posts")
             .document(postId)
+        
+        var ref = documentRef
+        if isReply{
+            if let replayId = replayId {
+                ref = ref.collection("replies").document(replayId)
+            }
+        }
+        ref
             .updateData([
                 "likes": FieldValue.arrayRemove([userId])
             ]) { error in
@@ -339,6 +307,7 @@ class PostsListViewModel: ObservableObject {
                     print("Error removing post: \(error)")
                 } else {
                     print("Post removed successfully.")
+                    self.didDeleteSelectedPost = true
                     if let index = self.posts.firstIndex(where: { $0.id == postId }) {
                         self.posts.remove(at: index)
                     }
@@ -400,5 +369,4 @@ class PostsListViewModel: ObservableObject {
             
         }
     }
-    
 }
