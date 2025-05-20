@@ -99,3 +99,8 @@
 "Cancel" = "الغاء";
 "Post" ="نشر";
 "Join" = "انضمام";
+
+//plantsListView
+"AllPlants"="كل النباتات";
+"FilterCategories"= "تصفية الفئات";
+"Apply" = "تطبيق";

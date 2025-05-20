@@ -98,3 +98,9 @@
 "Cancel" = "Cancel";
 "Post" ="Post";
 "Join" ="Join";
+
+//plantsListView
+"AllPlants"= "All Plants";
+"FilterCategories"= "Filter Categories";
+"Apply" = "Apply";
+

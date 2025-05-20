@@ -10,7 +10,9 @@ import SwiftUI
 struct FilterSheet: View {
     @ObservedObject var viewModel: PlantViewModel
     @Binding var isPresented: Bool
-
+    // Stores and observes the current language preference
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
     var body: some View {
         NavigationView {
             List {
@@ -34,11 +36,11 @@ struct FilterSheet: View {
                     }
                 }
             }
-            .navigationTitle("Filter Categories")
+            .navigationTitle("FilterCategories".localized(using: currentLanguage))
             .toolbar {
                 // Apply button
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Apply") {
+                    Button("Apply".localized(using: currentLanguage)) {
                         viewModel.applyFilters()
                         isPresented = false
                     }
