@@ -196,7 +196,7 @@ struct CommunityHomeView: View {
                 )
             }
             .fullScreenCover(isPresented: $navigateToLogin) {
-                LogInPage()
+                AuthViewPage()
             }
             .edgesIgnoringSafeArea(.top)
             .onAppear {

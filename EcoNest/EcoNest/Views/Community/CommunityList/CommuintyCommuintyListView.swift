@@ -96,7 +96,7 @@ struct CommuintyListView: View {
             CommunityHomeView(communityViewModel: communityViewModel)
         }
         .fullScreenCover(isPresented: $navigateToLogin) {
-            LogInPage()
+            AuthViewPage()
         }
     }
 }

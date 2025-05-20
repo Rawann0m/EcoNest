@@ -60,11 +60,11 @@ class CartViewModel: ObservableObject {
                                 name: productData["name"] as? String ?? "",
                                 description: productData["description"] as? String ?? "",
                                 price: productData["price"] as? Double ?? 0.0,
+                                plantId: productData["plantId"] as? String ?? "",
                                 image: productData["image"] as? String ?? "",
-                                category: productData["category"] as? String ?? "",
+                                category: productData["category"] as? [String] ?? [],
                                 quantity: productData["quantity"] as? Int ?? 0,
                                 careLevel: productData["careLevel"] as? String ?? "",
-                                color: productData["color"] as? String ?? "",
                                 size: productData["size"] as? String ?? ""
                             )
 
@@ -148,7 +148,6 @@ class CartViewModel: ObservableObject {
                 "quantity": cart.quantity,
                 "image": cart.product.image ?? "",
                 "category": cart.product.category ?? "",
-                "color": cart.product.color ?? "",
                 "size": cart.product.size ?? "",
             ]
         }

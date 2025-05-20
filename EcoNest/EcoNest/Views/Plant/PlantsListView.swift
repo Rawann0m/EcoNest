@@ -10,7 +10,6 @@ import SDWebImageSwiftUI
 struct PlantsListView: View {
     @StateObject private var viewModel = PlantViewModel()
     @State private var showFilterSheet = false
-
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -83,6 +82,3 @@ struct PlantsListView: View {
     }
 }
 
-#Preview {
-    PlantsListView()
-}

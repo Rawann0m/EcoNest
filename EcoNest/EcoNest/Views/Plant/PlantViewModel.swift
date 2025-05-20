@@ -17,7 +17,7 @@ class PlantViewModel: ObservableObject {
     let allCategories = [ // Available categories
         "🌿 Foliage Plants", "🌸 Flowering Plants", "🌴 Palms & Palm-like",
         "🌵 Succulents & Cacti", "🍃 Ferns", "🪴 Air-Purifying",
-        "🧪 Toxic to Pets", "🧤 Easy-care / Beginner-friendly", "🌱 Specialty / Unique"
+        "☠️ Toxic Plants", "✅ Beginner-friendly", "🌱 Specialty / Unique"
     ]
     
     init() {
