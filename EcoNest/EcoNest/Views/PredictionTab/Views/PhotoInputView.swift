@@ -23,55 +23,94 @@ struct PredictionView: View {
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var themeManager: ThemeManager
     
+    @State private var navigateToCreatePost = false
+    
     private var selectedColor: Color {
         colorScheme == .dark ? .black : .white
     }
-
+    
     private var defaultColor: Color {
         colorScheme == .dark ? .white : .black
     }
-
+    
+    private var shareText: String {
+        viewModel.topPredictions.map { "\($0.0): \(String(format: "%.2f%%", $0.1))" }
+            .joined(separator: "\n")
+    }
+    
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                PhotoInputButtons(
-                    buttonSelected: $buttonSelected,
-                    showPicker: $showPicker,
-                    capturedImage: $capturedImage,
-                    selectedImage: $selectedImage,
-                    currentLanguage: currentLanguage,
-                    namespace: _namespace,
-                    selectedColor: selectedColor,
-                    defaultColor: defaultColor,
-                    cameraManager: cameraManager,
-                    viewModel: viewModel
-                )
-                .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images)
-                .onChange(of: selectedItem) { oldItem, newItem in
-                    Task {
-                        if let data = try? await newItem?.loadTransferable(type: Data.self),
-                           let uiImage = UIImage(data: data) {
-                            selectedImage = uiImage
-                            capturedImage = nil
-                            selectedItem = nil
-                            viewModel.runPrediction(for: uiImage)
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    Spacer()
+                    PhotoInputButtons(
+                        buttonSelected: $buttonSelected,
+                        showPicker: $showPicker,
+                        capturedImage: $capturedImage,
+                        selectedImage: $selectedImage,
+                        currentLanguage: currentLanguage,
+                        namespace: _namespace,
+                        selectedColor: selectedColor,
+                        defaultColor: defaultColor,
+                        cameraManager: cameraManager,
+                        viewModel: viewModel
+                    )
+                    .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images)
+                    .onChange(of: selectedItem) { oldItem, newItem in
+                        Task {
+                            if let data = try? await newItem?.loadTransferable(type: Data.self),
+                               let uiImage = UIImage(data: data) {
+                                selectedImage = uiImage
+                                capturedImage = nil
+                                selectedItem = nil
+                                viewModel.runPrediction(for: uiImage)
+                            }
                         }
                     }
+                    
+                    if let image = selectedImage ?? capturedImage {
+                        VStack {
+                            PredictionResultView(
+                                image: image,
+                                predictions: viewModel.topPredictions,
+                                currentLanguage: currentLanguage,
+                                onShare: {
+                                    navigateToCreatePost = true
+                                }
+                            )
+                            
+                            NavigationLink(
+                                destination: CreatePost(
+                                    initialMessage: shareText,
+                                    initialImages: [image],
+                                    communityId: "0ScXYeMDgcTz0pcDpkin"
+                                ),
+                                isActive: $navigateToCreatePost
+                            ) {
+                                EmptyView()
+                            }
+                            .hidden()
+                        }
+                    } else {
+                        ImagePlaceholderView()
+                    }
+                    
+                    Spacer()
+                    Spacer()
                 }
-
-                if let image = selectedImage ?? capturedImage {
-                    PredictionResultView(
-                        image: image,
-                        predictions: viewModel.topPredictions,
-                        currentLanguage: currentLanguage
-                    )
-                } else {
-                    ImagePlaceholderView()
-                }
-
-                Spacer()
             }
+            .scrollIndicators(.hidden)
+            
         }
-        .scrollIndicators(.hidden)
     }
+    
+    private func sharePrediction(image: UIImage, text: String) {
+        let activityVC = UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let root = scene.windows.first?.rootViewController {
+            root.present(activityVC, animated: true)
+        }
+    }
+    
 }

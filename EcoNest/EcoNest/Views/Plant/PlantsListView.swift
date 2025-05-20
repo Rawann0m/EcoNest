@@ -10,6 +10,8 @@ import SDWebImageSwiftUI
 struct PlantsListView: View {
     @StateObject private var viewModel = PlantViewModel()
     @State private var showFilterSheet = false
+    @EnvironmentObject var themeManager: ThemeManager
+
 
     var body: some View {
         NavigationView {
@@ -19,6 +21,7 @@ struct PlantsListView: View {
                     HStack {
                         Text("🌿 All Plants")
                             .font(.title)
+                            .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
                             .fontWeight(.bold)
                         Spacer()
                         Button {
@@ -26,13 +29,15 @@ struct PlantsListView: View {
                         } label: {
                             Image(systemName: "line.horizontal.3.decrease.circle")
                                 .font(.title2)
+                                .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
+
                         }
                     }
                     
                     // Search bar
                     TextField("🔍 Search plants...", text: $viewModel.searchText)
                         .padding(10)
-                        .background(Color.white)
+                        .background(themeManager.isDarkMode ? Color.black : Color.white)
                         .cornerRadius(10)
                         .onChange(of: viewModel.searchText) { _ in
                             viewModel.applyFilters()
@@ -48,7 +53,7 @@ struct PlantsListView: View {
                                 .padding(.top, -30) // Top corners = 0, Bottom corners = 30
                         )
                 )
-                .foregroundColor(.white)
+                .foregroundColor(themeManager.isDarkMode ? Color.white : Color.black)
 
                 // Plant list
                 List(viewModel.filteredPlants) { plant in
@@ -82,7 +87,7 @@ struct PlantsListView: View {
         }
     }
 }
-
-#Preview {
-    PlantsListView()
-}
+//
+//#Preview {
+//    PlantsListView()
+//}
