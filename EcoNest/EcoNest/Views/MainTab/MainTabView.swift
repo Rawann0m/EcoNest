@@ -26,9 +26,15 @@ struct MainTabView: View {
                 // Overlay the custom tab bar at the bottom of the screen
                 CustomTabBar(selectedIndex: $selectedTabIndex)
             }
-            .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-            .navigationBarBackButtonHidden(true)
-            .ignoresSafeArea()
+        
+        
+        .overlay(alignment: .bottom) {
+            // Overlay the custom tab bar at the bottom of the screen
+            CustomTabBar(selectedIndex: $selectedTabIndex)
+        }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        .navigationBarBackButtonHidden(true)
+        .ignoresSafeArea()
         }
     }
 }
