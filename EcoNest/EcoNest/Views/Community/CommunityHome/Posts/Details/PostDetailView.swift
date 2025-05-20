@@ -146,7 +146,7 @@ struct PostDetailView: View {
                             }
                         }
                     }
-                    .frame(height: 30)
+                    .frame(height: selectedImages.isEmpty ? 30: 150)
                     .padding(.horizontal)
                     .padding(.bottom, 30)
                     .background(themeManager.isDarkMode ? .black : .white)

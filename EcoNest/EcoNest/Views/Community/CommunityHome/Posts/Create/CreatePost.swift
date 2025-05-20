@@ -11,7 +11,6 @@ import SDWebImageSwiftUI
 import PhotosUI
 
 struct CreatePost: View {
-    
     @State var message: String = ""
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = CreatePostViewModel()
@@ -21,7 +20,8 @@ struct CreatePost: View {
     @State private var selectedItems: [PhotosPickerItem] = []
     @State var showImagePicker: Bool = false
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    
+    @State private var showCamera: Bool = false
+    var imagecount = 4
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading){
@@ -89,7 +89,7 @@ struct CreatePost: View {
                 
                 Menu {
                     Button("Camera") {
-            
+                        showCamera.toggle()
                     }
                     Button("Photo Picker") {
                         showImagePicker.toggle()
@@ -149,10 +149,17 @@ struct CreatePost: View {
             }
             .padding()
         }
+        .fullScreenCover(isPresented: $showCamera) {
+            ImagePicker(sourceType: .camera) { image in
+                if selectedImages.count < 4 {
+                    selectedImages.append(image)
+                }
+            }
+        }
         .photosPicker(
             isPresented: $showImagePicker,
             selection: $selectedItems,
-            maxSelectionCount: 4,
+            maxSelectionCount: imagecount - selectedImages.count,
             matching: .images
         )
         .onChange(of: selectedItems) { _, newItems in
