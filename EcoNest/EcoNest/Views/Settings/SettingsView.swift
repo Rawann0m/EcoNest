@@ -18,11 +18,9 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var name: String = ""
-    @State var email: String = ""
-    @State var profileImage: String = ""
+
     @State var login: Bool = false
-    @State var oldName = ""
+
     @StateObject var viewModel = SettingsViewModel()
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -73,7 +71,7 @@ struct SettingsView: View {
                             if let selectedImage = selectedImage {
                                 Image(uiImage: selectedImage)
                                     .resizable()
-                            } else if let imageURL = URL(string: profileImage) {
+                            } else if let imageURL = URL(string: viewModel.profileImage) {
                                 WebImage(url: imageURL)
                                     .resizable()
                             } else {
@@ -115,9 +113,9 @@ struct SettingsView: View {
                                 .foregroundColor(themeManager.isDarkMode ? .white : Color("DarkGreen"))
                                 .offset(x: Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.19 :  Geometry.size.height * 0.22, y: Geometry.size.height * 0.06)
                                 .onTapGesture {
-                                    if oldName != name || selectedImage != nil {
+                                    if viewModel.oldName != viewModel.name || selectedImage != nil {
                                         if isEdit {
-                                            viewModel.updateUserInformation(user: User(username: name.trimmingCharacters(in: .whitespacesAndNewlines), email: email, profileImage: profileImage), newImage: selectedImage)
+                                            viewModel.updateUserInformation(user: User(username: viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines), email: viewModel.email, profileImage: viewModel.profileImage), newImage: selectedImage)
                                             print("edit")
                                         }
                                     }
@@ -127,14 +125,14 @@ struct SettingsView: View {
                         
                         VStack(spacing: 5){
                             if isEdit{
-                                TextField("Name", text: $name)
+                                TextField("Name", text: $viewModel.name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                     .accessibilityIdentifier("Name")
                                 
                             } else {
-                                TextField("Name", text: $name)
+                                TextField("Name", text: $viewModel.name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
@@ -144,7 +142,7 @@ struct SettingsView: View {
                             
                             
                             if FirebaseManager.shared.isLoggedIn {
-                                Text(email)
+                                Text(viewModel.email)
                                     .frame(width: 200)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                 
@@ -178,7 +176,8 @@ struct SettingsView: View {
                         
                         settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
                             NavigationLink{
-                                OrderView()
+                                // go to orders page
+                                Text("orders")
                             } label:{
                                 Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                     .foregroundColor(Color("LimeGreen"))
@@ -239,7 +238,7 @@ struct SettingsView: View {
                         if FirebaseManager.shared.isLoggedIn {
                             settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
                                 // show alert and delete account
-                                handleDeleteAccount(email: email)
+                                handleDeleteAccount(email: viewModel.email)
                                 
                                 print("delete account")
                                 
@@ -250,8 +249,8 @@ struct SettingsView: View {
                                 if FirebaseManager.shared.isLoggedIn{
                                     print("logout")
                                     authViewModel.logOut()
-                                    profileImage = ""
-                                    name="Guest"
+                                    viewModel.profileImage = ""
+                                    viewModel.name="Guest"
                                 } else {
                                     
                                 }
@@ -283,7 +282,6 @@ struct SettingsView: View {
                 .fullScreenCover(isPresented: $login, content: {
                     AuthViewPage()
                 })
-                
                 .onChange(of: isArabic) { _ , value in
                     let languageCode = value ? "ar" : "en"
                     languageManager.setLanguage(languageCode)
@@ -292,13 +290,13 @@ struct SettingsView: View {
                         selectedLanguageIndex = index
                     }
                 }
-                .onChange(of: viewModel.user) { newUser, _ in
-                    if let user = newUser {
-                        name = user.username
-                        email = user.email
-                        profileImage = user.profileImage
-                    }
-                }
+//                .onChange(of: viewModel.user) { newUser, _ in
+//                    if let user = newUser {
+//                        name = user.username
+//                        email = user.email
+//                        profileImage = user.profileImage
+//                    }
+//                }
                 .onAppear{
                     if let index = languageManager.supportedLanguages.firstIndex(of: currentLanguage) {
                         selectedLanguageIndex = index
@@ -312,24 +310,25 @@ struct SettingsView: View {
                             languageManager.setLanguage(defaultLanguage)
                         }
                     }
-                    // to check
-                    viewModel.fetchCurrentUser()
                     
-                    let currentUser = viewModel.user
-                    if let user = currentUser {
-                        name = user.username
-                        oldName = user.username
-                        email = user.email
-                        profileImage = user.profileImage
-                    }
-                    
+//                    let currentUser = viewModel.user
+//                    if let user = currentUser {
+//                        name = user.username
+//                        oldName = user.username
+//                        email = user.email
+//                        profileImage = user.profileImage
+//                    }
+//
                     if !FirebaseManager.shared.isLoggedIn {
-                        name = "Guest"
+                        viewModel.name = "Gest"
                     }
                     
                     print(FirebaseManager.shared.auth.currentUser?.uid ?? "no user")
                 }
-                .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+                .onDisappear{
+                    viewModel.userListener?.remove()
+                }
+
             }
             .ignoresSafeArea(.keyboard)
         }
@@ -344,7 +343,7 @@ struct SettingsView: View {
                     title: "Success".localized(using: currentLanguage),
                     message: message
                 )
-                name="Guest"
+                viewModel.name = "Guest"
             case .failure(let error):
                 AlertManager.shared.showAlert(
                     title: "Error".localized(using: currentLanguage),
