@@ -16,13 +16,14 @@ struct ForgotPasswordPage:View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
         NavigationStack{
+            GeometryReader{ geometry in
             VStack{
                 ScrollView(.vertical) {
                     ZStack{
                         //bubbles
                         Image("bubbles")
                             .resizable()
-                            .frame(width: 400,height: 400)
+                            .frame(width: geometry.size.width * 1,height: geometry.size.width * 1)
                         //logo
                         Image(themeManager.isDarkMode ? "EcoNestL":"EcoNestG")
                             .resizable()
@@ -33,9 +34,9 @@ struct ForgotPasswordPage:View {
                             .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
                             .offset(x:-170, y:-120)
                             .onTapGesture {
-                               dismiss()
+                                dismiss()
                             }
-                    }.padding(.top,-50)
+                    }.padding(.top,-62)
                     
                     
                     VStack(spacing: 20){
@@ -43,6 +44,7 @@ struct ForgotPasswordPage:View {
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
+                            .accessibilityIdentifier("ResetPasswordTitle")
                         CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false))
                         // Custom button
                         CustomButton(
@@ -56,6 +58,7 @@ struct ForgotPasswordPage:View {
                         .padding(.top,70)
                 }
             }
+        }
             }.alert(isPresented: $alertManager.alertState.isPresented) {
             Alert(
                 title: Text(alertManager.alertState.title),

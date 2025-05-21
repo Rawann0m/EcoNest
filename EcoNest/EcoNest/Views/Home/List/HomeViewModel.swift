@@ -45,6 +45,7 @@ class HomeViewModel: ObservableObject {
                     let price = document.get("price") as? Double ?? 0.0
                     let image = document.get("image") as? String ?? ""
                     let quantity = document.get("quantity") as? Int ?? 0
+                    let plantId = document.get("plantId") as? String ?? ""
                     
                     return Product(
                         id: id,

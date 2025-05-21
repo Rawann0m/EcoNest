@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Product: Identifiable, Codable {
-    
     var id: String?
     var plantId: String?
     var name: String?
@@ -19,4 +19,8 @@ struct Product: Identifiable, Codable {
     var quantity: Int?
     var careLevel: String?
     var size: String?
+}
+
+struct ProductWrapper: Codable {
+    let products: [Product]
 }
