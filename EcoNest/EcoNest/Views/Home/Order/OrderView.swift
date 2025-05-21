@@ -15,6 +15,7 @@ struct OrderView: View {
     @EnvironmentObject var themeManager: ThemeManager
     
     @StateObject private var viewModel = OrderViewModel()
+    var currentLanguage: String
     
     var body: some View {
         
@@ -33,34 +34,35 @@ struct OrderView: View {
                         VStack(spacing: 10) {
                             
                             // Display cart image
-                            Image("Cart")
+                            Image("Order")
                                 .resizable()
                                 .frame(width: 230, height: 230)
                             
                             // Localized message when the cart is empty
-                            Text("Your Order List is Empty")
-                                .font(.headline)
-                                .foregroundColor(.gray)
-                            
-                            // Localized instruction to add products
-                            Text("Add Order Here")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                            
+                            if selectedCategory == .awaitingPickup {
+                                Text("NoOrdersYet".localized(using: currentLanguage))
+                                    .font(.headline)
+                                    .foregroundColor(.gray)
+                            } else {
+                                Text("NoCancelledOrders".localized(using: currentLanguage))
+                                    .font(.headline)
+                                    .foregroundColor(.gray)
+                            }
                         }
                         .padding()
                     } else {
                         ForEach(viewModel.orders.filter({$0.status.rawValue == selectedCategory.rawValue})) { order in
-                            OrderCardView(order: order, viewModel: viewModel)
+                            OrderCardView(order: order, viewModel: viewModel, currentLanguage: currentLanguage)
                         }
                     }
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    CustomBackward(title: "Order", tapEvent: {dismiss()})
+                ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
+                    CustomBackward(title: "Order".localized(using: currentLanguage), tapEvent: {dismiss()})
                 }
             }
+            .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
             .navigationBarBackButtonHidden(true)
         }
         .onAppear {
@@ -72,14 +74,14 @@ struct OrderView: View {
     func CustomSegmentedControl() -> some View {
         HStack {
             ForEach(OrderStatus.allCases, id: \.rawValue){ category in
-                Text(category.rawValue)
+                Text(category.rawValue.localized(using: currentLanguage))
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 10)
-                    .foregroundStyle(category == selectedCategory ? .white : Color("DarkGreen"))
+                    .foregroundStyle(category == selectedCategory ? .white : Color("LimeGreen"))
                     .background{
                         if category == selectedCategory {
                             Capsule()
-                                .fill(Color("DarkGreen"))
+                                .fill(Color("LimeGreen"))
                                 .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                         }
                     }
@@ -91,10 +93,10 @@ struct OrderView: View {
                     }
             }
         }
-        .background(Color.white, in: Capsule())
+        .background(.background, in: Capsule())
         .overlay(
             Capsule()
-                .stroke(Color("DarkGreen"), lineWidth: 1)
+                .stroke(Color("LimeGreen"), lineWidth: 1)
         )
         .padding()
     }

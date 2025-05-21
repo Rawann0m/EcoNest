@@ -11,7 +11,8 @@ import MapKit
 struct MapView: View {
     
     @EnvironmentObject private var viewModel: LocationViewModel
-
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -72,7 +73,7 @@ struct MapView: View {
                     ZStack {
                         ForEach(viewModel.locations) { location in
                             if viewModel.mapLocation == location {
-                                LocationPreviewView(location: location)
+                                LocationPreviewView(location: location, currentLanguage: currentLanguage)
                                     .shadow(color: .black.opacity(0.3), radius: 20)
                                     .padding()
                                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
@@ -82,7 +83,7 @@ struct MapView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
                     Button {
                         viewModel.showMap = false
                     } label: {
@@ -95,6 +96,7 @@ struct MapView: View {
                     }
                 }
             }
+            .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         }
     }
 }
