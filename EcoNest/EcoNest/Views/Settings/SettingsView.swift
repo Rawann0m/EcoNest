@@ -178,8 +178,7 @@ struct SettingsView: View {
                         
                         settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
                             NavigationLink{
-                                // go to orders page
-                                Text("orders")
+                                OrderView()
                             } label:{
                                 Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                     .foregroundColor(Color("LimeGreen"))
@@ -282,8 +281,9 @@ struct SettingsView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $login, content: {
-                    LogInPage()
+                    AuthViewPage()
                 })
+                
                 .onChange(of: isArabic) { _ , value in
                     let languageCode = value ? "ar" : "en"
                     languageManager.setLanguage(languageCode)
@@ -324,7 +324,7 @@ struct SettingsView: View {
                     }
                     
                     if !FirebaseManager.shared.isLoggedIn {
-                        name = "Gest"
+                        name = "Guest"
                     }
                     
                     print(FirebaseManager.shared.auth.currentUser?.uid ?? "no user")

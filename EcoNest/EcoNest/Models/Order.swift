@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Order {
+struct Order: Identifiable {
     var id: String
-    var products: Product
+    var products: [Product]
     var total: Double
     var date: Date
     var pickupLocation: Location

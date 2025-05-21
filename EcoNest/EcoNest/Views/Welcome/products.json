@@ -1,0 +1,1605 @@
+[
+  {
+    "name": "Kalanchoe",
+    "description": "A vibrant flowering succulent, easy to care for. Care level: Low. Size: Small.",
+    "price": 9.27,
+    "plantId": "4Q6n5mYd3mvLiEgroELE",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fkalanchoe.png?alt=media&token=f9684762-e37c-483a-9e11-03873996ab00",
+    "category": ["🌸 Flowering Plants", "🌵 Succulents & Cacti", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Kalanchoe",
+    "description": "A vibrant flowering succulent, easy to care for. Care level: Low. Size: Medium.",
+    "price": 14.93,
+    "plantId": "4Q6n5mYd3mvLiEgroELE",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fkalanchoe.png?alt=media&token=f9684762-e37c-483a-9e11-03873996ab00",
+    "category": ["🌸 Flowering Plants", "🌵 Succulents & Cacti", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Kalanchoe",
+    "description": "A vibrant flowering succulent, easy to care for. Care level: Low. Size: Large.",
+    "price": 29.82,
+    "plantId": "4Q6n5mYd3mvLiEgroELE",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fkalanchoe.png?alt=media&token=f9684762-e37c-483a-9e11-03873996ab00",
+    "category": ["🌸 Flowering Plants", "🌵 Succulents & Cacti", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Cast Iron Plant",
+    "description": "Extremely durable plant ideal for low light. Care level: Low. Size: Small.",
+    "price": 7.13,
+    "plantId": "VFJqFhYAxMP4Oe16fqVj",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fcast_iron_plant.png?alt=media&token=2df6d486-8b45-42dc-bd56-4ab9e1a74e62",
+    "category":  ["🌿 Foliage Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Cast Iron Plant",
+    "description": "Extremely durable plant ideal for low light. Care level: Low. Size: Medium.",
+    "price": 14.35,
+    "plantId": "VFJqFhYAxMP4Oe16fqVj",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fcast_iron_plant.png?alt=media&token=2df6d486-8b45-42dc-bd56-4ab9e1a74e62",
+    "category": ["🌿 Foliage Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Cast Iron Plant",
+    "description": "Extremely durable plant ideal for low light. Care level: Low. Size: Large.",
+    "price": 33.79,
+    "plantId": "VFJqFhYAxMP4Oe16fqVj",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fcast_iron_plant.png?alt=media&token=2df6d486-8b45-42dc-bd56-4ab9e1a74e62",
+    "category":  ["🌿 Foliage Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Schefflera",
+    "description": "Also known as umbrella plant, fast-growing and decorative. Care level: Medium. Size: Small.",
+    "price": 6.07,
+    "plantId": "mwJlH9gk3IiNa60PVFNw",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fschefflera.png?alt=media&token=7ab897b5-f7db-4e9d-b079-48be42fcb19b",
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying", "☠️ Toxic Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Schefflera",
+    "description": "Also known as umbrella plant, fast-growing and decorative. Care level: Medium. Size: Medium.",
+    "price": 13.58,
+    "plantId": "mwJlH9gk3IiNa60PVFNw",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fschefflera.png?alt=media&token=7ab897b5-f7db-4e9d-b079-48be42fcb19b",
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying", "☠️ Toxic Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Schefflera",
+    "description": "Also known as umbrella plant, fast-growing and decorative. Care level: Medium. Size: Large.",
+    "price": 21.66,
+    "plantId": "mwJlH9gk3IiNa60PVFNw",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fschefflera.png?alt=media&token=7ab897b5-f7db-4e9d-b079-48be42fcb19b",
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying", "☠️ Toxic Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Elephant Ear",
+    "description": "Large leaves and a dramatic tropical appearance. Care level: Medium. Size: Small.",
+    "price": 8.02,
+    "plantId": "Rc35MoFLLJKXNTMjMvuz",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Felephant_ear.png?alt=media&token=e5d49bd1-ed27-4d54-b1c7-1988744ac668",
+    "category": ["☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Elephant Ear",
+    "description": "Large leaves and a dramatic tropical appearance. Care level: Medium. Size: Medium.",
+    "price": 18.6,
+    "plantId": "Rc35MoFLLJKXNTMjMvuz",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Felephant_ear.png?alt=media&token=e5d49bd1-ed27-4d54-b1c7-1988744ac668",
+    "category": ["☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Elephant Ear",
+    "description": "Large leaves and a dramatic tropical appearance. Care level: Medium. Size: Large.",
+    "price": 21.61,
+    "plantId": "Rc35MoFLLJKXNTMjMvuz",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Felephant_ear.png?alt=media&token=e5d49bd1-ed27-4d54-b1c7-1988744ac668",
+    "category": ["☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Christmas Cactus",
+    "description": "Blooms around the holidays with minimal care. Care level: Low. Size: Small.",
+    "price": 6.25,
+    "plantId": "2rtjHxi829XnGFCSEMGV",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchristmas_cactus.png?alt=media&token=deedbb1c-11bc-460d-8bb2-6c4106a35da9",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Christmas Cactus",
+    "description": "Blooms around the holidays with minimal care. Care level: Low. Size: Medium.",
+    "price": 11.8,
+    "plantId": "2rtjHxi829XnGFCSEMGV",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchristmas_cactus.png?alt=media&token=deedbb1c-11bc-460d-8bb2-6c4106a35da9",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Christmas Cactus",
+    "description": "Blooms around the holidays with minimal care. Care level: Low. Size: Large.",
+    "price": 30.58,
+    "plantId": "2rtjHxi829XnGFCSEMGV",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchristmas_cactus.png?alt=media&token=deedbb1c-11bc-460d-8bb2-6c4106a35da9",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Chinese Money Plant",
+    "description": "Known for its round leaves and symbolism of fortune. Care level: Medium. Size: Small.",
+    "price": 6.28,
+    "plantId": "Usn49scYE8eLCfzDlR8c",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchinese_money_plant.png?alt=media&token=249ae7cb-757b-4767-bc7e-33fc150ac8ac",
+    "category": ["🌿 Foliage Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Chinese Money Plant",
+    "description": "Known for its round leaves and symbolism of fortune. Care level: Medium. Size: Medium.",
+    "price": 17.67,
+    "plantId": "Usn49scYE8eLCfzDlR8c",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchinese_money_plant.png?alt=media&token=249ae7cb-757b-4767-bc7e-33fc150ac8ac",
+    "category": ["🌿 Foliage Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Chinese Money Plant",
+    "description": "Known for its round leaves and symbolism of fortune. Care level: Medium. Size: Large.",
+    "price": 30.24,
+    "plantId": "Usn49scYE8eLCfzDlR8c",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchinese_money_plant.png?alt=media&token=249ae7cb-757b-4767-bc7e-33fc150ac8ac",
+    "category": ["🌿 Foliage Plants", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Calathea",
+    "description": "Tropical plant with vibrant patterned foliage. Care level: High. Size: Small.",
+    "price": 5.02,
+    "plantId": "TwlvO1skQmph8I2ySWUd",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fcalathea.png?alt=media&token=31dcb729-9502-41d0-a5ac-7e277c655b11",
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Calathea",
+    "description": "Tropical plant with vibrant patterned foliage. Care level: High. Size: Medium.",
+    "price": 15.01,
+    "plantId": "TwlvO1skQmph8I2ySWUd",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fcalathea.png?alt=media&token=31dcb729-9502-41d0-a5ac-7e277c655b11",
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Calathea",
+    "description": "Tropical plant with vibrant patterned foliage. Care level: High. Size: Large.",
+    "price": 29.2,
+    "plantId": "TwlvO1skQmph8I2ySWUd",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fcalathea.png?alt=media&token=31dcb729-9502-41d0-a5ac-7e277c655b11",
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "African Violet",
+    "description": "Compact flowering plant great for windowsills. Care level: Medium. Size: Small.",
+    "price": 7.67,
+    "plantId": "yUsQfP2wGa8Z7TgdGjoD",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fafrican_violet.png?alt=media&token=5416a429-331a-46b1-a0bc-a96d7f435f62",
+    "category": ["🌸 Flowering Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+
+    "name": "African Violet",
+    "description": "Compact flowering plant great for windowsills. Care level: Medium. Size: Medium.",
+    "price": 19.81,
+    "plantId": "yUsQfP2wGa8Z7TgdGjoD",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fafrican_violet.png?alt=media&token=5416a429-331a-46b1-a0bc-a96d7f435f62",
+    "category": ["🌸 Flowering Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "African Violet",
+    "description": "Compact flowering plant great for windowsills. Care level: Medium. Size: Large.",
+    "price": 34.43,
+    "plantId": "yUsQfP2wGa8Z7TgdGjoD",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fafrican_violet.png?alt=media&token=5416a429-331a-46b1-a0bc-a96d7f435f62",
+    "category": ["🌸 Flowering Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Dracaena",
+    "description": "Hardy and adaptable with long, strappy leaves. Care level: Low. Size: Small.",
+    "price": 9.74,
+    "plantId": "Xa1C0TJIICA2NRAUZRDn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdracaena.png?alt=media&token=6101f479-f099-45b4-9f11-b3f7aca006c4",
+    "category": ["🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Dracaena",
+    "description": "Hardy and adaptable with long, strappy leaves. Care level: Low. Size: Medium.",
+    "price": 11.26,
+    "plantId": "Xa1C0TJIICA2NRAUZRDn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdracaena.png?alt=media&token=6101f479-f099-45b4-9f11-b3f7aca006c4",
+    "category": ["🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Dracaena",
+    "description": "Hardy and adaptable with long, strappy leaves. Care level: Low. Size: Large.",
+    "price": 28.54,
+    "plantId": "Xa1C0TJIICA2NRAUZRDn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdracaena.png?alt=media&token=6101f479-f099-45b4-9f11-b3f7aca006c4",
+    "category": ["🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Ponytail Palm",
+    "description": "Quirky and drought-tolerant with a bulbous trunk. Care level: Low. Size: Small.",
+    "price": 7.87,
+    "plantId": "8qpgkjnsraEHk2pjbMHY",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fponytail_palm.png?alt=media&token=58349171-5c60-4c0a-8893-dfdf2f598ef6",
+    "category": ["🌴 Palms & Palm-like"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Ponytail Palm",
+    "description": "Quirky and drought-tolerant with a bulbous trunk. Care level: Low. Size: Medium.",
+    "price": 13.66,
+    "plantId": "8qpgkjnsraEHk2pjbMHY",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fponytail_palm.png?alt=media&token=58349171-5c60-4c0a-8893-dfdf2f598ef6",
+    "category": ["🌴 Palms & Palm-like"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Ponytail Palm",
+    "description": "Quirky and drought-tolerant with a bulbous trunk. Care level: Low. Size: Large.",
+    "price": 33.07,
+    "plantId": "8qpgkjnsraEHk2pjbMHY",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fponytail_palm.png?alt=media&token=58349171-5c60-4c0a-8893-dfdf2f598ef6",
+    "category": ["🌴 Palms & Palm-like"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Parlor Palm",
+    "description": "Classic indoor palm that thrives in indirect light. Care level: Low. Size: Small.",
+    "price": 8.58,
+    "plantId": "WryTnuvJzxK30TYNgtu6",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fparlor_palm.png?alt=media&token=8abff914-2311-4ae7-b61b-29eec5dd8008",
+    "category": ["🌿 Foliage Plants","🌴 Palms & Palm-like","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Parlor Palm",
+    "description": "Classic indoor palm that thrives in indirect light. Care level: Low. Size: Medium.",
+    "price": 19.63,
+    "plantId": "WryTnuvJzxK30TYNgtu6",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fparlor_palm.png?alt=media&token=8abff914-2311-4ae7-b61b-29eec5dd8008",
+    "category": ["🌿 Foliage Plants","🌴 Palms & Palm-like","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Parlor Palm",
+    "description": "Classic indoor palm that thrives in indirect light. Care level: Low. Size: Large.",
+    "price": 33.36,
+    "plantId": "WryTnuvJzxK30TYNgtu6",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fparlor_palm.png?alt=media&token=8abff914-2311-4ae7-b61b-29eec5dd8008",
+    "category": ["🌿 Foliage Plants","🌴 Palms & Palm-like","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Snake plant",
+    "description": "Tolerates neglect and poor light; great air purifier. Care level: Low. Size: Small.",
+    "price": 5.75,
+    "plantId": "PjF5YV1noAwEkHcvqOya",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fsnake_plant.png?alt=media&token=3c3d9f9e-9693-4b75-9f06-d8d3eb2719b9",
+    "category":  ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Snake plant",
+    "description": "Tolerates neglect and poor light; great air purifier. Care level: Low. Size: Medium.",
+    "price": 17.98,
+    "plantId": "PjF5YV1noAwEkHcvqOya",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fsnake_plant.png?alt=media&token=3c3d9f9e-9693-4b75-9f06-d8d3eb2719b9",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Snake plant",
+    "description": "Tolerates neglect and poor light; great air purifier. Care level: Low. Size: Large.",
+    "price": 34.87,
+    "plantId": "PjF5YV1noAwEkHcvqOya",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fsnake_plant.png?alt=media&token=3c3d9f9e-9693-4b75-9f06-d8d3eb2719b9",
+    "category":  ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Lilium",
+    "description": "Elegant, fragrant blooms in a range of colors. Care level: Medium. Size: Small.",
+    "price": 9.28,
+    "plantId": "CqZPhuwYffmdq2PfIbyK",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Flilium.png?alt=media&token=5442f82a-7587-43f5-b991-b67568c6891d",
+    "category": ["🌸 Flowering Plants", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Lilium",
+    "description": "Elegant, fragrant blooms in a range of colors. Care level: Medium. Size: Medium.",
+    "price": 13.67,
+    "plantId": "CqZPhuwYffmdq2PfIbyK",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Flilium.png?alt=media&token=5442f82a-7587-43f5-b991-b67568c6891d",
+    "category": ["🌸 Flowering Plants", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Lilium",
+    "description": "Elegant, fragrant blooms in a range of colors. Care level: Medium. Size: Large.",
+    "price": 29.63,
+    "plantId": "CqZPhuwYffmdq2PfIbyK",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Flilium.png?alt=media&token=5442f82a-7587-43f5-b991-b67568c6891d",
+    "category": ["🌸 Flowering Plants", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Ctenanthe",
+    "description": "Beautiful patterned leaves; prefers humidity. Care level: High. Size: Small.",
+    "price": 8.24,
+    "plantId": "C2DN2WfBrDMdjUmftnwb",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fctenanthe.png?alt=media&token=353913d6-41f1-46b7-85ab-034adb181bd5",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Ctenanthe",
+    "description": "Beautiful patterned leaves; prefers humidity. Care level: High. Size: Medium.",
+    "price": 19.84,
+    "plantId": "C2DN2WfBrDMdjUmftnwb",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fctenanthe.png?alt=media&token=353913d6-41f1-46b7-85ab-034adb181bd5",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Ctenanthe",
+    "description": "Beautiful patterned leaves; prefers humidity. Care level: High. Size: Large.",
+    "price": 30.82,
+    "plantId": "C2DN2WfBrDMdjUmftnwb",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fctenanthe.png?alt=media&token=353913d6-41f1-46b7-85ab-034adb181bd5",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Yucca",
+    "description": "Tough plant with sword-like leaves. Care level: Low. Size: Small.",
+    "price": 9.71,
+    "plantId": "ycm7RunxGGTJrHDOXApC",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fyucca.png?alt=media&token=1c9d4e39-536f-4caa-ba1e-7082bf942fbc",
+    "category": ["🌴 Palms & Palm-like"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Yucca",
+    "description": "Tough plant with sword-like leaves. Care level: Low. Size: Medium.",
+    "price": 12.23,
+    "plantId": "ycm7RunxGGTJrHDOXApC",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fyucca.png?alt=media&token=1c9d4e39-536f-4caa-ba1e-7082bf942fbc",
+    "category": ["🌴 Palms & Palm-like"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Yucca",
+    "description": "Tough plant with sword-like leaves. Care level: Low. Size: Large.",
+    "price": 23.3,
+    "plantId": "ycm7RunxGGTJrHDOXApC",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fyucca.png?alt=media&token=1c9d4e39-536f-4caa-ba1e-7082bf942fbc",
+    "category": ["🌴 Palms & Palm-like"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Tradescantia",
+    "description": "Colorful trailing plant with purple-tinted foliage. Care level: Medium. Size: Small.",
+    "price": 9.32,
+    "plantId": "wMueO802p1QQS5mdrQvg",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Ftradescantia.png?alt=media&token=60b1ddc9-5a26-4ca6-a721-eb3253adbef3",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Tradescantia",
+    "description": "Colorful trailing plant with purple-tinted foliage. Care level: Medium. Size: Medium.",
+    "price": 18.98,
+    "plantId": "wMueO802p1QQS5mdrQvg",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Ftradescantia.png?alt=media&token=60b1ddc9-5a26-4ca6-a721-eb3253adbef3",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Tradescantia",
+    "description": "Colorful trailing plant with purple-tinted foliage. Care level: Medium. Size: Large.",
+    "price": 28.23,
+    "plantId": "wMueO802p1QQS5mdrQvg",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Ftradescantia.png?alt=media&token=60b1ddc9-5a26-4ca6-a721-eb3253adbef3",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Areca Palm",
+    "description": "Graceful fronds and great for indoor air. Care level: Medium. Size: Small.",
+    "price": 9.11,
+    "plantId": "ZaxMH6VCkB0IoScUUDGm",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fareca_palm.png?alt=media&token=827771a0-7cf8-404f-a2f3-8301807303b7",
+    "category":["🌿 Foliage Plants","🌴 Palms & Palm-like","🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Areca Palm",
+    "description": "Graceful fronds and great for indoor air. Care level: Medium. Size: Medium.",
+    "price": 18.92,
+    "plantId": "ZaxMH6VCkB0IoScUUDGm",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fareca_palm.png?alt=media&token=827771a0-7cf8-404f-a2f3-8301807303b7",
+    "category": ["🌿 Foliage Plants","🌴 Palms & Palm-like","🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Areca Palm",
+    "description": "Graceful fronds and great for indoor air. Care level: Medium. Size: Large.",
+    "price": 23.68,
+    "plantId": "ZaxMH6VCkB0IoScUUDGm",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fareca_palm.png?alt=media&token=827771a0-7cf8-404f-a2f3-8301807303b7",
+    "category": ["🌿 Foliage Plants","🌴 Palms & Palm-like","🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "ZZ Plant",
+    "description": "Extremely low maintenance with glossy leaves. Care level: Low. Size: Small.",
+    "price": 7.82,
+    "plantId": "ADhpCGS6LV4lWz6djOz8",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fzz_plant.png?alt=media&token=1ae2f70f-e46b-4aa1-9816-770e645efce0",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "ZZ Plant",
+    "description": "Extremely low maintenance with glossy leaves. Care level: Low. Size: Medium.",
+    "price": 15.31,
+    "plantId": "ADhpCGS6LV4lWz6djOz8",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fzz_plant.png?alt=media&token=1ae2f70f-e46b-4aa1-9816-770e645efce0",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "ZZ Plant",
+    "description": "Extremely low maintenance with glossy leaves. Care level: Low. Size: Large.",
+    "price": 27.74,
+    "plantId": "ADhpCGS6LV4lWz6djOz8",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fzz_plant.png?alt=media&token=1ae2f70f-e46b-4aa1-9816-770e645efce0",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Venus Flytrap",
+    "description": "Carnivorous plant that feeds on insects. Care level: High. Size: Small.",
+    "price": 9.67,
+    "plantId": "w9Oyr0HRx0KUZonUn6bO",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fvenus_flytrap.png?alt=media&token=85f60966-4f5e-45c1-ba1b-96a80bf593d8",
+    "category": ["🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Venus Flytrap",
+    "description": "Carnivorous plant that feeds on insects. Care level: High. Size: Medium.",
+    "price": 16.24,
+    "plantId": "w9Oyr0HRx0KUZonUn6bO",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fvenus_flytrap.png?alt=media&token=85f60966-4f5e-45c1-ba1b-96a80bf593d8",
+    "category": ["🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Venus Flytrap",
+    "description": "Carnivorous plant that feeds on insects. Care level: High. Size: Large.",
+    "price": 25.57,
+    "plantId": "w9Oyr0HRx0KUZonUn6bO",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fvenus_flytrap.png?alt=media&token=85f60966-4f5e-45c1-ba1b-96a80bf593d8",
+    "category": ["🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Tulip",
+    "description": "Spring-blooming bulb known for colorful flowers. Care level: Medium. Size: Small.",
+    "price": 8.56,
+    "plantId": "AkjYxuatU6yaEMGezikX",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Ftulip.png?alt=media&token=68f8ef99-3927-4eb1-80f8-0ce333408b3c",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Tulip",
+    "description": "Spring-blooming bulb known for colorful flowers. Care level: Medium. Size: Medium.",
+    "price": 13.89,
+    "plantId": "AkjYxuatU6yaEMGezikX",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Ftulip.png?alt=media&token=68f8ef99-3927-4eb1-80f8-0ce333408b3c",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Tulip",
+    "description": "Spring-blooming bulb known for colorful flowers. Care level: Medium. Size: Large.",
+    "price": 32.31,
+    "plantId": "AkjYxuatU6yaEMGezikX",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Ftulip.png?alt=media&token=68f8ef99-3927-4eb1-80f8-0ce333408b3c",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Rubber Plant",
+    "description": "Glossy, thick leaves; grows into a tree indoors. Care level: Low. Size: Small.",
+    "price": 5.4,
+    "plantId": "741dhQoU7SiSgv393eTe",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Frubber_plant.png?alt=media&token=9e5a3863-0d16-47f5-94c9-79e4707577df",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Rubber Plant",
+    "description": "Glossy, thick leaves; grows into a tree indoors. Care level: Low. Size: Medium.",
+    "price": 12.48,
+    "plantId": "741dhQoU7SiSgv393eTe",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Frubber_plant.png?alt=media&token=9e5a3863-0d16-47f5-94c9-79e4707577df",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Rubber Plant",
+    "description": "Glossy, thick leaves; grows into a tree indoors. Care level: Low. Size: Large.",
+    "price": 28.63,
+    "plantId": "741dhQoU7SiSgv393eTe",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Frubber_plant.png?alt=media&token=9e5a3863-0d16-47f5-94c9-79e4707577df",
+    "category": ["🌿 Foliage Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Sago Palm",
+    "description": "Ancient plant with feathery leaves and a sturdy trunk. Care level: Medium. Size: Small.",
+    "price": 7.84,
+    "plantId": "8372j90NDFiXJaUwTbvk",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fsago_palm.png?alt=media&token=dd69cd0f-9286-413d-a910-25e2ce11e511",
+    "category": ["🌴 Palms & Palm-like","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Sago Palm",
+    "description": "Ancient plant with feathery leaves and a sturdy trunk. Care level: Medium. Size: Medium.",
+    "price": 11.72,
+    "plantId": "8372j90NDFiXJaUwTbvk",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fsago_palm.png?alt=media&token=dd69cd0f-9286-413d-a910-25e2ce11e511",
+    "category": ["🌴 Palms & Palm-like","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Sago Palm",
+    "description": "Ancient plant with feathery leaves and a sturdy trunk. Care level: Medium. Size: Large.",
+    "price": 28.09,
+    "plantId": "8372j90NDFiXJaUwTbvk",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fsago_palm.png?alt=media&token=dd69cd0f-9286-413d-a910-25e2ce11e511",
+    "category": ["🌴 Palms & Palm-like","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Rattlesnake Plant",
+    "description": "Wavy, spotted leaves; loves humidity. Care level: High. Size: Small.",
+    "price": 5.14,
+    "plantId": "KPkWJhkoyQp8ljymTpO8",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Frattlesnake_plant.png?alt=media&token=9c751bb2-055e-49f7-bc86-4c7d15dfa143",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Rattlesnake Plant",
+    "description": "Wavy, spotted leaves; loves humidity. Care level: High. Size: Medium.",
+    "price": 16.26,
+    "plantId": "KPkWJhkoyQp8ljymTpO8",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Frattlesnake_plant.png?alt=media&token=9c751bb2-055e-49f7-bc86-4c7d15dfa143",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Rattlesnake Plant",
+    "description": "Wavy, spotted leaves; loves humidity. Care level: High. Size: Large.",
+    "price": 22.39,
+    "plantId": "KPkWJhkoyQp8ljymTpO8",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Frattlesnake_plant.png?alt=media&token=9c751bb2-055e-49f7-bc86-4c7d15dfa143",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Prayer Plant",
+    "description": "Folds its leaves at night; loves moisture. Care level: High. Size: Small.",
+    "price": 7.89,
+    "plantId": "5XRZC95BQxM0ITVyLC1o",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fprayer_plant.png?alt=media&token=f8f39eb9-455d-4a43-8441-ad0c0cb86a01",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Prayer Plant",
+    "description": "Folds its leaves at night; loves moisture. Care level: High. Size: Medium.",
+    "price": 19.04,
+    "plantId": "5XRZC95BQxM0ITVyLC1o",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fprayer_plant.png?alt=media&token=f8f39eb9-455d-4a43-8441-ad0c0cb86a01",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Prayer Plant",
+    "description": "Folds its leaves at night; loves moisture. Care level: High. Size: Large.",
+    "price": 29.24,
+    "plantId": "5XRZC95BQxM0ITVyLC1o",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fprayer_plant.png?alt=media&token=f8f39eb9-455d-4a43-8441-ad0c0cb86a01",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Pothos",
+    "description": "Fast-growing vine, perfect for hanging baskets. Care level: Low. Size: Small.",
+    "price": 7.5,
+    "plantId": "YJ2CPADtjVTqu7yVkqQz",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpothos.png?alt=media&token=3f0d07b2-0808-47f1-a614-90927ac780ca",
+    "category": ["🌬️ Air-Purifying", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Pothos",
+    "description": "Fast-growing vine, perfect for hanging baskets. Care level: Low. Size: Medium.",
+    "price": 19.44,
+    "plantId": "YJ2CPADtjVTqu7yVkqQz",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpothos.png?alt=media&token=3f0d07b2-0808-47f1-a614-90927ac780ca",
+    "category": ["🌬️ Air-Purifying", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Pothos",
+    "description": "Fast-growing vine, perfect for hanging baskets. Care level: Low. Size: Large.",
+    "price": 29.6,
+    "plantId": "YJ2CPADtjVTqu7yVkqQz",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpothos.png?alt=media&token=3f0d07b2-0808-47f1-a614-90927ac780ca",
+    "category":["🌬️ Air-Purifying", "✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Poinsettia",
+    "description": "Festive plant with red and green foliage. Care level: Medium. Size: Small.",
+    "price": 8.99,
+    "plantId": "sGoeAgGP3GzsRHLiudMa",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpoinsettia.png?alt=media&token=c338a567-b2ce-407b-ae75-5cba848d912a",
+    "category":["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Poinsettia",
+    "description": "Festive plant with red and green foliage. Care level: Medium. Size: Medium.",
+    "price": 16.29,
+    "plantId": "sGoeAgGP3GzsRHLiudMa",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpoinsettia.png?alt=media&token=c338a567-b2ce-407b-ae75-5cba848d912a",
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Poinsettia",
+    "description": "Festive plant with red and green foliage. Care level: Medium. Size: Large.",
+    "price": 28.33,
+    "plantId": "sGoeAgGP3GzsRHLiudMa",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpoinsettia.png?alt=media&token=c338a567-b2ce-407b-ae75-5cba848d912a",
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Peace lily",
+    "description": "White blooms and excellent air purifier. Care level: Medium. Size: Small.",
+    "price": 6.0,
+    "plantId": "PEQY7LOnIkmpjVVf8XWy",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpeace_lily.png?alt=media&token=2677a058-3556-47ad-a0e0-8f759a4d5189",
+    "category": ["🌸 Flowering Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Peace lily",
+    "description": "White blooms and excellent air purifier. Care level: Medium. Size: Medium.",
+    "price": 16.96,
+    "plantId": "PEQY7LOnIkmpjVVf8XWy",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpeace_lily.png?alt=media&token=2677a058-3556-47ad-a0e0-8f759a4d5189",
+    "category": ["🌸 Flowering Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Peace lily",
+    "description": "White blooms and excellent air purifier. Care level: Medium. Size: Large.",
+    "price": 22.4,
+    "plantId": "PEQY7LOnIkmpjVVf8XWy",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpeace_lily.png?alt=media&token=2677a058-3556-47ad-a0e0-8f759a4d5189",
+    "category": ["🌸 Flowering Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Orchid",
+    "description": "Elegant flowers; requires precise care. Care level: High. Size: Small.",
+    "price": 8.89,
+    "plantId": "GmoZpU8EEvmrg436mI1n",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Forchid.png?alt=media&token=42928a79-b437-4547-a4e4-b2dbc70ef28a",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Orchid",
+    "description": "Elegant flowers; requires precise care. Care level: High. Size: Medium.",
+    "price": 14.7,
+    "plantId": "GmoZpU8EEvmrg436mI1n",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Forchid.png?alt=media&token=42928a79-b437-4547-a4e4-b2dbc70ef28a",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Orchid",
+    "description": "Elegant flowers; requires precise care. Care level: High. Size: Large.",
+    "price": 31.82,
+    "plantId": "GmoZpU8EEvmrg436mI1n",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Forchid.png?alt=media&token=42928a79-b437-4547-a4e4-b2dbc70ef28a",
+    "category": ["🌸 Flowering Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Monstera Deliciosa",
+    "description": "Known for its iconic split leaves. Care level: Medium. Size: Small.",
+    "price": 9.05,
+    "plantId": "aov5tI3N9a2mc6CCLlkl",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fmonstera_deliciosa.png?alt=media&token=51501bac-56a2-48b4-9dce-1e19cd7f6d75",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Monstera Deliciosa",
+    "description": "Known for its iconic split leaves. Care level: Medium. Size: Medium.",
+    "price": 17.01,
+    "plantId": "aov5tI3N9a2mc6CCLlkl",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fmonstera_deliciosa.png?alt=media&token=51501bac-56a2-48b4-9dce-1e19cd7f6d75",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Monstera Deliciosa",
+    "description": "Known for its iconic split leaves. Care level: Medium. Size: Large.",
+    "price": 31.79,
+    "plantId": "aov5tI3N9a2mc6CCLlkl",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fmonstera_deliciosa.png?alt=media&token=51501bac-56a2-48b4-9dce-1e19cd7f6d75",
+    "category": ["🌿 Foliage Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Money Tree",
+    "description": "Braided trunk; believed to bring good fortune. Care level: Low. Size: Small.",
+    "price": 8.05,
+    "plantId": "XZwpPJdIF2QIcn3z7u5Y",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fmoney_tree.png?alt=media&token=91cc7905-bd2a-4258-afe0-3d7b33072bc2",
+    "category": ["✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Money Tree",
+    "description": "Braided trunk; believed to bring good fortune. Care level: Low. Size: Medium.",
+    "price": 19.46,
+    "plantId": "XZwpPJdIF2QIcn3z7u5Y",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fmoney_tree.png?alt=media&token=91cc7905-bd2a-4258-afe0-3d7b33072bc2"
+,
+    "category": ["✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Money Tree",
+    "description": "Braided trunk; believed to bring good fortune. Care level: Low. Size: Large.",
+    "price": 25.82,
+    "plantId": "XZwpPJdIF2QIcn3z7u5Y",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fmoney_tree.png?alt=media&token=91cc7905-bd2a-4258-afe0-3d7b33072bc2",
+    "category": ["✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Lily of the valley",
+    "description": "Delicate bells with a sweet fragrance. Care level: High. Size: Small.",
+    "price": 8.4,
+    "plantId": "SNKFQUrcKJrCqB0CmhRZ",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Flily_of_the_valley.png?alt=media&token=5f6e01c5-903b-4770-aef6-3cfd79bc4d06"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Lily of the valley",
+    "description": "Delicate bells with a sweet fragrance. Care level: High. Size: Medium.",
+    "price": 16.13,
+    "plantId": "SNKFQUrcKJrCqB0CmhRZ",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Flily_of_the_valley.png?alt=media&token=5f6e01c5-903b-4770-aef6-3cfd79bc4d06"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Lily of the valley",
+    "description": "Delicate bells with a sweet fragrance. Care level: High. Size: Large.",
+    "price": 24.7,
+    "plantId": "SNKFQUrcKJrCqB0CmhRZ",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Flily_of_the_valley.png?alt=media&token=5f6e01c5-903b-4770-aef6-3cfd79bc4d06"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Jade plant",
+    "description": "Succulent associated with prosperity. Care level: Low. Size: Small.",
+    "price": 8.28,
+    "plantId": "oLbOCtnem1vmEzKNPGwn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fjade_plant.png?alt=media&token=de194e35-6f0a-4624-8cc3-3416570a2c90"
+,
+    "category": ["🌵 Succulents & Cacti","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Jade plant",
+    "description": "Succulent associated with prosperity. Care level: Low. Size: Medium.",
+    "price": 18.92,
+    "plantId": "oLbOCtnem1vmEzKNPGwn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fjade_plant.png?alt=media&token=de194e35-6f0a-4624-8cc3-3416570a2c90"
+,
+    "category": ["🌵 Succulents & Cacti","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Jade plant",
+    "description": "Succulent associated with prosperity. Care level: Low. Size: Large.",
+    "price": 29.51,
+    "plantId": "oLbOCtnem1vmEzKNPGwn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fjade_plant.png?alt=media&token=de194e35-6f0a-4624-8cc3-3416570a2c90"
+,
+    "category": ["🌵 Succulents & Cacti","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Hyacinth",
+    "description": "Fragrant blooms in spring. Care level: Medium. Size: Small.",
+    "price": 9.64,
+    "plantId": "lqff7x0IZaF4JnYLXtQ0",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fhyacinth.png?alt=media&token=6a1b1a36-a0a3-47c8-9657-fc066895c57f"
+,
+    "category": ["🌸 Flowering Plants" ,"☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Hyacinth",
+    "description": "Fragrant blooms in spring. Care level: Medium. Size: Medium.",
+    "price": 14.32,
+    "plantId": "lqff7x0IZaF4JnYLXtQ0",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fhyacinth.png?alt=media&token=6a1b1a36-a0a3-47c8-9657-fc066895c57f"
+,
+    "category":  ["🌸 Flowering Plants" ,"☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Hyacinth",
+    "description": "Fragrant blooms in spring. Care level: Medium. Size: Large.",
+    "price": 24.85,
+    "plantId": "lqff7x0IZaF4JnYLXtQ0",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fhyacinth.png?alt=media&token=6a1b1a36-a0a3-47c8-9657-fc066895c57f"
+,
+    "category":  ["🌸 Flowering Plants" ,"☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Iron Cross begonia",
+    "description": "Striking foliage with unique patterns. Care level: Medium. Size: Small.",
+    "price": 7.16,
+    "plantId": "6uwV8xi6qsbQm2geI18n",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Firon_cross_begonia.png?alt=media&token=bdf8a887-506b-4cbb-aceb-4847a4e6ae71",
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Iron Cross begonia",
+    "description": "Striking foliage with unique patterns. Care level: Medium. Size: Medium.",
+    "price": 16.21,
+    "plantId": "6uwV8xi6qsbQm2geI18n",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Firon_cross_begonia.png?alt=media&token=bdf8a887-506b-4cbb-aceb-4847a4e6ae71"
+,
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Iron Cross begonia",
+    "description": "Striking foliage with unique patterns. Care level: Medium. Size: Large.",
+    "price": 27.31,
+    "plantId": "6uwV8xi6qsbQm2geI18n",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Firon_cross_begonia.png?alt=media&token=bdf8a887-506b-4cbb-aceb-4847a4e6ae71"
+,
+    "category": ["🌿 Foliage Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "English Ivy",
+    "description": "Climbing vine, great for decorative coverage. Care level: Low. Size: Small.",
+    "price": 6.78,
+    "plantId": "OHL8hw4nbG4nZYC09x2S",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fenglish_ivy.png?alt=media&token=4579b267-2bf3-4e86-ba92-c942010567d2"
+,
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "English Ivy",
+    "description": "Climbing vine, great for decorative coverage. Care level: Low. Size: Medium.",
+    "price": 19.07,
+    "plantId": "OHL8hw4nbG4nZYC09x2S",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fenglish_ivy.png?alt=media&token=4579b267-2bf3-4e86-ba92-c942010567d2"
+,
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "English Ivy",
+    "description": "Climbing vine, great for decorative coverage. Care level: Low. Size: Large.",
+    "price": 21.1,
+    "plantId": "OHL8hw4nbG4nZYC09x2S",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fenglish_ivy.png?alt=media&token=4579b267-2bf3-4e86-ba92-c942010567d2"
+,
+    "category": ["🌿 Foliage Plants", "🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Dumb Cane",
+    "description": "Large, variegated leaves; toxic if eaten. Care level: Medium. Size: Small.",
+    "price": 6.0,
+    "plantId": "gSekQSFnFKISFw4zn9Ym",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdumb_cane.png?alt=media&token=730ef52b-6c69-488f-ad19-8035ea93f98c"
+,
+    "category": ["🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Dumb Cane",
+    "description": "Large, variegated leaves; toxic if eaten. Care level: Medium. Size: Medium.",
+    "price": 11.28,
+    "plantId": "gSekQSFnFKISFw4zn9Ym",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdumb_cane.png?alt=media&token=730ef52b-6c69-488f-ad19-8035ea93f98c"
+,
+    "category":  ["🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Dumb Cane",
+    "description": "Large, variegated leaves; toxic if eaten. Care level: Medium. Size: Large.",
+    "price": 29.37,
+    "plantId": "gSekQSFnFKISFw4zn9Ym",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdumb_cane.png?alt=media&token=730ef52b-6c69-488f-ad19-8035ea93f98c"
+,
+    "category":  ["🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Daffodils",
+    "description": "Cheerful yellow spring flowers. Care level: Medium. Size: Small.",
+    "price": 9.22,
+    "plantId": "A67cqZPMa8f6YanSDWW4",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdaffodils.png?alt=media&token=74862d8f-ff70-4d9b-9074-e0e1dd850daa"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Daffodils",
+    "description": "Cheerful yellow spring flowers. Care level: Medium. Size: Medium.",
+    "price": 15.31,
+    "plantId": "A67cqZPMa8f6YanSDWW4",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdaffodils.png?alt=media&token=74862d8f-ff70-4d9b-9074-e0e1dd850daa"
+,
+    "category":  ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Daffodils",
+    "description": "Cheerful yellow spring flowers. Care level: Medium. Size: Large.",
+    "price": 34.95,
+    "plantId": "A67cqZPMa8f6YanSDWW4",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fdaffodils.png?alt=media&token=74862d8f-ff70-4d9b-9074-e0e1dd850daa"
+,
+    "category":  ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Chrysanthemum",
+    "description": "Colorful, bushy flowers in fall. Care level: Medium. Size: Small.",
+    "price": 6.77,
+    "plantId": "hZHjn1j6LS5pAaURdWTs",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchrysanthemum.png?alt=media&token=973c393c-6de3-4f76-a73f-e03d6a64e993"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Chrysanthemum",
+    "description": "Colorful, bushy flowers in fall. Care level: Medium. Size: Medium.",
+    "price": 12.29,
+    "plantId": "hZHjn1j6LS5pAaURdWTs",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchrysanthemum.png?alt=media&token=973c393c-6de3-4f76-a73f-e03d6a64e993"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Chrysanthemum",
+    "description": "Colorful, bushy flowers in fall. Care level: Medium. Size: Large.",
+    "price": 34.13,
+    "plantId": "hZHjn1j6LS5pAaURdWTs",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchrysanthemum.png?alt=media&token=973c393c-6de3-4f76-a73f-e03d6a64e993"
+,
+    "category": ["🌸 Flowering Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Chinese evergreen",
+    "description": "Tolerant of low light and humidity. Care level: Low. Size: Small.",
+    "price": 5.3,
+    "plantId": "vd2BEOJMYyA3LN3C5iw2",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchinese_evergreen.png?alt=media&token=602a8baa-2d98-4c02-82d3-ff3de0f028e7"
+,
+    "category": ["🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Chinese evergreen",
+    "description": "Tolerant of low light and humidity. Care level: Low. Size: Medium.",
+    "price": 19.42,
+    "plantId": "vd2BEOJMYyA3LN3C5iw2",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchinese_evergreen.png?alt=media&token=602a8baa-2d98-4c02-82d3-ff3de0f028e7"
+,
+    "category": ["🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Chinese evergreen",
+    "description": "Tolerant of low light and humidity. Care level: Low. Size: Large.",
+    "price": 28.25,
+    "plantId": "vd2BEOJMYyA3LN3C5iw2",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fchinese_evergreen.png?alt=media&token=602a8baa-2d98-4c02-82d3-ff3de0f028e7"
+,
+    "category": ["🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Boston Fern",
+    "description": "Lush, arching fronds; needs constant moisture. Care level: High. Size: Small.",
+    "price": 9.28,
+    "plantId": "GOAgU0xYtzAVa5MD3jkS",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fboston_fern.png?alt=media&token=b8532f65-c11d-4e33-a709-2d473fe033a1"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Boston Fern",
+    "description": "Lush, arching fronds; needs constant moisture. Care level: High. Size: Medium.",
+    "price": 12.19,
+    "plantId": "GOAgU0xYtzAVa5MD3jkS",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fboston_fern.png?alt=media&token=b8532f65-c11d-4e33-a709-2d473fe033a1"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Boston Fern",
+    "description": "Lush, arching fronds; needs constant moisture. Care level: High. Size: Large.",
+    "price": 26.25,
+    "plantId": "GOAgU0xYtzAVa5MD3jkS",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fboston_fern.png?alt=media&token=b8532f65-c11d-4e33-a709-2d473fe033a1"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","🌬️ Air-Purifying","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Birds Nest Fern",
+    "description": "Curled fronds and a tropical look. Care level: High. Size: Small.",
+    "price": 8.11,
+    "plantId": "D7vZJ74o5koLJXc0cKhn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbirds_nest_fern.png?alt=media&token=6b333e8d-5d9e-4beb-9037-5ec0eb65e31c"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","🌬️ Air-Purifying", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Small"
+  },
+  {
+    "name": "Birds Nest Fern",
+    "description": "Curled fronds and a tropical look. Care level: High. Size: Medium.",
+    "price": 15.48,
+    "plantId": "D7vZJ74o5koLJXc0cKhn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbirds_nest_fern.png?alt=media&token=6b333e8d-5d9e-4beb-9037-5ec0eb65e31c"
+,
+    "category":["🍃 Ferns","🌿 Foliage Plants","🌬️ Air-Purifying", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Medium"
+  },
+  {
+    "name": "Birds Nest Fern",
+    "description": "Curled fronds and a tropical look. Care level: High. Size: Large.",
+    "price": 24.02,
+    "plantId": "D7vZJ74o5koLJXc0cKhn",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbirds_nest_fern.png?alt=media&token=6b333e8d-5d9e-4beb-9037-5ec0eb65e31c"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","🌬️ Air-Purifying", "☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "High",
+    "size": "Large"
+  },
+  {
+    "name": "Bird of Paradise",
+    "description": "Striking, exotic flowers. Care level: Medium. Size: Small.",
+    "price": 7.41,
+    "plantId": "EZ4JLGnjuA7JL9DZbA6Q",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbird_of_paradise.png?alt=media&token=f11aaf07-83ff-45a5-ad13-0f3b49902181"
+,
+    "category": ["🌸 Flowering Plants","🌿 Foliage Plants","🌬️ Air-Purifying", "☠️ Toxic Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Bird of Paradise",
+    "description": "Striking, exotic flowers. Care level: Medium. Size: Medium.",
+    "price": 12.63,
+    "plantId": "EZ4JLGnjuA7JL9DZbA6Q",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbird_of_paradise.png?alt=media&token=f11aaf07-83ff-45a5-ad13-0f3b49902181"
+,
+    "category": ["🌸 Flowering Plants","🌿 Foliage Plants","🌬️ Air-Purifying", "☠️ Toxic Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Bird of Paradise",
+    "description": "Striking, exotic flowers. Care level: Medium. Size: Large.",
+    "price": 25.25,
+    "plantId": "EZ4JLGnjuA7JL9DZbA6Q",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbird_of_paradise.png?alt=media&token=f11aaf07-83ff-45a5-ad13-0f3b49902181"
+,
+    "category": ["🌸 Flowering Plants","🌿 Foliage Plants","🌬️ Air-Purifying", "☠️ Toxic Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Begonia",
+    "description": "Colorful flowers and foliage. Care level: Medium. Size: Small.",
+    "price": 7.99,
+    "plantId": "YBUeOzj9lRNRWuYXnzOk",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbegonia.png?alt=media&token=e2b01acc-ab3f-4ccd-8fbd-82e34d430c19"
+,
+    "category": ["🌸 Flowering Plants","🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Begonia",
+    "description": "Colorful flowers and foliage. Care level: Medium. Size: Medium.",
+    "price": 13.85,
+    "plantId": "YBUeOzj9lRNRWuYXnzOk",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbegonia.png?alt=media&token=e2b01acc-ab3f-4ccd-8fbd-82e34d430c19"
+,
+    "category": ["🌸 Flowering Plants","🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Begonia",
+    "description": "Colorful flowers and foliage. Care level: Medium. Size: Large.",
+    "price": 33.22,
+    "plantId": "YBUeOzj9lRNRWuYXnzOk",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fbegonia.png?alt=media&token=e2b01acc-ab3f-4ccd-8fbd-82e34d430c19"
+,
+    "category": ["🌸 Flowering Plants","🌿 Foliage Plants","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Asparagus Fern",
+    "description": "Delicate, fluffy foliage. Care level: Medium. Size: Small.",
+    "price": 7.09,
+    "plantId": "9eku6dWDSoaTa8IjFuJY",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fasparagus_fern.png?alt=media&token=dd4ad2ef-a16b-4bad-ba1f-d8677223cbe4"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","☠️ Toxic Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Asparagus Fern",
+    "description": "Delicate, fluffy foliage. Care level: Medium. Size: Medium.",
+    "price": 11.56,
+    "plantId": "9eku6dWDSoaTa8IjFuJY",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fasparagus_fern.png?alt=media&token=dd4ad2ef-a16b-4bad-ba1f-d8677223cbe4"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","☠️ Toxic Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Asparagus Fern",
+    "description": "Delicate, fluffy foliage. Care level: Medium. Size: Large.",
+    "price": 21.65,
+    "plantId": "9eku6dWDSoaTa8IjFuJY",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fasparagus_fern.png?alt=media&token=dd4ad2ef-a16b-4bad-ba1f-d8677223cbe4"
+,
+    "category": ["🍃 Ferns","🌿 Foliage Plants","☠️ Toxic Plants","🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Anthurium",
+    "description": "Heart-shaped flowers and shiny leaves. Care level: Medium. Size: Small.",
+    "price": 8.69,
+    "plantId": "rZaCprwpnkUU0yrSSOvR",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fanthurium.png?alt=media&token=5607bcfc-bcb6-4d82-b7c7-4b3b80b7d813"
+,
+    "category": ["🌸 Flowering Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Anthurium",
+    "description": "Heart-shaped flowers and shiny leaves. Care level: Medium. Size: Medium.",
+    "price": 13.36,
+    "plantId": "rZaCprwpnkUU0yrSSOvR",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fanthurium.png?alt=media&token=5607bcfc-bcb6-4d82-b7c7-4b3b80b7d813"
+,
+    "category": ["🌸 Flowering Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Anthurium",
+    "description": "Heart-shaped flowers and shiny leaves. Care level: Medium. Size: Large.",
+    "price": 32.7,
+    "plantId": "rZaCprwpnkUU0yrSSOvR",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fanthurium.png?alt=media&token=5607bcfc-bcb6-4d82-b7c7-4b3b80b7d813"
+,
+    "category": ["🌸 Flowering Plants","🌬️ Air-Purifying","☠️ Toxic Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  },
+  {
+    "name": "Aloe Vera",
+    "description": "Succulent with healing gel inside. Care level: Low. Size: Small.",
+    "price": 9.51,
+    "plantId": "qqRezH2MSHdv88J8FySB",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Faloe_vera.png?alt=media&token=f17a1f1d-02f9-4da9-9a8b-6c87decbebc7"
+,
+    "category": ["🌵 Succulents & Cacti","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Small"
+  },
+  {
+    "name": "Aloe Vera",
+    "description": "Succulent with healing gel inside. Care level: Low. Size: Medium.",
+    "price": 17.7,
+    "plantId": "qqRezH2MSHdv88J8FySB",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Faloe_vera.png?alt=media&token=f17a1f1d-02f9-4da9-9a8b-6c87decbebc7"
+,
+    "category": ["🌵 Succulents & Cacti","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Medium"
+  },
+  {
+    "name": "Aloe Vera",
+    "description": "Succulent with healing gel inside. Care level: Low. Size: Large.",
+    "price": 30.08,
+    "plantId": "qqRezH2MSHdv88J8FySB",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Faloe_vera.png?alt=media&token=f17a1f1d-02f9-4da9-9a8b-6c87decbebc7"
+,
+    "category": ["🌵 Succulents & Cacti","🌬️ Air-Purifying","☠️ Toxic Plants","✅ Beginner-friendly"],
+    "quantity": 50,
+    "careLevel": "Low",
+    "size": "Large"
+  },
+  {
+    "name": "Polka Dot Plant",
+    "description": "Speckled leaves in pink or white. Care level: Medium. Size: Small.",
+    "price": 6.15,
+    "plantId": "6kmSosxEL1QaPkXTXHAC",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpolka_dot_plant.png?alt=media&token=a8b31298-ac02-4203-945d-1dc1a2426286"
+,
+    "category": ["🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Small"
+  },
+  {
+    "name": "Polka Dot Plant",
+    "description": "Speckled leaves in pink or white. Care level: Medium. Size: Medium.",
+    "price": 17.04,
+    "plantId": "6kmSosxEL1QaPkXTXHAC",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpolka_dot_plant.png?alt=media&token=a8b31298-ac02-4203-945d-1dc1a2426286"
+,
+    "category": ["🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Medium"
+  },
+  {
+    "name": "Polka Dot Plant",
+    "description": "Speckled leaves in pink or white. Care level: Medium. Size: Large.",
+    "price": 32.0,
+    "plantId": "6kmSosxEL1QaPkXTXHAC",
+    "image": "https://firebasestorage.googleapis.com/v0/b/econest-58ad7.firebasestorage.app/o/PlantImages%2Fpolka_dot_plant.png?alt=media&token=a8b31298-ac02-4203-945d-1dc1a2426286"
+,
+    "category": ["🌟 Unique Plants"],
+    "quantity": 50,
+    "careLevel": "Medium",
+    "size": "Large"
+  }
+]

@@ -16,7 +16,6 @@ struct HomeView: View {
     // State objects for managing cart and product data
     @StateObject private var cartViewModel = CartViewModel()
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    
     var body: some View {
         
         ZStack(alignment: .top) {
