@@ -12,12 +12,14 @@ struct OrderCardView: View {
     var order: Order
     @ObservedObject var viewModel: OrderViewModel
     @State private var showCancelAlert = false
-
+    var currentLanguage: String
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         HStack(spacing: 12){
             
             VStack {
-                Text("Scheduled :")
+                Text("Scheduled".localized(using: currentLanguage))
                 Text(order.date.formattedAsOrderDate())
             }
             .padding()
@@ -27,15 +29,17 @@ struct OrderCardView: View {
             .background(Color("LimeGreen"))
                                     
             VStack(alignment: .leading, spacing: 8, content: {
-                Text("Plant: \(order.products.map { $0.name ?? "" }.joined(separator: ", "))")
+                Text(String(format: "PlantO".localized(using: currentLanguage),
+                            order.products.map { $0.name ?? "" }.joined(separator: ", ")))
                     .foregroundStyle(.primary)
                 
                 HStack {
-                    Text("Total: \(order.total, specifier: "%.2f")")
+                    
+                    Text(String(format: "TotalO".localized(using: currentLanguage), String(format: "%.2f", order.total)))
                         .foregroundStyle(.primary)
                         .bold()
                     
-                    Image("RiyalB")
+                    Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                         .resizable()
                         .frame(width: 16, height: 16)
                 }
@@ -44,17 +48,17 @@ struct OrderCardView: View {
                     Button(action: {
                         showCancelAlert = true
                     }) {
-                        Text("Cancel")
+                        Text("Cancel".localized(using: currentLanguage))
                             .foregroundStyle(.red)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
-                    .alert("Cancel Order", isPresented: $showCancelAlert) {
-                        Button("Yes", role: .destructive) {
+                    .alert("CancelOrder".localized(using: currentLanguage), isPresented: $showCancelAlert) {
+                        Button("Yes".localized(using: currentLanguage), role: .destructive) {
                             viewModel.cancelOrders(order: order)
                         }
-                        Button("No", role: .cancel) { }
+                        Button("No".localized(using: currentLanguage), role: .cancel) { }
                     } message: {
-                        Text("Are you sure you want to cancel this order?")
+                        Text("CancelThisOrder".localized(using: currentLanguage))
                     }
                 }
 
@@ -64,7 +68,7 @@ struct OrderCardView: View {
             
         }
         .padding(.trailing)
-        .background(Color.white, in: RoundedRectangle(cornerRadius: 10))
+        .background(.background, in: RoundedRectangle(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color("LimeGreen"), lineWidth: 2)

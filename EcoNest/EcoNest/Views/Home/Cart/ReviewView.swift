@@ -25,11 +25,9 @@ struct ReviewView: View {
     
     var body: some View {
         NavigationStack {
-            
             VStack {
                 ScrollView {
                     VStack(spacing: 16) {
-                        
                         Map(coordinateRegion: $mapRegion)
                             .frame(height: 300)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -40,8 +38,9 @@ struct ReviewView: View {
                             .onTapGesture {
                                 locViewModel.showMap.toggle()
                             }
-                            
+                        
                         Divider()
+                        
                         VStack {
                             ForEach(viewModel.cartProducts) { cart in
                                 HStack(spacing: 15) {
@@ -59,19 +58,15 @@ struct ReviewView: View {
                                             .frame(width: 16, height: 16)
                                     }
                                     .frame(width: 90, alignment: .leading)
-                                    
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 
-                                
                                 Divider()
                             }
-                            
                         }
                         .padding(.bottom)
                         
                         VStack {
-                            
                             HStack(spacing: 30) {
                                 Text("PickupLocation".localized(using: currentLanguage))
                                     .frame(width: 150, alignment: .leading)
@@ -94,19 +89,15 @@ struct ReviewView: View {
                                     .frame(width: 150, alignment: .leading)
                                 
                                 HStack {
-                                    
                                     Text("\(viewModel.calculateTotal(), specifier: "%.2f")")
                                     
                                     Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                                         .resizable()
                                         .frame(width: 16, height: 16)
                                 }
-                                
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            
                         }
-                        
                     }
                 }
                 
@@ -114,9 +105,9 @@ struct ReviewView: View {
                     viewModel.addOrder(locationId: locViewModel.mapLocation.id)
                     NotificationManager.shared.requestPermission { granted in
                         if granted {
-                            NotificationManager.shared.scheduleNotification (
-                                title: "New order",
-                                body: "hi",
+                            NotificationManager.shared.scheduleNotification(
+                                title: "It's Pickup Day! ✨",
+                                body: "Just a reminder that your order is ready for pickup today. We look forward to seeing you!",
                                 date: viewModel.selectedDate
                             )
                         }
@@ -137,23 +128,18 @@ struct ReviewView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-            .fullScreenCover(isPresented: $locViewModel.showMap, content: {
-                MapView()
-            })
-            .fullScreenCover(isPresented: $show, content: {
-                
+            .sheet(isPresented: $show) {
                 ConfirmationAlert()
-                        
-            })
+            }
+            .fullScreenCover(isPresented: $locViewModel.showMap) {
+                MapView()
+            }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    CustomBackward(title: "ReviewConfirm".localized(using: currentLanguage), tapEvent: {dismiss()})
+                ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
+                    CustomBackward(title: "ReviewConfirm".localized(using: currentLanguage), tapEvent: { dismiss() })
                 }
             }
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-            
         }
     }
 }
-
-
