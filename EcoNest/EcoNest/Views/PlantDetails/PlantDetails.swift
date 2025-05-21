@@ -17,6 +17,8 @@ struct PlantDetails: View {
         _plantDetailsVM = StateObject(wrappedValue: PlantDetailsViewModel(PlantName: plantName))
     }
     
+    
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 16){
@@ -69,10 +71,21 @@ struct PlantDetails: View {
                 .padding()
                 
                 
-                Text("Recommended Products")
-                LazyHStack {
-                    
+                if !plantDetailsVM.products.isEmpty {
+                    Text("Recommended Products")
+                        .font(.headline)
+                        .padding(.horizontal)
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 16) {
+                            ForEach(plantDetailsVM.products) { product in
+                                ProductCard(product: product)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
                 }
+
                 
             }
             
@@ -85,3 +98,36 @@ struct PlantDetails: View {
     
 }
 
+struct ProductCard: View {
+    let product: Product
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let url = URL(string: product.image ?? "") {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let img):
+                        img.resizable()
+                            .scaledToFit()
+                            .frame(width: 140, height: 120)
+                            .clipped()
+                    case .failure:
+                        Image(systemName: "photo")
+                            .foregroundColor(.white)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
+            Text(product.name ?? "").font(.subheadline).bold()
+            Text("SAR \(product.price ?? 0.0, specifier: "%.2f")")
+                .font(.caption)
+        }
+        .frame(width: 140)
+        .padding(8)
+        .background(.ultraThinMaterial)
+        .cornerRadius(12)
+    }
+}
