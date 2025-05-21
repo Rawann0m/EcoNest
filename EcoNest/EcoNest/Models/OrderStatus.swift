@@ -8,6 +8,5 @@
 
 enum OrderStatus: String, CaseIterable {
     case awaitingPickup = "Awaiting pickup"
-    //case pickedUp = "Picked up"
     case cancelled = "Cancelled"
 }

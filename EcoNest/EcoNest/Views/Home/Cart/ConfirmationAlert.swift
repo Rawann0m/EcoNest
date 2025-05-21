@@ -13,6 +13,11 @@ struct ConfirmationAlert: View {
     var gridentColor: Color = Color("LimeGreen")
     var circleColor: Color = Color("LimeGreen")
     var cornerRadius: CGFloat = 30
+    var width: CGFloat = 220
+    var height: CGFloat = 220
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @EnvironmentObject var themeManager: ThemeManager
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationView {
@@ -21,7 +26,7 @@ struct ConfirmationAlert: View {
                     Circle()
                         .stroke(lineWidth: 2)
                         .foregroundStyle(circleColor)
-                        .frame(width: 220, height: 220)
+                        .frame(width: width, height: height)
                         .scaleEffect(animationCircle ? 1.3 : 0.9)
                         .opacity(animationCircle ? 0 : 1)
                         .animation(.easeInOut(duration: 2).delay(1).repeatForever(autoreverses: true), value: animationCircle)
@@ -29,7 +34,7 @@ struct ConfirmationAlert: View {
                     Circle()
                         .stroke(lineWidth: 2)
                         .foregroundStyle(circleColor)
-                        .frame(width: 220, height: 220)
+                        .frame(width: width, height: height)
                         .scaleEffect(animationCircle ? 1.3 : 0.9)
                         .opacity(animationCircle ? 0 : 1)
                         .animation(.easeInOut(duration: 2).delay(1.5).repeatForever(autoreverses: true), value: animationCircle)
@@ -43,36 +48,27 @@ struct ConfirmationAlert: View {
                         .foregroundStyle(circleColor)
                 }
                
-                Text("Order confirmed Successfuly")
-                    .foregroundStyle(Color("DarkGreen"))
+                Text("OrderSuccessfuly".localized(using: currentLanguage))
+                    .foregroundStyle(themeManager.isDarkMode ? .white : Color("DarkGreen"))
                     .font(.system(size: 42, weight: .bold, design: .rounded))
                     .multilineTextAlignment(.center)
                 
                 HStack(spacing: 20){
-                    NavigationLink(destination: MainTabView()){
+                    Button(action: {dismiss()}) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(Color("LimeGreen"))
-                            Text("Home")
+                            Text("GoBack".localized(using: currentLanguage))
                                 .foregroundStyle(.white)
                                 .bold()
                         }
                     }
                     .frame(width: 160, height: 60)
                     
-                    NavigationLink(destination: Text("Order List")){
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color("LimeGreen"), lineWidth: 2)
-                            Text("Order")
-                                .foregroundStyle(Color("LimeGreen"))
-                                .bold()
-                        }
-                    }
-                    .frame(width: 160, height: 60)
                 }
             }
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
 

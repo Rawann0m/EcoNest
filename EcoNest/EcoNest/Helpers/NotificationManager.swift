@@ -54,11 +54,14 @@ class NotificationManager {
         content.badge = 1
 
         // Extract day, hour, and minute from the provided Date
-        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: date)
-        dateComponents.hour = 11
-        dateComponents.minute = 46
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        var dateComponents = DateComponents()
+        dateComponents.year = Calendar.current.component(.year, from: date)
+        dateComponents.month = Calendar.current.component(.month, from: date)
+        dateComponents.day = Calendar.current.component(.day, from: date)
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
@@ -68,7 +71,6 @@ class NotificationManager {
             }
         }
     }
-
     
     // Remove all notifications if user turned off his notification
     func removeAllPendingNotifications() {
