@@ -240,7 +240,11 @@ class PostsListViewModel: ObservableObject {
                 let profileImage = data["profileImage"] as? String ?? ""
                 let receiveMessages = data["receiveMessages"] as? Bool ?? false
                 
+<<<<<<< Updated upstream
                 let user = User(username: username, email: email, profileImage: profileImage, receiveMessages: receiveMessages)
+=======
+                let user = User(username: username, email: email, favoritePlants: [], profileImage: profileImage)
+>>>>>>> Stashed changes
                 print("found user")
                 completion(user)
             } else {

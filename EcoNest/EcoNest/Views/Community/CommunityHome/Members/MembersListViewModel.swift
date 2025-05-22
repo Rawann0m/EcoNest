@@ -40,7 +40,11 @@ class MembersListViewModel: ObservableObject {
                         let profileImage = data["profileImage"] as? String ?? ""
                         let receiveMessages = data["receiveMessages"] as? Bool ?? false
                         
+<<<<<<< Updated upstream
                         let user = User(id: snapshot.documentID, username: name, email: email, profileImage: profileImage, receiveMessages: receiveMessages)
+=======
+                        let user = User(id: snapshot.documentID, username: name, email: email, favoritePlants: [], profileImage: profileImage)
+>>>>>>> Stashed changes
                         
                         DispatchQueue.main.async {
                             self.members.append(user)

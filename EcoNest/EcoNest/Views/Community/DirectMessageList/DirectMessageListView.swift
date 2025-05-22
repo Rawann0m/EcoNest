@@ -24,7 +24,11 @@ struct DirectMessageListView: View {
                             .listRowSeparator(.hidden)
                             .onTapGesture {
                                 let uid = FirebaseManager.shared.auth.currentUser!.uid == message.fromId ? message.toId : message.fromId
+<<<<<<< Updated upstream
                                 selectedUser = User(id: uid, username: message.username, email: "", profileImage: message.profileImage ?? "", receiveMessages: false)
+=======
+                                selectedUser = User(id: uid, username: message.username, email: "", favoritePlants: [], profileImage: message.profileImage ?? "")
+>>>>>>> Stashed changes
                             }
                     }
                     .onDelete(perform: viewModel.DeleteMessage)

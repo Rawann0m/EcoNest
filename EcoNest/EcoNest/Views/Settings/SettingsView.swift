@@ -101,7 +101,12 @@ struct SettingsView: View {
                                 .onTapGesture {
                                     if viewModel.oldName != viewModel.name || selectedImage != nil {
                                         if isEdit {
+<<<<<<< Updated upstream
                                             viewModel.updateUserInformation(user: User(username: viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines), email: viewModel.email, profileImage: viewModel.profileImage, receiveMessages: viewModel.receiveMessages), newImage: selectedImage)
+=======
+                                            // fix the fav
+                                            viewModel.updateUserInformation(user: User(username: viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines), email: viewModel.email,favoritePlants: [] ,profileImage: viewModel.profileImage), newImage: selectedImage)
+>>>>>>> Stashed changes
                                             print("edit")
                                         }
                                     }
