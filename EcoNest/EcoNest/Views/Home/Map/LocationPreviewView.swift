@@ -12,6 +12,7 @@ struct LocationPreviewView: View {
     
     let location: Location
     @EnvironmentObject private var viewModel: LocationViewModel
+    var currentLanguage: String
     
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
@@ -43,7 +44,7 @@ struct LocationPreviewView: View {
                 Button {
                     viewModel.nextButtonPressed()
                 } label: {
-                    Text("Next")
+                    Text("Next".localized(using: currentLanguage))
                         .font(.headline)
                         .frame(width: 125, height: 35)
                 }

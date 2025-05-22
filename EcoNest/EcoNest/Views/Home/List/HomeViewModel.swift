@@ -20,9 +20,14 @@ class HomeViewModel: ObservableObject {
     /// Products filtered based on the search query
     @Published var filtered: [Product] = []
     
+    
+    init(){
+        fetchProductData()
+    }
+    
     /// Computed property returning the first few product image URLs for slider
     var sliderImages: [String] {
-        return products.prefix(4).map { $0.image ?? "" }
+        return products.shuffled().prefix(4).map { $0.image ?? "" }
     }
     
     /// Fetches product data from the "product" collection in Firestore
@@ -90,7 +95,6 @@ class HomeViewModel: ObservableObject {
                 }
             }
     }
-
 }
 
 

@@ -69,6 +69,25 @@
 "PickupLocation" = "موقع الاستلام:";
 "PickupDate" = "تاريخ الاستلام:";
 "Total" = "الإجمالي:";
+"Next" = "التالي";
+"OrderSuccessfuly" = "تم تأكيد الطلب بنجاح";
+"Orders" = "الطلبات";
+"GoBack" = "ارجع";
+
+// Order
+"Order" = "الطلب";
+"Awaiting pickup" = "بانتظار الاستلام";
+"Cancelled" = "ملغي";
+"Scheduled" = "الموعد:";
+"PlantO" = "النباتات: %@";
+"TotalO" = "الإجمالي: %@";
+"Cancel" = "إلغاء";
+"CancelOrder" = "إلغاء الطلب";
+"Yes" = "نعم";
+"No" = "لا";
+"CancelThisOrder" = "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟";
+"NoOrdersYet" = "لا توجد طلبات بعد";
+"NoCancelledOrders" = "لا توجد طلبات ملغاة";
 
 "Members" = "الاعضاء";
 "Posts" = "المنشورات";
@@ -104,3 +123,11 @@
 "AllPlants"="كل النباتات";
 "FilterCategories"= "تصفية الفئات";
 "Apply" = "تطبيق";
+"DeleteAccountMessage" = "سيؤدي حذف حسابك إلى مسح جميع بياناتك.";
+"Delete" = "حذف";
+"Sure" = "هل أنت متأكد؟";
+"allowDR" = "استقبال الرسائل";
+"postNumber" = "يمكنك إضافة 3 صور كحد أقصى لكل منشور.";
+"OK" = "نعم";
+"membersCommunity" = "%d أعضاء";
+"memberCommunity" = "%d عضو";

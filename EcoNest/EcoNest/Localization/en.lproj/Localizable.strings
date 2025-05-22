@@ -70,6 +70,26 @@
 "PickupLocation" = "Pickup Location:";
 "PickupDate" = "Pickup Date:";
 "Total" = "Total:";
+"Next" = "Next";
+"OrderSuccessfuly" = "Order confirmed Successfuly";
+"Home" = "Home";
+"Orders" = "Orders";
+"GoBack" = "Go Back";
+
+// Order
+"Order" = "Order";
+"Awaiting pickup" = "Awaiting pickup";
+"Cancelled" = "Cancelled";
+"Scheduled" = "Scheduled:";
+"PlantO" = "Plant: %@";
+"TotalO" = "Total: %@";
+"Cancel" = "Cancel";
+"CancelOrder" = "Cancel Order";
+"Yes" = "Yes";
+"No" = "No";
+"CancelThisOrder" = "Are you sure you want to cancel this order?";
+"NoOrdersYet" = "No Orders Yet";
+"NoCancelledOrders" = "No Cancelled Orders";
 
 "Members" = "Members";
 "Posts" = "Posts";
@@ -103,4 +123,11 @@
 "AllPlants"= "All Plants";
 "FilterCategories"= "Filter Categories";
 "Apply" = "Apply";
-
+"DeleteAccountMessage" = "Deleting your account will erase all your data.";
+"Delete" = "Delete";
+"Sure" = "Are you sure?";
+"allowDR" = "Receive Messages";
+"postNumber" = "You can only add up to 3 photos per post.";
+"OK" = "OK";
+"membersCommunity" = "%d members";
+"memberCommunity" = "%d member";

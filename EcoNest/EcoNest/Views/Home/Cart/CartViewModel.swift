@@ -17,34 +17,42 @@ class CartViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var selectedDate: Date = Date()
     
+    private var cartListener: ListenerRegistration?
+
+    init() {
+        fetchCartData()
+    }
+
+    deinit {
+        cartListener?.remove()
+    }
+    
     /// Fetches all cart items from Firestore and resolves them into complete Cart objects with full Product data.
     func fetchCartData() {
         
         isLoading = true
+        cartListener?.remove() // Remove previous one
         
         let db = FirebaseManager.shared.firestore
         
         guard let userId = Auth.auth().currentUser?.uid else {
-            print("User must be logged in to add to cart.")
+            print("User not logged in")
             isLoading = false
             return
         }
         
-        db.collection("users")
+        cartListener = db.collection("users")
             .document(userId)
             .collection("cart")
-            .getDocuments { snapshot, error in
+            .addSnapshotListener { snapshot, error in
                 
                 guard let documents = snapshot?.documents else {
                     print("No cart data found.")
-                    DispatchQueue.main.async {
-                        self.cartProducts = []
-                        self.isLoading = false
-                    }
+                    self.isLoading = false
                     return
                 }
 
-                self.cartProducts = [] // Clear old data
+                var fetchedCart: [Cart] = []
                 let group = DispatchGroup()
 
                 for doc in documents {
@@ -78,14 +86,15 @@ class CartViewModel: ObservableObject {
                                 price: price
                             )
 
-                            DispatchQueue.main.async {
-                                self.cartProducts.append(cartItem)
-                            }
+                           
+                            fetchedCart.append(cartItem)
+                            
                         }
                     }
                 }
 
                 group.notify(queue: .main) {
+                    self.cartProducts = fetchedCart
                     self.isLoading = false
                 }
             }
