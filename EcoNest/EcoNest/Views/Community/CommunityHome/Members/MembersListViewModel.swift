@@ -39,15 +39,8 @@ class MembersListViewModel: ObservableObject {
                         let email = data["email"] as? String ?? "Unknown"
                         let profileImage = data["profileImage"] as? String ?? ""
                         
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                        let user = User(id: snapshot.documentID, username: name, email: email, profileImage: profileImage, receiveMessages: receiveMessages)
-=======
                         let user = User(id: snapshot.documentID, username: name, email: email, favoritePlants: [], profileImage: profileImage)
->>>>>>> Stashed changes
-=======
-                        let user = User(id: snapshot.documentID, username: name, email: email, profileImage: profileImage)
->>>>>>> parent of b842684 (Merge branch 'Dev' into Dev-AH-Branch)
+
                         
                         DispatchQueue.main.async {
                             self.members.append(user)
