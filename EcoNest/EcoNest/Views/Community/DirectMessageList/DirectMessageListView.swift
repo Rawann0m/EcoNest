@@ -24,7 +24,7 @@ struct DirectMessageListView: View {
                             .listRowSeparator(.hidden)
                             .onTapGesture {
                                 let uid = FirebaseManager.shared.auth.currentUser!.uid == message.fromId ? message.toId : message.fromId
-                                selectedUser = User(id: uid, username: message.username, email: "", profileImage: message.profileImage ?? "")
+                                selectedUser = User(id: uid, username: message.username, email: "", profileImage: message.profileImage ?? "", receiveMessages: false)
                             }
                     }
                     .onDelete(perform: viewModel.DeleteMessage)

@@ -12,25 +12,38 @@ class SettingsViewModel: ObservableObject {
     @Published var user: User?
     @Published var isUploading = false
     @Published var uploadURL: URL?
+    @Published var oldName = ""
+    @Published var name: String = ""
+    @Published var email: String = ""
+    @Published var profileImage: String = ""
+    @Published var receiveMessages: Bool = false
+    
+    var userListener: ListenerRegistration?
     
     init(){
         fetchCurrentUser()
     }
     
+    deinit{
+        userListener?.remove()
+    }
+    
     func fetchCurrentUser() {
         if let uid = FirebaseManager.shared.auth.currentUser?.uid {
-            FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { (snapshot, error) in
+            userListener =   FirebaseManager.shared.firestore.collection("users").document(uid).addSnapshotListener { (snapshot, error) in
                 if let error = error {
                     print("Error getting document: \(error)")
                 } else if let document = snapshot {
                     let data = document.data()
                     if let data = data {
                         
-                        let username = data["username"] as? String ?? ""
-                        let email = data["email"] as? String ?? ""
-                        let profileImage = data["profileImage"] as? String ?? ""
+                        self.name = data["username"] as? String ?? ""
+                        self.oldName = data["username"] as? String ?? ""
+                        self.email = data["email"] as? String ?? ""
+                        self.profileImage = data["profileImage"] as? String ?? ""
+                        self.receiveMessages = data["receiveMessages"] as? Bool ?? false
                         
-                        self.user = User(username: username, email: email, profileImage: profileImage)
+                        self.user = User(username: self.name, email: self.email, profileImage: self.profileImage, receiveMessages: self.receiveMessages)
                     }
                 }
             }
@@ -80,5 +93,24 @@ class SettingsViewModel: ObservableObject {
             }
         }
     }
-
+    
+    func updateReceiveMessages(){
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            print("No authenticated user.")
+            return
+        }
+        
+        FirebaseManager.shared.firestore.collection("users")
+            .document(uid)
+            .updateData([
+                "receiveMessages" : self.receiveMessages
+            ]) { error in
+                if let error = error {
+                    print("Firestore update error: \(error.localizedDescription)")
+                } else {
+                    print("User updated receiveing Messages")
+                }
+            }
+    }
+    
 }

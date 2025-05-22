@@ -31,13 +31,14 @@ struct CommuintyListView: View {
                                 
                                 VStack{
                                     Group{
-                                        Text(community.name)
+                                        Text(currentLanguage == "en" ? community.name[0] : community.name[1])
                                             .font(.title)
                                             .foregroundColor(.white)
                                             .bold()
                                             .frame(width: 320, alignment: .leading)
                                         
-                                        Text("\(community.members.count) members")
+//                                        Text("\(community.members.count) members".localized(using: currentLanguage))
+                                        Text("\(community.members.count) \(Text("membersCommunity"))")
                                             .font(.title3)
                                             .foregroundColor(.white)
                                             .bold()

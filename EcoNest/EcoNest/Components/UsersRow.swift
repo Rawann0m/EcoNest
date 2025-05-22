@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 @ViewBuilder
-func UsersRow(username: String, image: String) -> some View {
+func UsersRow(user: User, image: String, receiveMessages: Bool) -> some View {
     HStack (alignment: .center){
         VStack{
             if image == "" {
@@ -27,8 +27,18 @@ func UsersRow(username: String, image: String) -> some View {
                 .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
         }
         
-        Text(username)
+        Text(user.username)
             .font(.headline)
+        
+        
+        Spacer()
+        
+        if FirebaseManager.shared.auth.currentUser?.uid != user.id && receiveMessages {
+            Text("chat")
+                .bold()
+                .foregroundColor(Color("LimeGreen"))
+                .padding(.horizontal)
+        }
             
     }
     .frame(maxWidth: .infinity, alignment: .leading)
