@@ -56,7 +56,6 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                             .scaledToFill()
                             .frame(maxWidth: .infinity, maxHeight: 300)
                             .clipped()
-                            .contentShape(Rectangle())
                             .cornerRadius(10)
                     }
                 } else if images.count == 2 {
@@ -68,10 +67,8 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                     WebImage(url: url)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(minHeight: 200, maxHeight: 300)
-                                        .frame(width: (UIScreen.main.bounds.width - 25)/2)
+                                        .frame(maxWidth: 188, minHeight: 200, maxHeight: 300)
                                         .clipped()
-                                        .contentShape(Rectangle())
                                         .cornerRadius(10)
                                 }
                             }
@@ -86,10 +83,8 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                     WebImage(url: url)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(minHeight: 100, maxHeight: 300)
-                                        .frame(width: (UIScreen.main.bounds.width - 25)/2)
+                                        .frame(maxWidth: 185, minHeight: 100, maxHeight: 300)
                                         .clipped()
-                                        .contentShape(Rectangle())
                                         .cornerRadius(10)
                                 }
                             }

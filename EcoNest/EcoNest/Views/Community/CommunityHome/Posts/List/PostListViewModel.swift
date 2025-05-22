@@ -238,13 +238,16 @@ class PostsListViewModel: ObservableObject {
                 let username = data["username"] as? String ?? ""
                 let email = data["email"] as? String ?? ""
                 let profileImage = data["profileImage"] as? String ?? ""
-                let receiveMessages = data["receiveMessages"] as? Bool ?? false
                 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                 let user = User(username: username, email: email, profileImage: profileImage, receiveMessages: receiveMessages)
 =======
                 let user = User(username: username, email: email, favoritePlants: [], profileImage: profileImage)
 >>>>>>> Stashed changes
+=======
+                let user = User(username: username, email: email, profileImage: profileImage)
+>>>>>>> parent of b842684 (Merge branch 'Dev' into Dev-AH-Branch)
                 print("found user")
                 completion(user)
             } else {

@@ -14,5 +14,4 @@ struct User: Identifiable, Hashable {
     let email: String
     let favoritePlants: [String]?
     let profileImage: String
-    var receiveMessages: Bool
 }
