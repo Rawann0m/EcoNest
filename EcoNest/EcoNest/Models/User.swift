@@ -13,4 +13,5 @@ struct User: Identifiable, Hashable {
     let username: String
     let email: String
     let profileImage: String
+    var receiveMessages: Bool
 }
