@@ -15,7 +15,7 @@ struct HomeView: View {
     
     // State objects for managing cart and product data
     @StateObject private var cartViewModel = CartViewModel()
-    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @StateObject private var homeViewModel = HomeViewModel()
     
     var body: some View {
         
@@ -31,10 +31,10 @@ struct HomeView: View {
                         AppBar(viewModel: cartViewModel)
                         
                         // Search bar for filtering products
-                        SearchView()
+                        SearchView(viewModel: homeViewModel)
                         
                         // Auto-playing promotional image slider
-                        ImageSliderView()
+                        ImageSliderView(viewModel: homeViewModel)
                         
                         // Section title for product grid
                         HStack {
@@ -72,20 +72,16 @@ struct HomeView: View {
 
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
-                                ForEach(homeViewModel.filtered) { product in
-                                    ProductCardView(product: product)
+                                ForEach(homeViewModel.filtered.prefix(12)) { product in
+                                    ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
                                 }
                             }
                             .padding(.horizontal, 16)
-                            .padding(.bottom, 45)
+                            .padding(.bottom, 100)
                         }
                     }
                 }
             }
-        }
-        // Fetch product data when view appears
-        .onAppear {
-            homeViewModel.fetchProductData()
         }
         // Observe changes in the search term and filter products accordingly
         .onChange(of: homeViewModel.search) { oldValue, newValue in

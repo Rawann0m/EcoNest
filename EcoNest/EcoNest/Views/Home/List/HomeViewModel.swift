@@ -20,16 +20,21 @@ class HomeViewModel: ObservableObject {
     /// Products filtered based on the search query
     @Published var filtered: [Product] = []
     
-    /// Computed property returning the first few product image URLs for slider
-    var sliderImages: [String] {
-        return products.prefix(4).map { $0.image ?? "" }
+    
+    init(){
+        fetchProductData()
     }
     
-    /// Fetches product data from the "ProductTH" collection in Firestore
+    /// Computed property returning the first few product image URLs for slider
+    var sliderImages: [String] {
+        return products.shuffled().prefix(4).map { $0.image ?? "" }
+    }
+    
+    /// Fetches product data from the "product" collection in Firestore
     func fetchProductData() {
         let db = FirebaseManager.shared.firestore
         
-        db.collection("ProductTH")
+        db.collection("product")
             .whereField("quantity", isGreaterThan: 0) // Only fetch if quantity > 0
             .getDocuments { (snapshot, error) in
                 guard let itemData = snapshot else { return }
@@ -40,6 +45,7 @@ class HomeViewModel: ObservableObject {
                     let price = document.get("price") as? Double ?? 0.0
                     let image = document.get("image") as? String ?? ""
                     let quantity = document.get("quantity") as? Int ?? 0
+                    let plantId = document.get("plantId") as? String ?? ""
                     
                     return Product(
                         id: id,
@@ -89,7 +95,6 @@ class HomeViewModel: ObservableObject {
                 }
             }
     }
-
 }
 
 

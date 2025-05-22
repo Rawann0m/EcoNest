@@ -17,29 +17,42 @@ class CartViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var selectedDate: Date = Date()
     
+    private var cartListener: ListenerRegistration?
+
+    init() {
+        fetchCartData()
+    }
+
+    deinit {
+        cartListener?.remove()
+    }
+    
     /// Fetches all cart items from Firestore and resolves them into complete Cart objects with full Product data.
     func fetchCartData() {
+        
         isLoading = true
+        cartListener?.remove() // Remove previous one
+        
         let db = FirebaseManager.shared.firestore
+        
         guard let userId = Auth.auth().currentUser?.uid else {
-            print("User must be logged in to add to cart.")
+            print("User not logged in")
+            isLoading = false
             return
         }
-        db.collection("users")
+        
+        cartListener = db.collection("users")
             .document(userId)
             .collection("cart")
-            .getDocuments { snapshot, error in
+            .addSnapshotListener { snapshot, error in
                 
                 guard let documents = snapshot?.documents else {
                     print("No cart data found.")
-                    DispatchQueue.main.async {
-                        self.cartProducts = []
-                        self.isLoading = false
-                    }
+                    self.isLoading = false
                     return
                 }
 
-                self.cartProducts = [] // Clear old data
+                var fetchedCart: [Cart] = []
                 let group = DispatchGroup()
 
                 for doc in documents {
@@ -51,7 +64,7 @@ class CartViewModel: ObservableObject {
 
                     group.enter()
 
-                    db.collection("ProductTH").document(productId).getDocument { productDoc, error in
+                    db.collection("product").document(productId).getDocument { productDoc, error in
                         defer { group.leave() }
 
                         if let productData = productDoc?.data() {
@@ -61,10 +74,8 @@ class CartViewModel: ObservableObject {
                                 description: productData["description"] as? String ?? "",
                                 price: productData["price"] as? Double ?? 0.0,
                                 image: productData["image"] as? String ?? "",
-                                category: productData["category"] as? String ?? "",
                                 quantity: productData["quantity"] as? Int ?? 0,
                                 careLevel: productData["careLevel"] as? String ?? "",
-                                color: productData["color"] as? String ?? "",
                                 size: productData["size"] as? String ?? ""
                             )
 
@@ -75,14 +86,15 @@ class CartViewModel: ObservableObject {
                                 price: price
                             )
 
-                            DispatchQueue.main.async {
-                                self.cartProducts.append(cartItem)
-                            }
+                           
+                            fetchedCart.append(cartItem)
+                            
                         }
                     }
                 }
 
                 group.notify(queue: .main) {
+                    self.cartProducts = fetchedCart
                     self.isLoading = false
                 }
             }
@@ -147,8 +159,6 @@ class CartViewModel: ObservableObject {
                 "price": cart.price,
                 "quantity": cart.quantity,
                 "image": cart.product.image ?? "",
-                "category": cart.product.category ?? "",
-                "color": cart.product.color ?? "",
                 "size": cart.product.size ?? "",
             ]
         }
@@ -171,7 +181,7 @@ class CartViewModel: ObservableObject {
 
                 // Reduce product quantities
                 for cart in self.cartProducts {
-                    let productRef = db.collection("ProductTH").document(cart.product.id ?? "")
+                    let productRef = db.collection("product").document(cart.product.id ?? "")
                     
                     productRef.getDocument { document, error in
                         if let document = document, document.exists,
@@ -220,7 +230,9 @@ class CartViewModel: ObservableObject {
     }
     
     func increaseQuantity(cart: Cart, change: upQuantity) {
+        
         guard let index = cartProducts.firstIndex(where: { $0.id == cart.id }) else { return }
+        
         guard let userId = Auth.auth().currentUser?.uid else {
             print("User must be logged in to add to cart.")
             return

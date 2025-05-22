@@ -12,14 +12,16 @@ struct SplashView: View {
     @State private var animateOut = false
     @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
-            ZStack {
+            Group {
                 if showWelcome {
                     WelcomePage()
                         .opacity(animateOut ? 0 : 1)
                         .scaleEffect(animateOut ? 1.2 : 1.0)
                         .transition(.opacity)
+                        .accessibilityIdentifier("Welcome")
                 } else {
                     MainTabView()
+                        .accessibilityIdentifier("MainTabView")
                 }
             }
             .onAppear {

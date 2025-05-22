@@ -20,7 +20,6 @@ struct SettingsView: View {
     @Environment(\.openURL) var openURL
     @State var showAlert: Bool = false
     @State var login: Bool = false
-    @State var isChatting: Bool = false
     @StateObject var viewModel = SettingsViewModel()
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -284,7 +283,7 @@ struct SettingsView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $login, content: {
-                    LogInPage()
+                    AuthViewPage()
                 })
                 .onChange(of: isArabic) { _ , value in
                     let languageCode = value ? "ar" : "en"
@@ -307,7 +306,6 @@ struct SettingsView: View {
                             languageManager.setLanguage(defaultLanguage)
                         }
                     }
-                    
                     if !FirebaseManager.shared.isLoggedIn {
                         viewModel.name = "Gest"
                     }

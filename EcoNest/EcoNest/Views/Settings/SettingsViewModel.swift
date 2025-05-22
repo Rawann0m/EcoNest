@@ -36,7 +36,7 @@ class SettingsViewModel: ObservableObject {
                 } else if let document = snapshot {
                     let data = document.data()
                     if let data = data {
-                        
+
                         self.name = data["username"] as? String ?? ""
                         self.oldName = data["username"] as? String ?? ""
                         self.email = data["email"] as? String ?? ""

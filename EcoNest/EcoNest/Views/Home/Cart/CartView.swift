@@ -22,7 +22,9 @@ struct CartView: View {
     @EnvironmentObject private var locationViewModel: LocationViewModel
     
     var body: some View {
+        
         NavigationStack {
+            
             if viewModel.isLoading {
                 ProgressView()
             }
@@ -94,22 +96,17 @@ struct CartView: View {
         }
         .padding(.top)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
                 CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: {dismiss()})
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                }) {
+            ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarLeading : .navigationBarTrailing) {
+                NavigationLink (destination: OrderView(currentLanguage: currentLanguage)) {
                     Image(systemName: "bag")
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                 }
             }
         }
-        // Fetch cart data when view appears
-        .onAppear {
-            viewModel.fetchCartData()
-        }
-        .navigationBarBackButtonHidden(true)
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        .navigationBarBackButtonHidden(true)
     }
 }

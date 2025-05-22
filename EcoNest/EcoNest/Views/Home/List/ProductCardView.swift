@@ -13,10 +13,11 @@ import FirebaseAuth
 struct ProductCardView: View {
     
     @EnvironmentObject var themeManager: ThemeManager
-    @EnvironmentObject private var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HomeViewModel
     @State private var showLoginAlert = false
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
+    @ObservedObject var cartViewModel: CartViewModel
     
     var product: Product
     
@@ -54,6 +55,7 @@ struct ProductCardView: View {
                     }
                     
                 }
+                .padding(.bottom, 10)
                 
                 // Add-to-cart button
                 Button(action: {
@@ -64,11 +66,19 @@ struct ProductCardView: View {
                     }
                     
                 }, label: {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .foregroundStyle(Color("LimeGreen"))
-                        .frame(width: 35, height: 35)
+                    if cartViewModel.cartProducts.contains(where: { $0.product.id == product.id }) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .resizable()
+                            .foregroundStyle(Color("LightGreen"))
+                            .frame(width: 35, height: 35)
+                    } else {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .foregroundStyle(Color("LimeGreen"))
+                            .frame(width: 35, height: 35)
+                    }
                 })
+                .accessibilityIdentifier("AddToCart_\(product.name ?? "Unknown")")
                 .alert(isPresented: $alertManager.alertState.isPresented) {
                     Alert(
                         title: Text(alertManager.alertState.title),
@@ -81,14 +91,14 @@ struct ProductCardView: View {
                 }
             }
         }
-        .frame(width: 175, height: 230)
+        .frame(width: 175, height: 240)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(.gray.opacity(0.3), lineWidth: 2)
                 .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 3)
         )
         .fullScreenCover(isPresented: $navigateToLogin) {
-            LogInPage()
+            AuthViewPage()
         }
     }
 }

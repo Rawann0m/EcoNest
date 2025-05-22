@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LogInPage: View {
+struct AuthViewPage: View {
     @EnvironmentObject var themeManager: ThemeManager
     @State private var email: String = ""
     @State private var password: String = ""
@@ -19,14 +19,41 @@ struct LogInPage: View {
     @State private var isConPasswordSecure: Bool = true
     @State private var confirmPassword: String = ""
     @State private var username: String = ""
+    @Environment(\.dismiss) var dismiss
     @StateObject private var authViewModel = AuthViewModel()
     @StateObject private var alertManager = AlertManager.shared
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var body: some View {
         NavigationStack{
-            ScrollView(.vertical){
-                ZStack {
+            GeometryReader{ geometry in
+                ScrollView(.vertical){
                     VStack{
+                        ZStack{
+                            //bubbles
+                            Image("bubbles")
+                                .resizable()
+                                .frame(width: geometry.size.width * 1,height: geometry.size.width * 1)
+                            //logo
+                            Image(themeManager.isDarkMode ? "EcoNestL":"EcoNestG")
+                                .resizable()
+                                .frame(width: 230,height: 190)
+                                .padding(.bottom,30)
+                                .padding(.top , 45)
+                            Group{
+                            Image(systemName:currentLanguage == "ar" ? "chevron.right":"chevron.left")
+                                .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
+                                .offset(x:-170, y:-120)
+                        }
+                                .onTapGesture {
+                                    dismiss()
+                                }.accessibilityIdentifier("BackButton")
+                                .accessibilityAddTraits(.isButton)
+                                .accessibilityElement()
+                        }.padding(.top,-62)
+                        
+                            .ignoresSafeArea(.all)
+                        
+                        
                         if isLoggedIn {
                             VStack(spacing: 20){
                                 Text("LogIn".localized(using: currentLanguage))
@@ -35,23 +62,23 @@ struct LogInPage: View {
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
                                     .padding(.bottom,20)
                                     .padding(.top,-15)
-                                CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false))
+                                CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false)).accessibilityIdentifier("LoginEmail")
                                 ZStack(alignment: .trailing) {
-                                    CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure)
+                                    CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure).accessibilityIdentifier("LoginPassword")
                                     Button(action: {
                                         isPasswordSecure.toggle()
                                     }) {
                                         Image(systemName: isPasswordSecure ? "eye.slash" : "eye")
                                             .foregroundColor(.gray)
                                             .padding(.trailing, 16)
-                                    }
+                                    }.accessibilityIdentifier("LoginTogglePasswordVisibility")
                                 }
                                 Button(action:{
                                     goToForgot = true
                                 }){ Text("ForgotPassword".localized(using: currentLanguage))
                                         .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("LimeGreen"))
                                         .frame(maxWidth: .infinity, alignment: .center)
-                                }
+                                } .accessibilityIdentifier("ForgotPasswordButton")
                                 // Custom button
                                 CustomButton(
                                     title: "LogIn".localized(using: currentLanguage),
@@ -72,15 +99,22 @@ struct LogInPage: View {
                                     }
                                 ).disabled(isLoading)
                                     .padding(.bottom)
+                                    .accessibilityIdentifier("LoginButton")
                                 // Navigation to log in
                                 HStack{
                                     Text("DHaveAccount".localized(using: currentLanguage))
                                         .foregroundColor(themeManager.isDarkMode ? Color("LimeGreen"):Color("DarkGreen"))
+                                    Group{
                                     Text("SignUp2".localized(using: currentLanguage))
                                         .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("LimeGreen"))
+                                }
                                         .onTapGesture {
                                             isLoggedIn.toggle()
                                         }
+                                        .accessibilityIdentifier("SwitchToSignUp")
+                                        .accessibilityAddTraits(.isButton)
+                                        .accessibilityElement()
+                                        
                                 }
                                 
                             }.padding(.horizontal,30)
@@ -94,20 +128,20 @@ struct LogInPage: View {
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
-                                CustomTextField(placeholder: "Name".localized(using: currentLanguage), text: $username, isSecure: .constant(false))
-                                CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false))
+                                CustomTextField(placeholder: "Name".localized(using: currentLanguage), text: $username, isSecure: .constant(false)).accessibilityIdentifier("SignUpName")
+                                CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false)).accessibilityIdentifier("SignUpEmail")
                                 ZStack(alignment: .trailing) {
-                                    CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure)
+                                    CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure).accessibilityIdentifier("SignUpPassword")
                                     Button(action: {
                                         isPasswordSecure.toggle()
                                     }) {
                                         Image(systemName: isPasswordSecure ? "eye.slash" : "eye")
                                             .foregroundColor(.gray)
                                             .padding(.trailing, 16)
-                                    }
+                                    }.accessibilityIdentifier("SignUpTogglePasswordVisibility")
                                 }
                                 ZStack(alignment: .trailing) {
-                                    CustomTextField(placeholder: "ConfirmPassword".localized(using: currentLanguage), text: $confirmPassword, isSecure: $isConPasswordSecure)
+                                    CustomTextField(placeholder: "ConfirmPassword".localized(using: currentLanguage), text: $confirmPassword, isSecure: $isConPasswordSecure) .accessibilityIdentifier("ConfirmPassword")
                                     Button(action: {
                                         isConPasswordSecure.toggle()
                                     }) {
@@ -140,34 +174,43 @@ struct LogInPage: View {
                                         }
                                     }
                                 ).disabled(isLoading)
+                                    .accessibilityIdentifier("SignUpButton")
                                 // Navigation to log in
                                 HStack{
                                     Text("HaveAccount".localized(using: currentLanguage))
                                         .foregroundColor(themeManager.isDarkMode ? Color("LimeGreen"):Color("DarkGreen"))
+                                    Group{
                                     Text("LogIn2".localized(using: currentLanguage))
                                         .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("LimeGreen"))
+                                }
                                         .onTapGesture {
                                             isLoggedIn.toggle()
-                                        }
+                                        }.accessibilityIdentifier("SwitchToLogin")
+                                        .accessibilityAddTraits(.isButton)
+                                        .accessibilityElement()
                                 }
                                 
                             }.padding(.horizontal,30)
                         }
                     }
-                    .padding(.top, 420)
-                    //.frame(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.height * 1.23)
-                    
-                    
+
                 }
+                NavigationLink(
+                    destination: MainTabView(),
+                    isActive: $goToHome,
+                    label: {
+                        EmptyView()
+                    }
+                )
             }
-            .background(CustomBackground())
-            NavigationLink(
-                destination: MainTabView(),
-                isActive: $goToHome,
-                label: {
-                    EmptyView()
-                }
+        } .alert(isPresented: $alertManager.alertState.isPresented) {
+            Alert(
+                title: Text(alertManager.alertState.title),
+                message: Text(alertManager.alertState.message),
+                dismissButton: .default(Text("OK"))
             )
         }
+            .ignoresSafeArea(.all)
+            .navigationBarBackButtonHidden(true)
     }
 }
