@@ -391,15 +391,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 				DEVELOPMENT_TEAM = 6KFD3RALFY;
-=======
-				DEVELOPMENT_TEAM = "";
->>>>>>> Stashed changes
-=======
-				DEVELOPMENT_TEAM = H7SGWL26MA;
->>>>>>> parent of b842684 (Merge branch 'Dev' into Dev-AH-Branch)
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to take photos.";
@@ -432,15 +424,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 				DEVELOPMENT_TEAM = 6KFD3RALFY;
-=======
-				DEVELOPMENT_TEAM = "";
->>>>>>> Stashed changes
-=======
-				DEVELOPMENT_TEAM = H7SGWL26MA;
->>>>>>> parent of b842684 (Merge branch 'Dev' into Dev-AH-Branch)
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to take photos.";
