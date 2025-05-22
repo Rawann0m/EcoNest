@@ -49,8 +49,8 @@ class CommunityViewModel: ObservableObject {
                     }
                     
                     let id = change.document.documentID
-                    let name = data["name"] as? String ?? ""
-                    let description = data["description"] as? String ?? ""
+                    let name = data["name"] as? [String] ?? []
+                    let description = data["description"] as? [String] ?? []
                     let members = data["members"] as? [String] ?? []
                     let currentUserId = FirebaseManager.shared.auth.currentUser?.uid ?? ""
                     let isMember = members.contains(currentUserId)
@@ -128,8 +128,8 @@ class CommunityViewModel: ObservableObject {
                     return
                 }
                 
-                let name = data["name"] as? String ?? ""
-                let description = data["description"] as? String ?? ""
+                let name = data["name"] as? [String] ?? []
+                let description = data["description"] as? [String] ?? []
                 let members = data["members"] as? [String] ?? []
                 let currentUserId = FirebaseManager.shared.auth.currentUser?.uid ?? ""
                 let isMember = members.contains(currentUserId)
