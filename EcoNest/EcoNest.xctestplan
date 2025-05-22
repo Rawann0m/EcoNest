@@ -20,7 +20,7 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:EcoNest.xcodeproj",
-        "identifier" : "36E782742DDC4DBD000B3C55",
+        "identifier" : "995D7C162DDAFE9B005AA0A4",
         "name" : "EcoNestUITests"
       }
     }

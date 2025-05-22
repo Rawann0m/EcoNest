@@ -25,7 +25,7 @@ struct PostsListView: View {
                 } else {
                     ScrollViewReader{ scrollProxy in
                         LazyVStack {
-                            TextField("Search".localized(using: currentLanguage), text: $viewModel.searchText)
+                            TextField("Search", text: $viewModel.searchText)
                                 .padding(12)
                                 .background(.gray.opacity(0.1), in: .rect(cornerRadius: 25))
                                 .foregroundColor(.gray)

@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct Product: Identifiable, Codable {
-    var id: String?
+    @DocumentID var id: String?
     var plantId: String?
     var name: String?
     var description: String?

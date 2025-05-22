@@ -18,8 +18,9 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var showAlert: Bool = false
+
     @State var login: Bool = false
+
     @StateObject var viewModel = SettingsViewModel()
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -29,7 +30,28 @@ struct SettingsView: View {
         NavigationStack{
             GeometryReader{ Geometry in
                 VStack {
+                    
+                    //                    ZStack{
+                    //                        Color("LimeGreen")
+                    //                            .mask(
+                    //                                RoundedRectangle(cornerRadius: 30)
+                    //                                    .padding(.top, -50) // Top corners = 0, Bottom corners = 30
+                    //                            )
+                    //                            .frame(height: Geometry.size.height * 0.20)
+                    //
+                    //                        //                        RoundedRectangle(cornerRadius: 15)
+                    //                        //                            .fill(themeManager.isDarkMode ? Color.black: Color.white)
+                    //                        //                            .shadow(color: .black.opacity(0.2)  , radius: 10)
+                    //                        //                            .frame(width: Geometry.size.width * 0.85, height: Geometry.size.height * 0.18)
+                    //                        //                            .offset(y: Geometry.size.height * 0.12)
+                    //                        //                            .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
+                    //
+                    //                    }
                     ZStack {
+                        //                        RoundedRectangle(cornerRadius: 25)
+                        //                            .fill(Color("LimeGreen"))
+                        //                            //.frame(height: 200)
+                        //                            .frame(height: Geometry.size.height * 0.25)
                         Color("LimeGreen")
                             .mask(
                                 RoundedRectangle(cornerRadius: 30)
@@ -44,14 +66,6 @@ struct SettingsView: View {
                             .offset(y: Geometry.size.height * 0.12)
                             .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
                         
-//                        Image(systemName: "questionmark.circle")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 25, height: 25)
-//                            .foregroundColor(.white)
-//                            .padding(8)
-//                           // .background(.white.opacity(0.7), in: Circle())
-//                            .offset(x: -170, y: -20)
                         
                         VStack {
                             if let selectedImage = selectedImage {
@@ -101,7 +115,10 @@ struct SettingsView: View {
                                 .onTapGesture {
                                     if viewModel.oldName != viewModel.name || selectedImage != nil {
                                         if isEdit {
-                                            viewModel.updateUserInformation(user: User(username: viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines), email: viewModel.email, profileImage: viewModel.profileImage, receiveMessages: viewModel.receiveMessages), newImage: selectedImage)
+
+                                            // fix the fav
+                                            viewModel.updateUserInformation(user: User(username: viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines), email: viewModel.email,favoritePlants: [] ,profileImage: viewModel.profileImage), newImage: selectedImage)
+
                                             print("edit")
                                         }
                                     }
@@ -114,22 +131,23 @@ struct SettingsView: View {
                                 TextField("Name", text: $viewModel.name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
-                                    .foregroundColor(themeManager.textColor)
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                     .accessibilityIdentifier("Name")
                                 
                             } else {
                                 TextField("Name", text: $viewModel.name)
                                     .frame(width: 200)
                                     .multilineTextAlignment(.center)
-                                    .foregroundColor(themeManager.textColor)
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                     .disabled(true)
                                 
                             }
                             
+                            
                             if FirebaseManager.shared.isLoggedIn {
                                 Text(viewModel.email)
                                     .frame(width: 200)
-                                    .foregroundColor(themeManager.textColor)
+                                    .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
                                 
                             } else {
                                 Button(action: {
@@ -143,6 +161,7 @@ struct SettingsView: View {
                                                 .fill(Color("LimeGreen"))
                                         )
                                 }
+                                
                             }
                         }
                         .offset(y:   Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.135 : Geometry.size.height * 0.145)
@@ -165,7 +184,6 @@ struct SettingsView: View {
                             } label:{
                                 Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                     .foregroundColor(Color("LimeGreen"))
-                                    
                             }
                         }, color: themeManager.textColor)
                         
@@ -211,18 +229,6 @@ struct SettingsView: View {
                                 .onChange(of: themeManager.isDarkMode) { _, isOn in
                                     UserDefaults.standard.set(isOn, forKey: "isDarkMode")
                                 }
-                                .labelsHidden()
-                        }, color: themeManager.textColor)
-
-                        settingRow(icon: "ellipsis.message", text: "allowDR".localized(using: currentLanguage), function: {
-                            print("toggle receiveing Messages")
-                        }, trailingView: {
-                            Toggle("", isOn: $viewModel.receiveMessages)
-                                .tint(Color("LimeGreen"))
-                                .onChange(of: viewModel.receiveMessages) { _, isOn in
-                                    viewModel.updateReceiveMessages()
-                                }
-                                .labelsHidden()
                         }, color: themeManager.textColor)
                         
                         settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
@@ -233,6 +239,14 @@ struct SettingsView: View {
                         
                         
                         if FirebaseManager.shared.isLoggedIn {
+                            settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
+                                // show alert and delete account
+                                handleDeleteAccount(email: viewModel.email)
+                                
+                                print("delete account")
+                                
+                            }, color: themeManager.textColor)
+                            
                             settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
                                 // log out
                                 if FirebaseManager.shared.isLoggedIn{
@@ -244,27 +258,13 @@ struct SettingsView: View {
                                     
                                 }
                             }, color: themeManager.textColor)
-                            
-                            settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
-                                // show alert and delete account
-                                showAlert.toggle()
-                                
-                            }, color: themeManager.textColor)
-                            .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Sure".localized(using: currentLanguage)), message: Text("DeleteAccountMessage".localized(using: currentLanguage)), primaryButton: .destructive(Text("Delete".localized(using: currentLanguage))){
-                                    handleDeleteAccount(email: viewModel.email)
-                                    
-                                    print("delete account")
-                                    
-                                } , secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage))))
-                            }
                         }
                         NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
                         Spacer()
                         
                     }
-                    .padding(.bottom, 85)
                     .scrollIndicators(.hidden)
+                    .padding(.bottom, 85)
                     
                 }
                 .photosPicker(
@@ -293,6 +293,13 @@ struct SettingsView: View {
                         selectedLanguageIndex = index
                     }
                 }
+//                .onChange(of: viewModel.user) { newUser, _ in
+//                    if let user = newUser {
+//                        name = user.username
+//                        email = user.email
+//                        profileImage = user.profileImage
+//                    }
+//                }
                 .onAppear{
                     if let index = languageManager.supportedLanguages.firstIndex(of: currentLanguage) {
                         selectedLanguageIndex = index
@@ -306,6 +313,15 @@ struct SettingsView: View {
                             languageManager.setLanguage(defaultLanguage)
                         }
                     }
+                    
+//                    let currentUser = viewModel.user
+//                    if let user = currentUser {
+//                        name = user.username
+//                        oldName = user.username
+//                        email = user.email
+//                        profileImage = user.profileImage
+//                    }
+//
                     if !FirebaseManager.shared.isLoggedIn {
                         viewModel.name = "Gest"
                     }
@@ -315,6 +331,7 @@ struct SettingsView: View {
                 .onDisappear{
                     viewModel.userListener?.remove()
                 }
+
             }
             .ignoresSafeArea(.keyboard)
         }

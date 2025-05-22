@@ -103,7 +103,7 @@ struct PostDetailView: View {
                         HStack {
                             Image(systemName: "photo.on.rectangle")
                                 .font(.system(size: 28))
-                                .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                                .foregroundColor(Color("DarkGreen"))
                                 .onTapGesture {
                                     showImagePicker.toggle()
                                 }
@@ -118,16 +118,11 @@ struct PostDetailView: View {
                             }
                             
                             Button("Reply".localized(using: currentLanguage)) {
-                                let replay = newReply
-                                let images = selectedImages
-                                newReply = ""
-                                selectedImages.removeAll()
-                                selectedItems.removeAll()
                                 if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                    PhotoUploaderManager.shared.uploadImages(images: images) { result in
+                                    PhotoUploaderManager.shared.uploadImages(images: selectedImages) { result in
                                         switch result {
                                         case .success(let urls):
-                                            let contentArray = [replay] + urls.map { $0.absoluteString }
+                                            let contentArray = [newReply] + urls.map { $0.absoluteString }
                                             if let postId = self.post.id{
                                                 viewModel.addReplyToPost(communityId: communityId, postId: postId, replay: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
                                                 
@@ -135,6 +130,9 @@ struct PostDetailView: View {
                                         case .failure(let error):
                                             print("Image upload failed: \(error.localizedDescription)")
                                         }
+                                        newReply = ""
+                                        selectedImages.removeAll()
+                                        selectedItems.removeAll()
                                     }
                                 }
                                 

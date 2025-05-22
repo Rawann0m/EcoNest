@@ -48,7 +48,7 @@ struct CommunityHomeView: View {
                             
                             VStack {
                                 HStack {
-                                    Text(currentLanguage == "en" ? community.name[0] : community.name[1])
+                                    Text(community.name)
                                         .font(.title)
                                         .bold()
                                     
@@ -56,7 +56,6 @@ struct CommunityHomeView: View {
                                     
                                     Text(community.memberOfCommunity ? "Leave".localized(using: currentLanguage): "Join".localized(using: currentLanguage))
                                         .frame(width: 70)
-                                        .foregroundColor(.black)
                                         .padding()
                                         .bold()
                                         .background {
@@ -109,10 +108,9 @@ struct CommunityHomeView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                                 
-                                Text(currentLanguage == "en" ? community.description[0] : community.description[1])
+                                Text(community.description)
                                     .font(.caption)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 8)
+                                    .padding()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 
                                 HStack {

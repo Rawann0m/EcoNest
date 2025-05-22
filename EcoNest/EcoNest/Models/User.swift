@@ -12,6 +12,6 @@ struct User: Identifiable, Hashable {
     @DocumentID var id: String?
     let username: String
     let email: String
+    let favoritePlants: [String]?
     let profileImage: String
-    var receiveMessages: Bool
 }
