@@ -12,6 +12,7 @@ struct AppBar: View {
     
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @ObservedObject var viewModel: CartViewModel
+    @State var isPresented: Bool = false
     var body: some View {
 
             VStack(alignment: .leading) {
@@ -38,8 +39,8 @@ struct AppBar: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color("LimeGreen"))
             }
-            .padding(.horizontal, 16) 
-        
+            .padding(.horizontal, 16)
+
     }
 }
 

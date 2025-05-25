@@ -1,0 +1,221 @@
+//
+//  ProductDetailsView.swift
+//  EcoNest
+//
+//  Created by Abdullah Hafiz on 22/05/2025.
+//
+
+import SwiftUI
+import SDWebImageSwiftUI
+
+struct ProductDetailsView: View {
+    var productId: String
+    
+    @StateObject var productVM = ProductDetailsViewModel()
+    @ObservedObject private var cartViewModel = CartViewModel()
+    @ObservedObject private var homeViewModel = HomeViewModel()
+    @EnvironmentObject var themeManager: ThemeManager
+    
+    
+    var body: some View {
+        Group {
+            if let product = productVM.product {
+                ScrollView {
+                    VStack(spacing: 16) {
+                        ZStack(alignment: .top) {
+                            CustomRoundedRectangle(topLeft: 0, topRight: 0, bottomLeft: 45, bottomRight: 45)
+                                .fill(Color("DarkGreen"))
+                                .frame(width: UIScreen.main.bounds.width, height: 350)
+                                .ignoresSafeArea(edges: .top)
+                                .shadow(radius: 5)
+                            
+                            ProductDetailBar(productName: product.name ?? "")
+                            
+                            if let imageUrl = product.image {
+                                PlantImage(imageUrl: imageUrl)
+                            }
+                        }
+                        
+                        HStack {
+                            // Price and currency image
+                            HStack {
+                                Text("\(product.price ?? 0.0, specifier: "%.2f")")
+                                    .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                                    .font(.system(size: 24, weight: .bold, design: .default))
+                                
+                                Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                            }
+                            
+                            Spacer()
+                            
+                            // Add-to-cart button
+                            Button(action: {
+                                if FirebaseManager.shared.isLoggedIn {
+                                    homeViewModel.addToCart(product: product)
+                                } else {
+                                    AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
+                                }
+                                
+                            }, label: {
+                                if cartViewModel.cartProducts.contains(where: { $0.product.id == product.id }) {
+                                    HStack {
+                                        Text("Buy")
+                                            .font(.headline)
+                                            .bold()
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .foregroundColor(.white)
+                                    .background(Color("LimeGreen"))
+                                    .cornerRadius(15)
+                                    .shadow(radius: 5)
+                                } else {
+                                    HStack {
+                                        Text("Buy")
+                                            .font(.headline)
+                                            .bold()
+                                        Image(systemName: "plus.circle.fill")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .foregroundColor(.white)
+                                    .background(Color("LimeGreen"))
+                                    .cornerRadius(15)
+                                    .shadow(radius: 5)
+                                }
+                            })
+                        }.padding(.horizontal)
+                        
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text(product.name ?? "Unknown")
+                                .font(.title)
+                                .bold()
+                            
+                            Text((product.description ?? "No description").replacingOccurrences(of: ". ", with: ".\n"))
+                                .font(.body)
+                                .bold()
+                                .multilineTextAlignment(.leading)
+                            
+                            Text("Plant Sizes:").font(.headline)
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                        
+                        
+                        if !productVM.availableSizes.isEmpty {
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    ForEach(productVM.availableSizes) { sizeProduct in
+                                        let isSelected = sizeProduct.id == productVM.product?.id
+                                        
+                                        Button {
+                                            productVM.selectedProductId = sizeProduct.id
+                                        } label: {
+                                            ProductSizeCard(product: sizeProduct, isSelected: isSelected)
+                                        }
+                                    }                                }
+                                .padding(.horizontal)
+                            }
+                        }
+                        
+                    }
+                }
+                .scrollIndicators(.hidden)
+                .ignoresSafeArea(edges: .top)
+                .toolbarBackground(.hidden, for: .navigationBar)
+                .navigationBarBackButtonHidden(true)
+            } else if let error = productVM.errorMessage {
+                Text("Error: \(error)")
+                    .foregroundColor(.red)
+                    .padding()
+            } else {
+                ProgressView("Loading...")
+            }
+            
+        }.onAppear {
+            productVM.fetchProductDetails(productId: productId)
+        }.onChange(of: productVM.selectedProductId) { newId in
+            if let id = newId {
+                productVM.fetchProductDetails(productId: id)
+            }
+        }
+        
+        
+        
+    }
+}
+
+struct ProductDetailBar: View {
+    let productName: String
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Button(action: {
+                dismiss()
+            }) {
+                HStack {
+                    Image(systemName: "chevron.backward")
+                    Text(productName)
+                }.foregroundColor(.white)
+                
+            }
+            Spacer()
+        }.font(.headline)
+            .padding(.horizontal)
+            .padding(.top, UIScreen.main.bounds.height > 667 ? 52 : 28)
+    }
+}
+
+struct ProductSizeCard: View {
+    let product: Product
+    var isSelected: Bool = false
+    @EnvironmentObject var themeManager: ThemeManager
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let url = URL(string: product.image ?? "") {
+                WebImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let img):
+                        img.resizable()
+                            .scaledToFit()
+                            .frame(width: 140, height: 120)
+                            .clipped()
+                    case .failure:
+                        Image(systemName: "photo")
+                            .foregroundColor(.white)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
+            Text(product.size ?? "").font(.subheadline).bold()
+                .frame(maxWidth: .infinity, alignment: .center)
+            HStack {
+                Text("\(product.price ?? 0.0, specifier: "%.2f")")
+                    .foregroundStyle(isSelected ? .white : (themeManager.isDarkMode ? .white : .black))                    .font(.system(size: 16, weight: .bold, design: .default))
+                
+                Image(isSelected ? "RiyalW" : (themeManager.isDarkMode ? "RiyalW" : "RiyalB"))
+                    .resizable()
+                    .frame(width: 15, height: 15)
+            }.frame(maxWidth: .infinity, alignment: .center)
+        }
+        .frame(width: 140)
+        .padding(8)
+        .foregroundColor(isSelected ? .white : (themeManager.isDarkMode ? .white : Color("DarkGreen")))
+        .background(isSelected ? Color("LightGreen") : Color.clear)
+        .cornerRadius(12)
+        .shadow(radius: 3)
+    }
+}
+
