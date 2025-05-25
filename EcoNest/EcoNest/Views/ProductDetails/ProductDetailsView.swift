@@ -15,6 +15,8 @@ struct ProductDetailsView: View {
     @ObservedObject private var cartViewModel = CartViewModel()
     @ObservedObject private var homeViewModel = HomeViewModel()
     @EnvironmentObject var themeManager: ThemeManager
+    @StateObject var alertManager = AlertManager.shared
+    @State private var navigateToLogin = false
     
     
     var body: some View {
@@ -49,50 +51,50 @@ struct ProductDetailsView: View {
                             }
                             
                             Spacer()
-                            
-                            // Add-to-cart button
+                            let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
                             Button(action: {
                                 if FirebaseManager.shared.isLoggedIn {
-                                    homeViewModel.addToCart(product: product)
+                                    if isAddedToCart {
+                                        if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
+                                            cartViewModel.removeFormCart(cart: cartItem)
+                                        }
+                                    } else {
+                                        homeViewModel.addToCart(product: product)
+                                    }
+                                    
                                 } else {
                                     AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
                                 }
-                                
                             }, label: {
-                                if cartViewModel.cartProducts.contains(where: { $0.product.id == product.id }) {
-                                    HStack {
-                                        Text("Buy")
-                                            .font(.headline)
-                                            .bold()
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
-                                    .foregroundColor(.white)
-                                    .background(Color("LimeGreen"))
-                                    .cornerRadius(15)
-                                    .shadow(radius: 5)
-                                } else {
-                                    HStack {
-                                        Text("Buy")
-                                            .font(.headline)
-                                            .bold()
-                                        Image(systemName: "plus.circle.fill")
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
-                                    .foregroundColor(.white)
-                                    .background(Color("LimeGreen"))
-                                    .cornerRadius(15)
-                                    .shadow(radius: 5)
+                                HStack {
+                                    Text(isAddedToCart ? "Add" : "remove")
+                                        .font(.headline)
+                                        .bold()
+                                    Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
                                 }
+                                .frame(width: 100)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .foregroundColor(.white)
+                                .background(isAddedToCart ? Color("DarkGreen") : Color("LimeGreen"))
+                                .cornerRadius(15)
+                                .shadow(radius: 5)
+                                
                             })
-                        }.padding(.horizontal)
-                        
+                            //.disabled(isAddedToCart)
+                            .alert(isPresented: $alertManager.alertState.isPresented) {
+                                Alert(
+                                    title: Text(alertManager.alertState.title),
+                                    message: Text(alertManager.alertState.message),
+                                    primaryButton: .default(Text("Login")) {
+                                        navigateToLogin = true
+                                    },
+                                    secondaryButton: .cancel()
+                                )
+                            }
+                        }.padding()
                         VStack(alignment: .leading, spacing: 16) {
                             Text(product.name ?? "Unknown")
                                 .font(.title)
@@ -145,6 +147,8 @@ struct ProductDetailsView: View {
             if let id = newId {
                 productVM.fetchProductDetails(productId: id)
             }
+        }.fullScreenCover(isPresented: $navigateToLogin) {
+            AuthViewPage()
         }
         
         
@@ -203,19 +207,26 @@ struct ProductSizeCard: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             HStack {
                 Text("\(product.price ?? 0.0, specifier: "%.2f")")
-                    .foregroundStyle(isSelected ? .white : (themeManager.isDarkMode ? .white : .black))                    .font(.system(size: 16, weight: .bold, design: .default))
+                    .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                    .font(.system(size: 16, weight: .bold, design: .default))
                 
-                Image(isSelected ? "RiyalW" : (themeManager.isDarkMode ? "RiyalW" : "RiyalB"))
+                Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                     .resizable()
                     .frame(width: 15, height: 15)
             }.frame(maxWidth: .infinity, alignment: .center)
         }
         .frame(width: 140)
         .padding(8)
-        .foregroundColor(isSelected ? .white : (themeManager.isDarkMode ? .white : Color("DarkGreen")))
-        .background(isSelected ? Color("LightGreen") : Color.clear)
-        .cornerRadius(12)
-        .shadow(radius: 3)
+        .foregroundColor(themeManager.isDarkMode ? .white : Color("DarkGreen"))
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(
+                    themeManager.isDarkMode
+                    ? (isSelected ? Color("LightGreen") : Color.black.opacity(0.2))
+                    : (isSelected ? Color("DarkGreen") : Color.white.opacity(0.2)),
+                    lineWidth: 2
+                )
+        )
     }
 }
 
