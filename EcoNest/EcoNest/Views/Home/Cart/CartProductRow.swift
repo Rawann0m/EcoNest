@@ -8,90 +8,79 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-/// A reusable SwiftUI view that displays a single cart item row,
-/// including product image, name, price, and quantity controls.
+/// A reusable SwiftUI view that displays a single cart item row.
 struct CartProductRow: View {
     
-    /// View model responsible for cart interactions.
-    @ObservedObject var viewModel: CartViewModel
-    
-    /// Theme manager to apply dynamic styling based on light/dark mode.
-    @EnvironmentObject var themeManager: ThemeManager
-    
-    /// The cart item to be displayed in the row.
+    /// The cart item to display.
     var cartProduct: Cart
+    
+    /// Environment object for theme customization.
+    @EnvironmentObject var themeManager: ThemeManager
+    @ObservedObject var viewModel: CartViewModel
     
     var body: some View {
         
         HStack(spacing: 20) {
             
-            // Product image
+            // Product image loaded from a URL using SDWebImageSwiftUI
             WebImage(url: URL(string: cartProduct.product.image ?? ""))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .background(.gray.opacity(0.15))
-                .frame(width: 70, height: 80)
+                .frame(width: 70, height: 70)
                 .cornerRadius(8)
+                .transition(.fade(duration: 0.25))
             
-            // Product name and price
             VStack(alignment: .leading, spacing: 8) {
                 
-                // Display product name
+                // Product name
                 Text(cartProduct.product.name ?? "")
                 
-                Text(cartProduct.product.size ?? "")
-                    .font(.caption)
-                // Display product price with currency icon
+                // Price with currency icon
                 HStack {
-                    
                     Text("\(cartProduct.price, specifier: "%.2f")")
                         .bold()
                     
-                    // Display a currency icon based on theme mode
                     Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                         .resizable()
                         .frame(width: 16, height: 16)
                 }
+                
             }
             .padding(.vertical)
             
             Spacer()
             
-            // Quantity adjustment section (increase, decrease, or remove)
-            HStack(spacing: 5) {
-                
-                // Increase quantity button
+            // Quantity adjustment buttons
+            HStack(spacing: 10) {
                 Button {
-                    viewModel.updateQuantity(cart: cartProduct, change: true)
+                    viewModel.increaseQuantity(cart: cartProduct, change: .increase)
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 24))
                 }
                 
-                // Display current quantity
+                
                 Text("\(cartProduct.quantity)")
                     .font(.headline)
                     .foregroundColor(themeManager.isDarkMode ? .white : .black)
                 
-                // Decrease quantity or remove item if quantity is 1
                 Button {
                     if cartProduct.quantity > 1 {
-                        viewModel.updateQuantity(cart: cartProduct, change: false)
+                        viewModel.increaseQuantity(cart: cartProduct, change: .decrease)
                     } else {
-                        viewModel.removeFormCart(cart: cartProduct)
+                        viewModel.removeCartItem(cart: cartProduct)
                     }
-                    
                 } label: {
-                    
                     Image(systemName: cartProduct.quantity > 1 ? "minus.circle.fill" : "trash.circle.fill")
                         .font(.system(size: 24))
                 }
-                .buttonStyle(.plain) // Disable default button animation
-    
+                .buttonStyle(.plain) // Prevent default button tap styling
+                .contentShape(Rectangle()) // Ensures buttons only trigger on their shape
+                
             }
             .foregroundStyle(themeManager.isDarkMode ? .white.opacity(0.2) : .black.opacity(0.2))
             .font(.system(size: 20))
-
         }
         .padding(.horizontal, 8)
         .background(

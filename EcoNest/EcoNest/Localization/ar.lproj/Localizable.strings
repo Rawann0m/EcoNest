@@ -123,5 +123,12 @@
 "AllPlants"="كل النباتات";
 "FilterCategories"= "تصفية الفئات";
 "Apply" = "تطبيق";
-
-"Favorites" = "المفضلة";
+"DeleteAccountMessage" = "سيؤدي حذف حسابك إلى مسح جميع بياناتك.";
+"Delete" = "حذف";
+"Sure" = "هل أنت متأكد؟";
+"allowDR" = "استقبال الرسائل";
+"postNumber" = "يمكنك إضافة 3 صور كحد أقصى لكل منشور.";
+"OK" = "نعم";
+"membersCommunity" = "%d أعضاء";
+"memberCommunity" = "%d عضو";
+"chat" = "محادثة";

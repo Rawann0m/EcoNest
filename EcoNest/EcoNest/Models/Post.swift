@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct Post: Identifiable, Hashable {
-    var id: String?
+    @DocumentID var id: String?
     let userId: String
     let content: [String]
     let timestamp: Timestamp

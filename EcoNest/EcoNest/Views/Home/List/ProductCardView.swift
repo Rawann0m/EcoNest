@@ -30,6 +30,7 @@ struct ProductCardView: View {
                 VStack(alignment: .leading) {
                     
                     // Product image with styling
+                    //Image(product.image)
                     WebImage(url: URL(string: product.image ?? ""))
                         .resizable()
                         .background(Color.gray.opacity(0.15))
@@ -41,10 +42,6 @@ struct ProductCardView: View {
                         .font(.subheadline)
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                         .padding(.vertical, 1)
-                    
-                    Text(product.size ?? "")
-                        .foregroundStyle(.gray)
-                        .font(.caption)
                     
                     // Price and currency image
                     HStack {
@@ -58,44 +55,43 @@ struct ProductCardView: View {
                     }
                     
                 }
+                .padding(.bottom, 10)
                 
-                let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
                 // Add-to-cart button
-                    Button(action: {
-                        if FirebaseManager.shared.isLoggedIn {
-                            if isAddedToCart {
-                                if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
-                                    cartViewModel.removeFormCart(cart: cartItem)
-                                }
-                            } else {
-                                viewModel.addToCart(product: product)
-                            }
-                            
-                        } else {
-                            AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
-                        }
-                    }, label: {
-                        Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
-                            .resizable()
-                            .foregroundStyle(isAddedToCart ? .black.opacity(0.15) : Color("LimeGreen"))
-                            .frame(width: 35, height: 35)
-                    })
-                    //.disabled(isAddedToCart)
-                    .alert(isPresented: $alertManager.alertState.isPresented) {
-                        Alert(
-                            title: Text(alertManager.alertState.title),
-                            message: Text(alertManager.alertState.message),
-                            primaryButton: .default(Text("Login")) {
-                                navigateToLogin = true
-                            },
-                            secondaryButton: .cancel()
-                        )
+                Button(action: {
+                    if FirebaseManager.shared.isLoggedIn {
+                        viewModel.addToCart(product: product)
+                    } else {
+                        AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
                     }
-                
-                
+                    
+                }, label: {
+                    if cartViewModel.cartProducts.contains(where: { $0.product.id == product.id }) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .resizable()
+                            .foregroundStyle(Color("LightGreen"))
+                            .frame(width: 35, height: 35)
+                    } else {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .foregroundStyle(Color("LimeGreen"))
+                            .frame(width: 35, height: 35)
+                    }
+                })
+                .accessibilityIdentifier("AddToCart_\(product.name ?? "Unknown")")
+                .alert(isPresented: $alertManager.alertState.isPresented) {
+                    Alert(
+                        title: Text(alertManager.alertState.title),
+                        message: Text(alertManager.alertState.message),
+                        primaryButton: .default(Text("Login")) {
+                            navigateToLogin = true
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
         }
-        .frame(width: 175, height: 260)
+        .frame(width: 175, height: 240)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(.gray.opacity(0.3), lineWidth: 2)
