@@ -16,7 +16,6 @@ class HomeViewModel: ObservableObject {
     
     /// All products fetched from Firestore
     @Published var products: [Product] = []
-    @Published var leastProducts: [Product] = []
     
     /// Products filtered based on the search query
     @Published var filtered: [Product] = []
@@ -24,12 +23,11 @@ class HomeViewModel: ObservableObject {
     
     init(){
         fetchProductData()
-        fetchLeasttQuantity()
     }
     
     /// Computed property returning the first few product image URLs for slider
-    var sliderImages: [(name: String?, image: String?)] {
-        return leastProducts.map { ($0.name, $0.image ?? "") }
+    var sliderImages: [String] {
+        return products.shuffled().prefix(4).map { $0.image ?? "" }
     }
     
     /// Fetches product data from the "product" collection in Firestore
@@ -47,42 +45,8 @@ class HomeViewModel: ObservableObject {
                     let price = document.get("price") as? Double ?? 0.0
                     let image = document.get("image") as? String ?? ""
                     let quantity = document.get("quantity") as? Int ?? 0
-                    let size = document.get("size") as? String ?? ""
+                    let plantId = document.get("plantId") as? String ?? ""
                     
-                    return Product(
-                        id: id,
-                        name: name,
-                        price: price,
-                        image: image,
-                        quantity: quantity,
-                        size: size
-                    )
-                }
-                
-                self.filtered = self.products
-            }
-    }
-    
-    func fetchLeasttQuantity() {
-        
-        let db = FirebaseManager.shared.firestore
-        
-        db.collection("product")
-            .order(by: "quantity") // Order by quantity ascending
-            .limit(to: 4)          // Limit to 4 items
-            .getDocuments { (snapshot, error) in
-                guard let itemData = snapshot else {
-                    print("Error fetching documents: \(error?.localizedDescription ?? "Unknown error")")
-                    return
-                }
-
-                self.leastProducts = itemData.documents.compactMap { document in
-                    let id = document.documentID
-                    let name = document.get("name") as? String ?? ""
-                    let price = document.get("price") as? Double ?? 0.0
-                    let image = document.get("image") as? String ?? ""
-                    let quantity = document.get("quantity") as? Int ?? 0
-
                     return Product(
                         id: id,
                         name: name,
@@ -91,6 +55,8 @@ class HomeViewModel: ObservableObject {
                         quantity: quantity
                     )
                 }
+                
+                self.filtered = self.products
             }
     }
 

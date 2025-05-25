@@ -9,89 +9,76 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
-/// ViewModel responsible for managing cart-related operations.
+/// ViewModel responsible for managing cart-related operations such as adding to and fetching from Firestore.
 class CartViewModel: ObservableObject {
     
-    // Published properties to notify SwiftUI views of changes
+    /// List of cart items currently stored in Firestore for the user.
     @Published var cartProducts: [Cart] = []
     @Published var isLoading = false
     @Published var selectedDate: Date = Date()
-
-    private var cartListener: ListenerRegistration? // Listener for real-time cart updates
-    private var authListener: AuthStateDidChangeListenerHandle? // Listener for auth state changes
-
     
-    /// Initializes the view model and sets up a Firebase Auth listener
-    init() {
-        // Add a listener to monitor authentication state changes
-        authListener = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
-            // Use [weak self] to prevent retain cycles
-            guard let self = self else { return }
+    private var cartListener: ListenerRegistration?
 
-            // If the user logs out, clear cart data and remove cart listener
-            if user == nil {
-                self.cartProducts = []
-                self.cartListener?.remove()
-            } else {
-                self.fetchCartData() // Fetch cart data from Firestore for the logged-in user
-            }
-        }
+    init() {
+        fetchCartData()
     }
 
+    deinit {
+        cartListener?.remove()
+    }
     
-    /// Fetches the user's cart data from Firestore and listens for real-time updates.
+    /// Fetches all cart items from Firestore and resolves them into complete Cart objects with full Product data.
     func fetchCartData() {
         
-        isLoading = true  // Start loading state
-        cartListener?.remove() // Remove previous Firestore listener if it exists to avoid duplicates
+        isLoading = true
+        cartListener?.remove() // Remove previous one
         
-        let db = FirebaseManager.shared.firestore // Access Firestore database instance
+        let db = FirebaseManager.shared.firestore
         
-        // Ensure the user is logged in and has a valid UID
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User not logged in")
+            isLoading = false
+            return
+        }
         
-        // Attach a Firestore listener to the user's cart collection
-        cartListener = userDoc
+        cartListener = db.collection("users")
+            .document(userId)
             .collection("cart")
             .addSnapshotListener { snapshot, error in
                 
-                // If there are no documents in the snapshot, show an empty cart
                 guard let documents = snapshot?.documents else {
                     print("No cart data found.")
                     self.isLoading = false
                     return
                 }
 
-                var fetchedCart: [Cart] = [] // Temporary array to hold fetched cart items
-                let group = DispatchGroup()  // Use a dispatch group to manage async tasks
+                var fetchedCart: [Cart] = []
+                let group = DispatchGroup()
 
-                for doc in documents { // Iterate through all cart entries.
+                for doc in documents {
+                    let data = doc.data()
                     
-                    let data = doc.data() // Fetch the data from the document.
-                    
-                    // Extract product ID, quantity, and price from each cart document
                     guard let productId = data["productId"] as? String,
                           let quantity = data["quantity"] as? Int,
                           let price = data["price"] as? Double else { continue }
 
-                    group.enter() // Enter the dispatch group before starting async fetch
+                    group.enter()
 
-                    // Fetch the product document by its ID
                     db.collection("product").document(productId).getDocument { productDoc, error in
-                        defer { group.leave() } // Leave the group once finished
-                        
-                        // Ensure product data exists before parsing
+                        defer { group.leave() }
+
                         if let productData = productDoc?.data() {
                             let product = Product(
-                                id: productDoc?.documentID,
+                                id: productDoc!.documentID,
                                 name: productData["name"] as? String ?? "",
+                                description: productData["description"] as? String ?? "",
                                 price: productData["price"] as? Double ?? 0.0,
                                 image: productData["image"] as? String ?? "",
                                 quantity: productData["quantity"] as? Int ?? 0,
+                                careLevel: productData["careLevel"] as? String ?? "",
                                 size: productData["size"] as? String ?? ""
                             )
 
-                            // Create a Cart model from the product and cart info
                             let cartItem = Cart(
                                 id: doc.documentID,
                                 product: product,
@@ -99,12 +86,13 @@ class CartViewModel: ObservableObject {
                                 price: price
                             )
 
-                            fetchedCart.append(cartItem) // Append to result array
+                           
+                            fetchedCart.append(cartItem)
+                            
                         }
                     }
                 }
 
-                // Once all product fetches complete, update the state
                 group.notify(queue: .main) {
                     self.cartProducts = fetchedCart
                     self.isLoading = false
@@ -112,11 +100,9 @@ class CartViewModel: ObservableObject {
             }
     }
 
-    
     /// Calculates the total price of all items in the cart.
     /// - Returns: The sum of (quantity × unit price) for each cart item.
     func calculateTotal() -> Double {
-        
         var price: Double = 0
         // Iterate through each cart item
         cartProducts.forEach { cartItem in
@@ -126,16 +112,48 @@ class CartViewModel: ObservableObject {
         return price
     }
     
+    /// Remove items from the user's cart in Firestore and updates the local cart state.
+    /// - Parameter index: An IndexSet containing the indices of items to remove.
+    func removeFormCart(index: IndexSet) {
+        let db = FirebaseManager.shared.firestore
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User must be logged in to add to cart.")
+            return
+        }
+        guard let i = index.first else { return }
+        
+        // Get the corresponding cart item using the index
+        let cartItem = cartProducts[i]
+        
+        // Reference the Firestore document for the cart item and attempt deletion
+        db.collection("users")
+            .document(userId)
+            .collection("cart")
+            .document(cartItem.id)
+            .delete { err in
+                
+                if let err = err {
+                    // Print the error if deletion fails
+                    print("Failed to delete from cart: \(err.localizedDescription)")
+                    return
+                }
+                
+                // If deletion is successful, remove the item from the local cart list on the main thread
+                DispatchQueue.main.async {
+                    self.cartProducts.remove(at: i)
+                }
+            }
+    }
     
     /// Adds a new order to the user's "orders" collection in Firestore.
     /// - Parameter locationId: The ID of the selected pickup location.
     func addOrder(locationId: String) {
-        
-        // Ensure user is logged in before proceeding
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-        
-        // Converts the product items into a dictionary format for Firestore.
-        let productData = cartProducts.map { cart in
+        let db = FirebaseManager.shared.firestore
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User must be logged in to add to cart.")
+            return
+        }
+        let cartData = cartProducts.map { cart in
             return [
                 "name": cart.product.name ?? "",
                 "price": cart.price,
@@ -145,83 +163,64 @@ class CartViewModel: ObservableObject {
             ]
         }
 
-        // Add the new order to the user's orders collection
-        userDoc
+        db.collection("users")
+            .document(userId)
             .collection("orders")
             .document()
             .setData([
-                "products": productData,
+                "products": cartData,
                 "total": calculateTotal(),
                 "date": Timestamp(date: selectedDate),
                 "pickupLocation": locationId,
-                "status": OrderStatus.awaitingPickup.rawValue
+                "status" : OrderStatus.awaitingPickup.rawValue
             ]) { error in
                 if let error = error {
                     print("Failed to place order: \(error.localizedDescription)")
                     return
                 }
-                
-                // Update inventory quantities for ordered products
-                self.reduceQuantity()
 
-                // Clear cart after order placement and inventory update
-                self.clearCartFromFirestore()
-            }
-    }
-    
-    
-    /// Updates product inventory in Firestore by reducing quantity based on the user's cart.
-    private func reduceQuantity() {
-        
-        let db = FirebaseManager.shared.firestore
-        
-        for cart in self.cartProducts {
-            
-            let productCollection = db.collection("product").document(cart.product.id ?? "")
-            
-            // Fetch the current product document
-            productCollection.getDocument { document, error in
-                if let document = document, document.exists,
-                   let data = document.data(),
-                   let currentQuantity = data["quantity"] as? Int {
+                // Reduce product quantities
+                for cart in self.cartProducts {
+                    let productRef = db.collection("product").document(cart.product.id ?? "")
                     
-                    // Calculate the new quantity, ensuring it doesn't go below 0
-                    let newQuantity = max(currentQuantity - cart.quantity, 0)
-                    
-                    // Update Firestore with the new quantity
-                    productCollection.updateData(["quantity": newQuantity]) { error in
-                        if let error = error {
-                            print("Failed to update product quantity: \(error.localizedDescription)")
+                    productRef.getDocument { document, error in
+                        if let document = document, document.exists,
+                           let data = document.data(),
+                           let currentQuantity = data["quantity"] as? Int {
+                            
+                            let newQuantity = max(currentQuantity - cart.quantity, 0)
+                            
+                            productRef.updateData(["quantity": newQuantity]) { error in
+                                if let error = error {
+                                    print("Failed to update product quantity: \(error.localizedDescription)")
+                                }
+                            }
                         }
                     }
                 }
+
+                // Clear cart after reducing inventory
+                self.clearCartFromFirestore(userId: userId)
             }
-        }
     }
 
     
-    /// Clears the current user's cart from Firestore and updates the local cart state.
-    private func clearCartFromFirestore() {
+    private func clearCartFromFirestore(userId: String) {
+        let db = FirebaseManager.shared.firestore
         
-        // Get the document reference for the current user; exit if not available
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-        
-        // Access the "cart" subcollection for the current user
-        userDoc
+        db.collection("users")
+            .document(userId)
             .collection("cart")
             .getDocuments { snapshot, error in
-                // Check if documents were retrieved successfully
                 guard let documents = snapshot?.documents else {
                     print("No cart items found.")
                     return
                 }
                 
-                // Iterate through each document (cart item) and delete it
                 for doc in documents {
                     doc.reference.delete()
                 }
                 
-                // Clear the local cart state on the main thread
                 DispatchQueue.main.async {
                     self.cartProducts.removeAll() // Clear local cart as well
                 }
@@ -229,29 +228,27 @@ class CartViewModel: ObservableObject {
                 print("Cart cleared after order placement.")
             }
     }
-
     
-    /// Updates the quantity of a specific cart item in both local state and Firestore.
-    /// - Parameters:
-    ///   - cart: The cart item to be updated.
-    ///   - change: A Boolean indicating whether to increment (true) or decrement (false) the quantity.
-    func updateQuantity(cart: Cart, change: Bool) {
+    func increaseQuantity(cart: Cart, change: upQuantity) {
         
-        // Find the index of the cart item in the local array; exit if not found
         guard let index = cartProducts.firstIndex(where: { $0.id == cart.id }) else { return }
         
-        // Get the document reference for the current user; exit if not available
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-        
-        // Adjust the quantity locally based on the change flag
-        if change {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User must be logged in to add to cart.")
+            return
+        }
+        if change == .increase {
             cartProducts[index].quantity += 1
         } else {
             cartProducts[index].quantity -= 1
         }
         
-        // Update the corresponding cart document in Firestore with the new quantity
-        userDoc
+
+        // Update in Firestore
+        let db = FirebaseManager.shared.firestore
+        
+        db.collection("users")
+            .document(userId)
             .collection("cart")
             .document(cart.id)
             .updateData([
@@ -263,47 +260,14 @@ class CartViewModel: ObservableObject {
             }
     }
 
-
-    /// Removes an item from the user's cart in Firestore and updates the local cart state.
-    /// - Parameter index: An IndexSet indices of items to remove.
-    func removeFormCart(index: IndexSet) {
-        
-        // Get the document reference for the current user; exit if not available
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-        
-        // Safely extract the first index from the IndexSet and check bounds
-        guard let i = index.first, i < cartProducts.count else {
-            print("Invalid index")
+    func removeCartItem(cart: Cart) {
+        let db = FirebaseManager.shared.firestore
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User must be logged in to add to cart.")
             return
         }
-        
-        // Delete the item from the Firestore cart collection
-        userDoc
-            .collection("cart")
-            .document(cartProducts[i].id) // Retrieve the cart item id to be deleted
-            .delete { err in
-                if let err = err {
-                    print("Failed to delete from cart: \(err.localizedDescription)")
-                    return
-                }
-
-                // Update the local cart on the main thread after successful deletion
-                DispatchQueue.main.async {
-                    self.cartProducts.remove(at: i)
-                }
-            }
-    }
-
-
-    /// Removes a specific cart item from the user's Firestore cart and updates the local cart state.
-    /// - Parameter cart: The cart item to be removed.
-    func removeFormCart(cart: Cart) {
-        
-        // Get the document reference for the current user; exit if not available
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-        
-        // Delete the specific cart item document from the "cart" subcollection in Firestore
-        userDoc
+        db.collection("users")
+            .document(userId)
             .collection("cart")
             .document(cart.id)
             .delete { err in
@@ -313,10 +277,14 @@ class CartViewModel: ObservableObject {
                 }
 
                 DispatchQueue.main.async {
-                    // Remove any item with the same ID from the local cart
                     self.cartProducts.removeAll { $0.id == cart.id }
                 }
             }
     }
 
+}
+
+enum upQuantity {
+    case increase
+    case decrease
 }

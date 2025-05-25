@@ -45,27 +45,18 @@ struct PredictionResultView: View {
                         HStack {
                             Text(prediction.0)
                                 .font(.body)
+                                .padding(.bottom)
                                 .padding(.leading)
                             Spacer()
                             Text(String(format: "%.2f%%", prediction.1))
                                 .font(.body)
-                            Image(systemName: "chevron.right")
-                                .font(.subheadline)
+                                .padding(.bottom)
                                 .padding(.trailing)
-                                .foregroundColor(.secondary)
                         }
-                        .padding(.vertical, 8)
-                        .contentShape(Rectangle())
                     }.foregroundColor(.primary)
-                        .buttonStyle(.plain)                   // remove default blue tint
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(.white.opacity(0.15))    // lightly raised pill
-                        )
-                        .padding(.init(top: 0, leading: 8, bottom: 8, trailing: 8))
                 }
                 
-                
+
                 
             }
             .frame(maxWidth: 300)

@@ -24,10 +24,10 @@ struct AppBar: View {
                     Spacer()
                     
                     // Favorite icon with navigation
-                    IconNavigationLink(systemImageName: "heart", destination: FavoritesView())
+                    IconNavigationLink(systemImageName: "heart", destination: Text("Favorite"))
                         .padding(.horizontal, 10)
                     // Cart icon with navigation
-                    IconNavigationLink(systemImageName: "cart", destination: CartView(cartViewModel: viewModel))
+                    IconNavigationLink(systemImageName: "cart", destination: CartView(viewModel: viewModel))
 
                     
                 }
