@@ -7,15 +7,18 @@
 
 import Foundation
 import MapKit
-import FirebaseFirestore
 
+/// Define a struct to represent a location, conforming to Identifiable and Equatable protocols
 struct Location: Identifiable, Equatable {
+    
     var id: String
     var name: String
     var description: String
     var coordinates: CLLocationCoordinate2D
     var image: String
     
+    // Custom implementation of the Equatable protocol
+    // Two locations are considered equal if their IDs match
     static func == (lhs: Location, rhs: Location) -> Bool {
         lhs.id == rhs.id
     }

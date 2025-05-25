@@ -39,3 +39,9 @@ struct MainTabView: View {
     }
 }
 
+enum AppPage: Hashable {
+    case home
+    case cart
+    case checkout
+    case confirmation
+}

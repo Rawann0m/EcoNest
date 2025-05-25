@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestore
 
 struct RecentMessage: Identifiable, Codable {
-    @DocumentID var id: String?
+    var id: String?
     let content: [String]
     let toId: String
     let fromId: String

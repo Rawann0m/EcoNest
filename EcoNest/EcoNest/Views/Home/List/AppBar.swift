@@ -27,7 +27,7 @@ struct AppBar: View {
                     IconNavigationLink(systemImageName: "heart", destination: FavoritesView())
                         .padding(.horizontal, 10)
                     // Cart icon with navigation
-                    IconNavigationLink(systemImageName: "cart", destination: CartView(viewModel: viewModel))
+                    IconNavigationLink(systemImageName: "cart", destination: CartView(cartViewModel: viewModel))
 
                     
                 }

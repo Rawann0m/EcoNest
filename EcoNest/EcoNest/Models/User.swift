@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct User: Identifiable, Hashable {
-    @DocumentID var id: String?
+    var id: String?
     let username: String
     let email: String
     let favoritePlants: [String]?

@@ -7,7 +7,9 @@
 
 import Foundation
 
+/// Define a struct to represent an order, conforming to the Identifiable protocol
 struct Order: Identifiable {
+    
     var id: String
     var products: [Product]
     var total: Double
@@ -15,5 +17,6 @@ struct Order: Identifiable {
     var pickupLocation: Location
     var status: OrderStatus
 }
+
 
 

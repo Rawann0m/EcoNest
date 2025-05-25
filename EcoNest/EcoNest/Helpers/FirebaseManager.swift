@@ -22,5 +22,14 @@ class FirebaseManager {
     var isLoggedIn: Bool {
         return auth.currentUser != nil
     }
+    
+    func getCurrentUser() -> DocumentReference? {
+        guard let userId = auth.currentUser?.uid else {
+            print("User not logged in")
+            return nil
+        }
+        return firestore.collection("users").document(userId)
+    }
+
 
 }
