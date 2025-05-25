@@ -29,7 +29,7 @@ struct MembersListView: View {
                     ScrollViewReader{ scrollProxy in
                         LazyVStack{
                             // Text field for user input
-                            TextField("Search", text: $viewModel.searchText)
+                            TextField("Search".localized(using: currentLanguage), text: $viewModel.searchText)
                                 .padding(12)
                                 .background(.gray.opacity(0.1), in: .rect(cornerRadius: 25))
                                 .foregroundColor(.gray)
@@ -39,21 +39,23 @@ struct MembersListView: View {
                                 .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
                             
                             ForEach(getMembers()){ member in
-                                UsersRow(username: member.username, image: member.profileImage)
-                                    .id(member.id)
-                                    .onAppear {
-                                        savedId = member.id
-                                    }
-                                    .onTapGesture {
-                                        if FirebaseManager.shared.isLoggedIn{
-                                            viewModel.selectedMember = member
-                                            if  member.id != FirebaseManager.shared.auth.currentUser?.uid{
-                                                showChat.toggle()
-                                            }
-                                        } else {
-                                            AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                HStack{
+                                    UsersRow(user: member, image: member.profileImage, receiveMessages: member.receiveMessages)
+                                        .id(member.id)
+                                        .onAppear {
+                                            savedId = member.id
                                         }
-                                    }
+                                        .onTapGesture {
+                                            if FirebaseManager.shared.isLoggedIn{
+                                                viewModel.selectedMember = member
+                                                if  member.id != FirebaseManager.shared.auth.currentUser?.uid && member.receiveMessages{
+                                                    showChat.toggle()
+                                                }
+                                            } else {
+                                                AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                            }
+                                        }
+                                }
                             }
                         }
                         .onAppear {

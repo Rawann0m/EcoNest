@@ -34,9 +34,7 @@ struct HomeView: View {
                         SearchView(viewModel: homeViewModel)
                         
                         // Auto-playing promotional image slider
-                        if homeViewModel.search.isEmpty {
-                            ImageSliderView(viewModel: homeViewModel)
-                        }
+                        ImageSliderView(viewModel: homeViewModel)
                         
                         // Section title for product grid
                         HStack {

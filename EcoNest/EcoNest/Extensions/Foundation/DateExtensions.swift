@@ -7,19 +7,10 @@
 
 import Foundation
 
-// Extending the Date class to add custom formatting functionality
 extension Date {
-    
-    /// Formats the date instance into a string formatted as "day month year"
     func formattedAsOrderDate() -> String {
-        // Create a DateFormatter instance
         let formatter = DateFormatter()
-        
-        // Set the desired date format
-        formatter.dateFormat = "d MMMM yyyy"
-        
-        // Convert the Date to a formatted String and return it
+        formatter.dateFormat = "d MMMM yyyy" // e.g. 20 May 2025
         return formatter.string(from: self)
     }
 }
-

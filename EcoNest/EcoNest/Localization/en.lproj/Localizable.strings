@@ -123,6 +123,12 @@
 "AllPlants"= "All Plants";
 "FilterCategories"= "Filter Categories";
 "Apply" = "Apply";
-
-
-"Favorites" = "Favorites";
+"DeleteAccountMessage" = "Deleting your account will erase all your data.";
+"Delete" = "Delete";
+"Sure" = "Are you sure?";
+"allowDR" = "Receive Messages";
+"postNumber" = "You can only add up to 3 photos per post.";
+"OK" = "OK";
+"membersCommunity" = "%d members";
+"memberCommunity" = "%d member";
+"chat" = "chat";
