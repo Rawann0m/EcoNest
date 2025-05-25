@@ -14,7 +14,6 @@ struct Message: Identifiable, Codable, Hashable {
     let toId: String
     let content: [String]
     let timestamp: Timestamp?
-    let isRead: Bool
     
     init(documentId: String, data: [String: Any]){
         self.fromId = data["fromId"] as? String ?? ""
@@ -22,6 +21,5 @@ struct Message: Identifiable, Codable, Hashable {
         self.content = data["content"] as? [String] ?? []
         self.id = documentId
         self.timestamp = data["timestamp"] as? Timestamp
-        self.isRead = data["isRead"] as? Bool ?? false
     }
 }
