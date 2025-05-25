@@ -61,7 +61,7 @@ struct ConfirmationAlert: View {
                     }
                 }
             }
-        }
+        }.navigationBarBackButtonHidden(true)
         // Set layout direction based on language
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }

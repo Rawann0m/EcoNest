@@ -34,6 +34,7 @@ struct PhotoInputButtons: View {
                     withAnimation(.easeInOut) {
                         buttonSelected = true
                     }
+                    viewModel.clearPredictions()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         showPicker = true
                     }
@@ -60,6 +61,7 @@ struct PhotoInputButtons: View {
                     withAnimation(.easeInOut) {
                         buttonSelected = false
                     }
+                    viewModel.clearPredictions()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         if let root = UIApplication.shared.connectedScenes
                             .compactMap({ $0 as? UIWindowScene })

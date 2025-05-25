@@ -33,9 +33,8 @@ struct MainTabView: View {
             CustomTabBar(selectedIndex: $selectedTabIndex)
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-        .navigationBarBackButtonHidden(true)
         .ignoresSafeArea()
-        }
+        }.navigationBarBackButtonHidden(true)
     }
 }
 

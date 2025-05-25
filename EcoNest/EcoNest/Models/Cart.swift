@@ -15,4 +15,3 @@ struct Cart: Identifiable, Codable {
     var quantity: Int
     var price: Double
 }
-

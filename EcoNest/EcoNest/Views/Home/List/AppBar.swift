@@ -38,7 +38,7 @@ struct AppBar: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color("LimeGreen"))
             }
-            .padding(.horizontal, 16) 
+            .padding(.horizontal, 16)
         
     }
 }
