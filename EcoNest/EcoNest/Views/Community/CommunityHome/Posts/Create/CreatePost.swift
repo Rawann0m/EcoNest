@@ -166,6 +166,7 @@ struct CreatePost: View {
                     showMaxImagesAlert()
                 }
             }
+            .ignoresSafeArea(.all)
         }
         .photosPicker(
             isPresented: $showImagePicker,
@@ -185,27 +186,16 @@ struct CreatePost: View {
                 }
             }
         }
-//        .onChange(of: selectedItems) { _, newItems in
-//            Task {
-//                var tempImages: [UIImage] = []
-//                
-//                for item in newItems {
-//                    if tempImages.count + selectedImages.count >= imageCount { break }
-//
-//                    if let data = try? await item.loadTransferable(type: Data.self),
-//                       let uiImage = UIImage(data: data) {
-//                        tempImages.append(uiImage)
-//                    }
-//                }
-//
-//                let spaceLeft = imageCount - selectedImages.count
-//                if spaceLeft > 0 {
-//                    selectedImages += tempImages.prefix(spaceLeft)
-//                }
-//
-//                selectedItems = []
-//            }
-//        }
+        .alert(isPresented: $alertManager.alertState.isPresented) {
+            Alert(
+                title: Text(alertManager.alertState.title),
+                message: Text(alertManager.alertState.message),
+                primaryButton: .default(Text("Ok")) {
+                    
+                },
+                secondaryButton: .cancel()
+            )
+        }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
     

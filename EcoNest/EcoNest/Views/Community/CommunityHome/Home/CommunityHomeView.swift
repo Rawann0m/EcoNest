@@ -103,7 +103,13 @@ struct CommunityHomeView: View {
                                         .foregroundColor(.gray)
                                         .font(.caption)
                                     
-                                    Text("\(community.members.count) members")
+                                    Group {
+                                        if community.members.count == 1 {
+                                            Text(String(format: "memberCommunity".localized(using: currentLanguage), community.members.count))
+                                        } else {
+                                            Text(String(format: "membersCommunity".localized(using: currentLanguage), community.members.count))
+                                        }
+                                    }
                                         .font(.caption)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)

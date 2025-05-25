@@ -37,12 +37,17 @@ struct CommuintyListView: View {
                                             .bold()
                                             .frame(width: 320, alignment: .leading)
                                         
-//                                        Text("\(community.members.count) members".localized(using: currentLanguage))
-                                        Text("\(community.members.count) \(Text("membersCommunity"))")
-                                            .font(.title3)
-                                            .foregroundColor(.white)
-                                            .bold()
-                                            .frame(width: 320, alignment: .leading)
+                                        Group {
+                                            if community.members.count == 1 {
+                                                Text(String(format: "memberCommunity".localized(using: currentLanguage), community.members.count))
+                                            } else {
+                                                Text(String(format: "membersCommunity".localized(using: currentLanguage), community.members.count))
+                                            }
+                                        }
+                                        .font(.title3)
+                                        .foregroundColor(.white)
+                                        .bold()
+                                        .frame(width: 320, alignment: .leading)
                                     }
                                     .offset(y: community.memberOfCommunity ? 75 : 50)
                                     

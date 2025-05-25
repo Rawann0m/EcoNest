@@ -20,7 +20,7 @@ struct DirectMessageListView: View {
             } else {
                 List {
                     ForEach(viewModel.recentMessages){ message in
-                        RecentMessageRow(username: message.username, email: "", image: message.profileImage ?? "", time: message.timeAgo, message: message.content[0])
+                        RecentMessageRow(username: message.username, email: "", image: message.profileImage ?? "", time: message.timeAgo, message: message.content[0], count: message.unreadMessages)
                             .listRowSeparator(.hidden)
                             .onTapGesture {
                                 let uid = FirebaseManager.shared.auth.currentUser!.uid == message.fromId ? message.toId : message.fromId

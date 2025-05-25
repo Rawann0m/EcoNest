@@ -8,37 +8,62 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-@ViewBuilder
-func Posts(post: Post, user: User, communityId: String, viewModel: PostsListViewModel, isReplay: Bool = false, postId: String? = nil) -> some View {
-    @EnvironmentObject var themeManager: ThemeManager
+/// A reusable SwiftUI view builder that renders a social media post with user details, post content, images, likes, and comments.
+///
+/// `Posts` displays a post and its associated user info, including text and images. It allows liking/unliking the post,
+/// replying to it, and removing it (if the current user is the post author). The layout adapts to the number of images.
+///
+/// - Parameters:
+///   - post: The `Post` model containing content, timestamp, likes, and replies.
+///   - user: The `User` who created the post.
+///   - communityId: The ID of the community where the post was published.
+///   - viewModel: The `PostsListViewModel` used to manage state and handle actions.
+///   - isReplay: A `Bool` indicating if the post is a reply (defaults to `false`).
+///   - postId: Optional post ID used when handling replies.
+//@ViewBuilder
+//func Posts(post: Post, user: User, communityId: String, viewModel: PostsListViewModel, isReplay: Bool = false, postId: String? = nil) -> some View {
+//   // @State var showPic: Bool = false
+struct Posts: View {
+    let post: Post
+    let user: User
+    let communityId: String
+    @ObservedObject var viewModel: PostsListViewModel
+    let isReplay: Bool
+    let postId: String?
+
+    var body: some View {
     VStack(alignment: .leading) {
         HStack(spacing: 16){
-            VStack{
+            VStack {
                 if user.profileImage.isEmpty {
+                    // Display default profile image
                     Image("profile")
                         .resizable()
-                }  else if let imageURL = URL(string: user.profileImage){
+                } else if let imageURL = URL(string: user.profileImage){
+                    // Load profile image from URL
                     WebImage(url: imageURL)
                         .resizable()
                 }
             }
             .frame(width: 60, height: 60)
             .cornerRadius(50)
-            .background{
+            .background {
+                // Profile image border
                 Circle()
                     .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
             }
-            
+
             VStack(alignment: .leading){
                 Text(user.username)
+                // Show relative timestamp (e.g., "2h ago")
                 Text("\(post.timestamp.timeAgoDisplay())")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
         }
-        
+
         VStack(alignment: .leading, spacing: 10) {
-            
+            // Show text-only content (excluding links)
             ForEach(post.content.filter { !$0.lowercased().hasPrefix("http") }, id: \.self) { text in
                 Text(text)
                     .font(.body)
@@ -46,10 +71,12 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                     .padding(.leading,5)
             }
 
+            // Filter and display images from content
             let images = post.content.filter { $0.lowercased().hasPrefix("http") }
-            
+
             HStack {
                 if images.count == 1 {
+                    // Single image display
                     if let url = URL(string: images[0]) {
                         WebImage(url: url)
                             .resizable()
@@ -58,10 +85,14 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                             .clipped()
                             .contentShape(Rectangle())
                             .cornerRadius(10)
+                            .onTapGesture {
+                                viewModel.selectedPic = images[0]
+                                viewModel.showPic.toggle()
+                            }
                     }
                 } else if images.count == 2 {
-                    ForEach(images.chunked(into: 2), id: \.self) {
-                        rowItems in
+                    // Display 2 images in a row
+                    ForEach(images.chunked(into: 2), id: \.self) { rowItems in
                         HStack(alignment: .center, spacing: 5) {
                             ForEach(rowItems, id: \.self) { item in
                                 if let url = URL(string: item) {
@@ -73,13 +104,17 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                         .clipped()
                                         .contentShape(Rectangle())
                                         .cornerRadius(10)
+                                        .onTapGesture {
+                                            viewModel.selectedPic = item
+                                            viewModel.showPic.toggle()
+                                        }
                                 }
                             }
                         }
                     }
                 } else {
-                    ForEach(images.chunked(into: 2), id: \.self) {
-                        rowItems in
+                    // Display multiple images in grid format
+                    ForEach(images.chunked(into: 2), id: \.self) { rowItems in
                         VStack(alignment: .center, spacing: 5) {
                             ForEach(rowItems, id: \.self) { item in
                                 if let url = URL(string: item) {
@@ -91,6 +126,10 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                                         .clipped()
                                         .contentShape(Rectangle())
                                         .cornerRadius(10)
+                                        .onTapGesture {
+                                            viewModel.selectedPic = item
+                                            viewModel.showPic.toggle()
+                                        }
                                 }
                             }
                         }
@@ -98,60 +137,80 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                 }
             }
         }
-        
-        HStack(alignment: .center){
-            
-            Group{
+
+        HStack(alignment: .center) {
+            Group {
                 if post.likedByCurrentUser {
+                    // Filled heart if liked
                     Image(systemName: "heart.fill")
                         .foregroundColor(.red)
                         .font(.callout)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.removeUserIDFromFavorite(communityId: communityId, userId: userId, postId: postId ?? "",  replayId: post.id ?? "", isReply: isReplay)
+                                viewModel.removeUserIDFromFavorite(
+                                    communityId: communityId,
+                                    userId: userId,
+                                    postId: postId ?? "",
+                                    replayId: post.id ?? "",
+                                    isReply: isReplay
+                                )
                             }
-                            
                         }
-                    
                 } else {
+                    // Empty heart if not liked
                     Image(systemName: "heart")
                         .foregroundColor(.gray)
                         .font(.body)
                         .onTapGesture {
                             if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                viewModel.addUserIDToFavorite(communityId: communityId, userId: userId, postId: postId ?? "",  replayId: post.id ?? "", isReply: isReplay)
+                                viewModel.addUserIDToFavorite(
+                                    communityId: communityId,
+                                    userId: userId,
+                                    postId: postId ?? "",
+                                    replayId: post.id ?? "",
+                                    isReply: isReplay
+                                )
                             }
                         }
                 }
-                
+
+                // Like count
                 Text(post.likes.count == 0 ? "" : "\(post.likes.count)")
                     .font(.callout)
             }
             .frame(width: 10)
-            
+
             Spacer()
-            
-            Group{
+
+            // Message icon and reply count
+            Group {
                 Image(systemName: "message")
                     .foregroundColor(.gray)
                     .font(.callout)
-                
+
                 Text(post.numberOfReplies == 0 ? "" : "\(post.numberOfReplies)")
                     .font(.callout)
             }
             .frame(width: 10)
-            
+
             Spacer()
-            
+
+            // Show menu for post owner
             if post.userId == FirebaseManager.shared.auth.currentUser?.uid {
                 Menu {
                     Button("Remove Post", role: .destructive) {
                         if isReplay {
-                            viewModel.removeReplay(communityId: communityId, postId: postId ?? "", replayId: post.id ?? "")
+                            viewModel.removeReplay(
+                                communityId: communityId,
+                                postId: postId ?? "",
+                                replay: post
+                            )
                         } else {
-                            viewModel.removePost(communityId: communityId, postId: post.id ?? "")
+                            viewModel.removePost(
+                                communityId: communityId,
+                                post: post
+                            )
                         }
-                       
                         print("remove it")
                     }
                 } label: {
@@ -160,14 +219,20 @@ func Posts(post: Post, user: User, communityId: String, viewModel: PostsListView
                         .font(.callout)
                 }
             }
-            
         }
         .frame(maxWidth: 500)
         .padding(10)
-    }
-    .padding(.horizontal,10)
-    .padding(.top, 10)
-    .padding(.bottom, 0)
-    
-    Divider()
+        
+//        if viewModel.showPic {
+//             if let pic = viewModel.selectedPic {
+//                 PicView(pic: pic, showPic: $viewModel.showPic)
+//             }
+//         }
+     }
+     .padding(.horizontal,10)
+     .padding(.top, 10)
+     .padding(.bottom, 0)
+
+     Divider()
+ }
 }

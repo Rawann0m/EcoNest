@@ -100,6 +100,7 @@ struct ChatView: View {
                                         proxy.scrollTo("empty", anchor: .bottom)
                                     }
                                 }
+                                viewModel.markMessagesAsRead(toId: viewModel.chatUser?.id ?? "")
                             }
                         }
                         
@@ -228,6 +229,9 @@ struct ChatView: View {
                         }
                     }
                 }
+            }
+            .onAppear{
+                viewModel.markMessagesAsRead(toId: viewModel.chatUser?.id ?? "")
             }
             .onDisappear{
                 viewModel.firestoreListener?.remove()

@@ -17,6 +17,7 @@ struct RecentMessage: Identifiable, Codable {
     let timestamp: Date
     let username: String
     let profileImage: String?
+    var unreadMessages: Int = 0
     
     var timeAgo: String {
         let secondsAgo = Int(Date().timeIntervalSince(timestamp))

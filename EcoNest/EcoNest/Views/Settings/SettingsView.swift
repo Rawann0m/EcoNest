@@ -44,15 +44,6 @@ struct SettingsView: View {
                             .offset(y: Geometry.size.height * 0.12)
                             .shadow(color: (themeManager.isDarkMode ? Color.white : Color.black).opacity(0.33), radius: 10)
                         
-//                        Image(systemName: "questionmark.circle")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 25, height: 25)
-//                            .foregroundColor(.white)
-//                            .padding(8)
-//                           // .background(.white.opacity(0.7), in: Circle())
-//                            .offset(x: -170, y: -20)
-                        
                         VStack {
                             if let selectedImage = selectedImage {
                                 Image(uiImage: selectedImage)
@@ -137,7 +128,7 @@ struct SettingsView: View {
                                 }) {
                                     Text("Login/Create Account")
                                         .foregroundColor(.white)
-                                        .padding(5)
+                                        .padding(Geometry.size.width > smallDeviceWidth ? 10 : 5)
                                         .background(
                                             RoundedRectangle(cornerRadius: 5)
                                                 .fill(Color("LimeGreen"))
@@ -214,16 +205,18 @@ struct SettingsView: View {
                                 .labelsHidden()
                         }, color: themeManager.textColor)
 
-                        settingRow(icon: "ellipsis.message", text: "allowDR".localized(using: currentLanguage), function: {
-                            print("toggle receiveing Messages")
-                        }, trailingView: {
-                            Toggle("", isOn: $viewModel.receiveMessages)
-                                .tint(Color("LimeGreen"))
-                                .onChange(of: viewModel.receiveMessages) { _, isOn in
-                                    viewModel.updateReceiveMessages()
-                                }
-                                .labelsHidden()
-                        }, color: themeManager.textColor)
+                        if FirebaseManager.shared.isLoggedIn {
+                            settingRow(icon: "ellipsis.message", text: "allowDR".localized(using: currentLanguage), function: {
+                                print("toggle receiveing Messages")
+                            }, trailingView: {
+                                Toggle("", isOn: $viewModel.receiveMessages)
+                                    .tint(Color("LimeGreen"))
+                                    .onChange(of: viewModel.receiveMessages) { _, isOn in
+                                        viewModel.updateReceiveMessages()
+                                    }
+                                    .labelsHidden()
+                            }, color: themeManager.textColor)
+                        }
                         
                         settingRow(icon: "questionmark.circle", text: "CustomerSupport".localized(using: currentLanguage), function: {
                             // go to customer suport website
