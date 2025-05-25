@@ -62,7 +62,7 @@ struct CartProductRow: View {
                 
                 // Increase quantity button
                 Button {
-                    viewModel.updateQuantity(cart: cartProduct, change: true)
+                    //viewModel.updateQuantity(cart: cartProduct, change: true)
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 24))
@@ -76,9 +76,9 @@ struct CartProductRow: View {
                 // Decrease quantity or remove item if quantity is 1
                 Button {
                     if cartProduct.quantity > 1 {
-                        viewModel.updateQuantity(cart: cartProduct, change: false)
+                        //viewModel.updateQuantity(cart: cartProduct, change: false)
                     } else {
-                        viewModel.removeFormCart(cart: cartProduct)
+                       // viewModel.removeFormCart(cart: cartProduct)
                     }
                     
                 } label: {
