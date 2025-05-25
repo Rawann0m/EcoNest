@@ -238,8 +238,9 @@ class PostsListViewModel: ObservableObject {
                 let username = data["username"] as? String ?? ""
                 let email = data["email"] as? String ?? ""
                 let profileImage = data["profileImage"] as? String ?? ""
-                
-                let user = User(username: username, email: email, profileImage: profileImage)
+
+                let user = User(username: username, email: email, favoritePlants: [], profileImage: profileImage)
+
                 print("found user")
                 completion(user)
             } else {

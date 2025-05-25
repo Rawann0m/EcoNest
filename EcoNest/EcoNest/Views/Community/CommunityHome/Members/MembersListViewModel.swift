@@ -39,7 +39,8 @@ class MembersListViewModel: ObservableObject {
                         let email = data["email"] as? String ?? "Unknown"
                         let profileImage = data["profileImage"] as? String ?? ""
                         
-                        let user = User(id: snapshot.documentID, username: name, email: email, profileImage: profileImage)
+                        let user = User(id: snapshot.documentID, username: name, email: email, favoritePlants: [], profileImage: profileImage)
+
                         
                         DispatchQueue.main.async {
                             self.members.append(user)

@@ -12,5 +12,6 @@ struct User: Identifiable, Hashable {
     var id: String?
     let username: String
     let email: String
+    let favoritePlants: [String]?
     let profileImage: String
 }
