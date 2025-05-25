@@ -59,6 +59,7 @@ struct ShapeView: View {
                         Image(systemName: icon)
                             .resizable()
                             .frame(width: icon == "drop.fill" ? 15 : 30, height: icon == "drop.fill" ? 25 : 30)
+                            .foregroundColor(.black)
                         Text("\(maxWaterAmount == 0 ? 0 : Int(usagePercentage * 100))%")
                             .font(.caption)
                             .bold()

@@ -42,7 +42,7 @@ struct PlantDetailBar: View {
             
         }.font(.headline)
             .padding(.horizontal)
-            .padding(.top, 46)
+            .padding(.top, UIScreen.main.bounds.height > 667 ? 52 : 28)
             .onAppear {
                 viewModel.checkFavoriteStatus(userId: userId, plantId: plantId)
             }
