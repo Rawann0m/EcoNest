@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 /// A model representing a cart item that the user has added.
 struct Cart: Identifiable, Codable {

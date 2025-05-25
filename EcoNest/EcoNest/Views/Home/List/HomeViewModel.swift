@@ -37,36 +37,22 @@ class HomeViewModel: ObservableObject {
         let db = FirebaseManager.shared.firestore
         
         db.collection("product")
-            .whereField("quantity", isGreaterThan: 0) // Only fetch if quantity > 0
+            .whereField("quantity", isGreaterThan: 0)
             .getDocuments { (snapshot, error) in
-                guard let itemData = snapshot else { return }
-                
-                self.products = itemData.documents.compactMap { document in
-                    let id = document.documentID
-                    let name = document.get("name") as? String ?? ""
-                    let price = document.get("price") as? Double ?? 0.0
-                    let image = document.get("image") as? String ?? ""
-                    let quantity = document.get("quantity") as? Int ?? 0
-                    let size = document.get("size") as? String ?? ""
-                    
-                    return Product(
-                        id: id,
-                        name: name,
-                        price: price,
-                        image: image,
-                        quantity: quantity,
-                        size: size
-                    )
+                guard let documents = snapshot?.documents else { return }
+
+                self.products = documents.compactMap { document in
+                    try? document.data(as: Product.self)
                 }
-                
+
                 self.filtered = self.products
             }
     }
+
     
     func fetchLeasttQuantity() {
-        
         let db = FirebaseManager.shared.firestore
-        
+
         db.collection("product")
             .order(by: "quantity") // Order by quantity ascending
             .limit(to: 4)          // Limit to 4 items
@@ -77,19 +63,7 @@ class HomeViewModel: ObservableObject {
                 }
 
                 self.leastProducts = itemData.documents.compactMap { document in
-                    let id = document.documentID
-                    let name = document.get("name") as? String ?? ""
-                    let price = document.get("price") as? Double ?? 0.0
-                    let image = document.get("image") as? String ?? ""
-                    let quantity = document.get("quantity") as? Int ?? 0
-
-                    return Product(
-                        id: id,
-                        name: name,
-                        price: price,
-                        image: image,
-                        quantity: quantity
-                    )
+                    try? document.data(as: Product.self)
                 }
             }
     }

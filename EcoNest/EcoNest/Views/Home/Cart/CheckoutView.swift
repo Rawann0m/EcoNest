@@ -103,7 +103,7 @@ struct CheckoutView: View {
                 }
                 
                 Button {
-                    //viewModel.addOrder(locationId: locViewModel.mapLocation.id)
+                    viewModel.addOrder(locationId: locViewModel.mapLocation.id)
                     NotificationManager.shared.requestPermission { granted in
                         if granted {
                             NotificationManager.shared.scheduleNotification(

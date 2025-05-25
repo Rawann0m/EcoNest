@@ -41,77 +41,57 @@ class CartViewModel: ObservableObject {
     
     /// Fetches the user's cart data from Firestore and listens for real-time updates.
     func fetchCartData() {
-        
-        isLoading = true  // Start loading state
-        cartListener?.remove() // Remove previous Firestore listener if it exists to avoid duplicates
-        
-        let db = FirebaseManager.shared.firestore // Access Firestore database instance
-        
-        // Ensure the user is logged in and has a valid UID
+        isLoading = true
+        cartListener?.remove()
+
+        let db = FirebaseManager.shared.firestore
         guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-        
-        // Attach a Firestore listener to the user's cart collection
-        cartListener = userDoc
-            .collection("cart")
-            .addSnapshotListener { snapshot, error in
-                
-                // If there are no documents in the snapshot, show an empty cart
-                guard let documents = snapshot?.documents else {
-                    print("No cart data found.")
-                    self.isLoading = false
-                    return
-                }
 
-                var fetchedCart: [Cart] = [] // Temporary array to hold fetched cart items
-                let group = DispatchGroup()  // Use a dispatch group to manage async tasks
+        cartListener = userDoc.collection("cart").addSnapshotListener { snapshot, error in
+            guard let documents = snapshot?.documents else {
+                print("No cart data found.")
+                self.isLoading = false
+                return
+            }
 
-                for doc in documents { // Iterate through all cart entries.
-                    
-                    let data = doc.data() // Fetch the data from the document.
-                    
-                    // Extract product ID, quantity, and price from each cart document
-                    guard let productId = data["productId"] as? String,
-                          let quantity = data["quantity"] as? Int,
-                          let price = data["price"] as? Double else { continue }
+            var fetchedCart: [Cart] = []
+            let group = DispatchGroup()
 
-                    group.enter() // Enter the dispatch group before starting async fetch
+            for doc in documents {
+                let data = doc.data()
 
-                    // Fetch the product document by its ID
-                    db.collection("product").document(productId).getDocument { productDoc, error in
-                        defer { group.leave() } // Leave the group once finished
-                        
-                        // Ensure product data exists before parsing
-                        if let productData = productDoc?.data() {
-                            let product = Product(
-                                id: productDoc?.documentID,
-                                name: productData["name"] as? String ?? "",
-                                price: productData["price"] as? Double ?? 0.0,
-                                image: productData["image"] as? String ?? "",
-                                quantity: productData["quantity"] as? Int ?? 0,
-                                size: productData["size"] as? String ?? ""
-                            )
+                guard let productId = data["productId"] as? String,
+                      let quantity = data["quantity"] as? Int,
+                      let price = data["price"] as? Double else { continue }
 
-                            // Create a Cart model from the product and cart info
+                group.enter()
+
+                db.collection("product").document(productId).getDocument { productDoc, error in
+                    defer { group.leave() }
+
+                    if let productDoc = productDoc, productDoc.exists {
+                        let product = try? productDoc.data(as: Product.self)
+
+                        if let product = product {
                             let cartItem = Cart(
                                 id: doc.documentID,
                                 product: product,
                                 quantity: quantity,
                                 price: price
                             )
-
-                            fetchedCart.append(cartItem) // Append to result array
+                            fetchedCart.append(cartItem)
                         }
                     }
                 }
-
-                // Once all product fetches complete, update the state
-                group.notify(queue: .main) {
-                    self.cartProducts = fetchedCart
-                    self.isLoading = false
-                }
             }
-    }
 
+            group.notify(queue: .main) {
+                self.cartProducts = fetchedCart
+                self.isLoading = false
+            }
+        }
+    }
+    
     
     /// Calculates the total price of all items in the cart.
     /// - Returns: The sum of (quantity × unit price) for each cart item.
