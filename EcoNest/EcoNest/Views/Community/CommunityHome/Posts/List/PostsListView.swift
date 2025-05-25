@@ -25,7 +25,7 @@ struct PostsListView: View {
                 } else {
                     ScrollViewReader{ scrollProxy in
                         LazyVStack {
-                            TextField("Search".localized(using: currentLanguage), text: $viewModel.searchText)
+                            TextField("Search", text: $viewModel.searchText)
                                 .padding(12)
                                 .background(.gray.opacity(0.1), in: .rect(cornerRadius: 25))
                                 .foregroundColor(.gray)
@@ -35,7 +35,7 @@ struct PostsListView: View {
                                 .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
                             ForEach(getPosts()) { post in
                                 if let user = post.user {
-                                    Posts(post: post, user: user, communityId: communityId, viewModel: viewModel, isReplay: false, postId: post.id)
+                                    Posts(post: post, user: user, communityId: communityId, viewModel: viewModel, postId: post.id)
                                         .onTapGesture {
                                             viewModel.selectedPost = post
                                             showPostDetails.toggle()
@@ -49,7 +49,7 @@ struct PostsListView: View {
                         }
                         .onAppear {
                             if let id = savedId {
-                                scrollProxy.scrollTo(id, anchor: .bottom)
+                                scrollProxy.scrollTo(id, anchor: .center)
                             }
                         }
                     }

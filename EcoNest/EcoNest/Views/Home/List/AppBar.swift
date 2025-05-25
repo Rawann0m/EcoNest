@@ -12,6 +12,7 @@ struct AppBar: View {
     
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @ObservedObject var viewModel: CartViewModel
+    @State var isPresented: Bool = false
     var body: some View {
 
             VStack(alignment: .leading) {
@@ -24,10 +25,10 @@ struct AppBar: View {
                     Spacer()
                     
                     // Favorite icon with navigation
-                    IconNavigationLink(systemImageName: "heart", destination: Text("Favorite"))
+                    IconNavigationLink(systemImageName: "heart", destination: FavoritesView())
                         .padding(.horizontal, 10)
                     // Cart icon with navigation
-                    IconNavigationLink(systemImageName: "cart", destination: CartView(viewModel: viewModel))
+                    IconNavigationLink(systemImageName: "cart", destination: CartView(cartViewModel: viewModel))
 
                     
                 }
@@ -38,8 +39,8 @@ struct AppBar: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color("LimeGreen"))
             }
-            .padding(.horizontal, 16) 
-        
+            .padding(.horizontal, 16)
+
     }
 }
 

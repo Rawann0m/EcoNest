@@ -10,14 +10,13 @@ import Firebase
 import FirebaseFirestore
 
 struct RecentMessage: Identifiable, Codable {
-    @DocumentID var id: String?
+    var id: String?
     let content: [String]
     let toId: String
     let fromId: String
     let timestamp: Date
     let username: String
     let profileImage: String?
-    var unreadMessages: Int = 0
     
     var timeAgo: String {
         let secondsAgo = Int(Date().timeIntervalSince(timestamp))

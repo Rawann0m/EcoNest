@@ -1,9 +1,10 @@
 //
 //  ThemeManager.swift
-//  EcoNest
+//  ExpanseTracker
 //
 //  Created by Rawan on 12/10/1446 AH.
 //
+
 
 import SwiftUI
 
@@ -11,7 +12,17 @@ import SwiftUI
 class ThemeManager: ObservableObject {
     
     // MARK: - Variables
-    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+        @Published var isDarkMode: Bool {
+            didSet {
+                UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
+            }
+        }
+        
+        // MARK: - Init
+        init() {
+            // Load the saved mode or fallback to false
+            self.isDarkMode = UserDefaults.standard.bool(forKey: "isDarkMode")
+        }
     
     // Colors that adapt to dark/light mode
     var backgroundColor: Color {
@@ -19,10 +30,11 @@ class ThemeManager: ObservableObject {
     }
     
     var textColor: Color {
-        isDarkMode ? .white : Color("DarkGreen")
+        isDarkMode ?  Color("LightGreen") : Color("DarkGreen")
     }
     
     var secondaryColor: Color {
         isDarkMode ? Color.gray.opacity(0.4) : Color.gray.opacity(0.15)
     }
+
 }
