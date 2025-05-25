@@ -26,8 +26,11 @@ struct ImageSliderView: View {
                 
                 TabView(selection: $currentIndex) {
                     ForEach(viewModel.sliderImages.indices, id: \.self) { index in
-                        VStack {
-                            WebImage(url: URL(string: viewModel.sliderImages[index])) { image in
+                        
+                        let sliderItem = viewModel.sliderImages[index]
+                        
+                        ZStack(alignment: .bottomLeading) {
+                            WebImage(url: URL(string: sliderItem.image ?? "")) { image in
                                 image
                                     .resizable()
                                     .frame(width: 180, height: 220)
@@ -45,6 +48,7 @@ struct ImageSliderView: View {
                         }
                         .tag(index)
                     }
+                    
                 }
                 .tabViewStyle(.page)
                 .indexViewStyle(.page(backgroundDisplayMode: .interactive))
@@ -55,6 +59,7 @@ struct ImageSliderView: View {
         .padding(.top)
         .padding(.horizontal, 16)
         .onAppear {
+            
             startTimer()
         }
         .onDisappear {

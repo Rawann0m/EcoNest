@@ -6,9 +6,10 @@
 //
 
 import Foundation
-import FirebaseFirestore
 
+// Struct to represent a product, conforming to Identifiable and Codable protocols
 struct Product: Identifiable, Codable {
+    
     var id: String?
     var plantId: String?
     var name: String?
@@ -20,6 +21,7 @@ struct Product: Identifiable, Codable {
     var careLevel: String?
     var size: String?
 }
+
 
 struct ProductWrapper: Codable {
     let products: [Product]

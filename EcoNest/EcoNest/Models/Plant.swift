@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct Plant: Identifiable, Codable {
-    @DocumentID var id: String?
+    var id: String?
     let name: String
     let description: String
     let water: String

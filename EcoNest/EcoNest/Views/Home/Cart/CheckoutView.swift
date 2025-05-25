@@ -1,14 +1,14 @@
 //
-//  ReviewView.swift
+//  CheckoutView.swift
 //  EcoNest
 //
-//  Created by Tahani Ayman on 13/11/1446 AH.
+//  Created by Tahani Ayman on 25/11/1446 AH.
 //
 
 import SwiftUI
 import MapKit
 
-struct ReviewView: View {
+struct CheckoutView: View {
     
     @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject var viewModel: CartViewModel
@@ -24,6 +24,7 @@ struct ReviewView: View {
     @State var show = false
     
     var body: some View {
+        
         NavigationStack {
             VStack {
                 ScrollView {
@@ -102,7 +103,7 @@ struct ReviewView: View {
                 }
                 
                 Button {
-                    viewModel.addOrder(locationId: locViewModel.mapLocation.id)
+                    //viewModel.addOrder(locationId: locViewModel.mapLocation.id)
                     NotificationManager.shared.requestPermission { granted in
                         if granted {
                             NotificationManager.shared.scheduleNotification(
@@ -128,7 +129,7 @@ struct ReviewView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-            .sheet(isPresented: $show) {
+            .fullScreenCover(isPresented: $show) {
                 ConfirmationAlert()
             }
             .fullScreenCover(isPresented: $locViewModel.showMap) {
@@ -143,3 +144,4 @@ struct ReviewView: View {
         }
     }
 }
+
