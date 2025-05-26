@@ -169,7 +169,7 @@ struct ChatView: View {
                                 self.selectedImage = nil
                                 self.selectedItem = nil
                                 viewModel.chatText = ""
-                                PhotoUploaderManager.shared.uploadImages(image: image) { result in
+                                PhotoUploaderManager.shared.uploadImages(image: image, isPost: false) { result in
                                     switch result {
                                     case .success(let url):
                                         let contentArray = [trimmedText, url.absoluteString].filter { !$0.isEmpty }

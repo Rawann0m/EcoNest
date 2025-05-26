@@ -128,7 +128,7 @@ struct CreatePost: View {
                     
                     Button{
                         if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                            PhotoUploaderManager.shared.uploadImages(images: selectedImages) { result in
+                            PhotoUploaderManager.shared.uploadImages(images: selectedImages, isPost: true) { result in
                                 switch result {
                                 case .success(let urls):
                                     let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }

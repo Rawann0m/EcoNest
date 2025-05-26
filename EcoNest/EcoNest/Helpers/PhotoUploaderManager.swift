@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseStorage
 
 /// A singleton class responsible for uploading images to Firebase Storage.
 /// Supports uploading multiple images, individual post images, and user profile images.
@@ -19,14 +20,14 @@ class PhotoUploaderManager {
     ///   - images: An array of `UIImage` objects to upload.
     ///   - completion: A closure called when all uploads finish, returning
     ///                 either an array of URLs on success, or an error on failure.
-    func uploadImages(images: [UIImage], completion: @escaping (Result<[URL], Error>) -> Void) {
+    func uploadImages(images: [UIImage], isPost: Bool,completion: @escaping (Result<[URL], Error>) -> Void) {
         let group = DispatchGroup()           // To track multiple async upload tasks
         var uploadedURLs: [URL] = []          // Store successfully uploaded URLs
         var uploadError: Error?               // Capture any error occurred
         
         for image in images {
             group.enter()                     // Mark start of an upload task
-            uploadImages(image: image) { result in
+            uploadImages(image: image, isPost: isPost) { result in
                 switch result {
                 case .success(let url):
                     uploadedURLs.append(url)
@@ -51,28 +52,36 @@ class PhotoUploaderManager {
     /// - Parameters:
     ///   - image: The `UIImage` to upload.
     ///   - completion: Closure called with the resulting URL or error.
-    func uploadImages(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+    func uploadImages(image: UIImage,isPost: Bool, completion: @escaping (Result<URL, Error>) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             completion(.failure(NSError(domain: "Invalid image data", code: 0, userInfo: nil)))
             return
         }
         
+        var storageRef: StorageReference? = nil
         let imageID = UUID().uuidString
-        let storageRef = FirebaseManager.shared.storage.reference().child("Posts/\(imageID).jpg")
+        if isPost{
+            storageRef = FirebaseManager.shared.storage.reference().child("Posts/\(imageID).jpg")
+        } else {
+            storageRef = FirebaseManager.shared.storage.reference().child("Messages/\(imageID).jpg")
+        }
+        
         
         // Upload image data to Firebase Storage
-        storageRef.putData(imageData, metadata: nil) { _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            // Fetch the download URL after successful upload
-            storageRef.downloadURL { url, error in
-                if let url = url {
-                    completion(.success(url))
-                } else {
-                    completion(.failure(error ?? NSError(domain: "URL error", code: 0, userInfo: nil)))
+        if let storageRef = storageRef {
+            storageRef.putData(imageData, metadata: nil) { _, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                // Fetch the download URL after successful upload
+                storageRef.downloadURL { url, error in
+                    if let url = url {
+                        completion(.success(url))
+                    } else {
+                        completion(.failure(error ?? NSError(domain: "URL error", code: 0, userInfo: nil)))
+                    }
                 }
             }
         }

@@ -28,8 +28,10 @@ struct PlantDetailBar: View {
             
             Spacer()
             
+            if FirebaseManager.shared.isLoggedIn {
             Button(action: {
-                viewModel.toggleFavorite(userId: userId, plantId: plantId)
+                    viewModel.toggleFavorite(userId: userId, plantId: plantId)
+ 
             }) {
                 Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
                     .font(.system(size: 20, weight: .semibold))
@@ -38,13 +40,15 @@ struct PlantDetailBar: View {
                     .background(Circle().fill(Color.white))
             }
             .foregroundColor(.white)
-            
+            }
             
         }.font(.headline)
             .padding(.horizontal)
             .padding(.top, UIScreen.main.bounds.height > 667 ? 52 : 28)
             .onAppear {
-                viewModel.checkFavoriteStatus(userId: userId, plantId: plantId)
+                if FirebaseManager.shared.isLoggedIn {
+                    viewModel.checkFavoriteStatus(userId: userId, plantId: plantId)
+                }
             }
     }
 }
