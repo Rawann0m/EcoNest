@@ -52,11 +52,11 @@ struct HomeView: View {
                         let gridLayout = [
                             GridItem(.adaptive(minimum: 150, maximum: 250), spacing: 20)
                         ]
-
+                        
                         if homeViewModel.products.isEmpty {
                             ProgressView()
                         }
-
+                        
                         else if homeViewModel.filtered.isEmpty {
                             VStack {
                                 Image("Search")
@@ -71,11 +71,13 @@ struct HomeView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-
+                        
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
                                 ForEach(homeViewModel.filtered.prefix(12)) { product in
-                                    ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
+                                    NavigationLink(destination: ProductDetailsView(productId: product.id ?? "")) {
+                                        ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
+                                    }
                                 }
                             }
                             .padding(.horizontal, 16)
@@ -92,12 +94,12 @@ struct HomeView: View {
                     homeViewModel.filterData()
                 }
             }
-
+            
             // Reset filtered list if search is cleared
             if newValue.isEmpty {
                 withAnimation(.easeInOut(duration: 0.3)) {
                     homeViewModel.filtered = homeViewModel.products
-               }
+                }
             }
         }
     }

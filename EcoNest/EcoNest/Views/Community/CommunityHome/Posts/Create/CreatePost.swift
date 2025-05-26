@@ -21,16 +21,17 @@ struct CreatePost: View {
     @State var showImagePicker: Bool = false
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var showCamera: Bool = false
-    var imagecount = 4
+    @StateObject var alertManager = AlertManager.shared
+    let imageCount = 4
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading){
                 HStack(alignment: .center){
                     VStack{
-                        if settingsViewModel.user?.profileImage == "" {
+                        if settingsViewModel.profileImage == "" {
                             Image("profile")
                                 .resizable()
-                        }  else if let imageURL = URL(string: settingsViewModel.user?.profileImage ?? ""){
+                        }  else if let imageURL = URL(string: settingsViewModel.profileImage){
                             WebImage(url: imageURL)
                                 .resizable()
                         }
@@ -42,7 +43,7 @@ struct CreatePost: View {
                             .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
                     }
                     
-                    Text(settingsViewModel.user?.username ?? "User")
+                    Text(settingsViewModel.name)
                         .bold()
                 }
                 
@@ -70,11 +71,9 @@ struct CreatePost: View {
                                 
                                 Button(action: {
                                     selectedImages.remove(at: index)
-                                    
                                     if !selectedItems.isEmpty {
                                         selectedItems.remove(at: index)
                                     }
-                                    
                                 }) {
                                     Image(systemName: "xmark.circle.fill")
                                         .foregroundColor(.white)
@@ -86,19 +85,29 @@ struct CreatePost: View {
                     }
                     .padding(.vertical)
                 }
+                .scrollIndicators(.hidden)
                 
                 Menu {
                     Button("Camera") {
-                        showCamera.toggle()
+                        if canAddMoreImages() {
+                            showCamera = true
+                        } else {
+                            showMaxImagesAlert()
+                        }
                     }
+                    
                     Button("Photo Picker") {
-                        showImagePicker.toggle()
+                        if canAddMoreImages() {
+                            showImagePicker = true
+                        } else {
+                            showMaxImagesAlert()
+                        }
                     }
                 } label: {
                     Image(systemName: "camera.fill")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
-                        .background{
+                        .background {
                             Circle()
                                 .fill(Color("LimeGreen"))
                                 .frame(width: 50, height: 50)
@@ -151,20 +160,24 @@ struct CreatePost: View {
         }
         .fullScreenCover(isPresented: $showCamera) {
             ImagePicker(sourceType: .camera) { image in
-                if selectedImages.count < 4 {
+                if canAddMoreImages() {
                     selectedImages.append(image)
+                } else {
+                    showMaxImagesAlert()
                 }
             }
+            .ignoresSafeArea(.all)
         }
         .photosPicker(
             isPresented: $showImagePicker,
             selection: $selectedItems,
-            maxSelectionCount: imagecount - selectedImages.count,
+            maxSelectionCount: imageCount - selectedImages.count,
             matching: .images
         )
         .onChange(of: selectedItems) { _, newItems in
             Task {
-                selectedImages = []
+                selectedItems = []
+                if !canAddMoreImages() { return }
                 for item in newItems {
                     if let data = try? await item.loadTransferable(type: Data.self),
                        let uiImage = UIImage(data: data) {
@@ -173,12 +186,33 @@ struct CreatePost: View {
                 }
             }
         }
+        .alert(isPresented: $alertManager.alertState.isPresented) {
+            Alert(
+                title: Text(alertManager.alertState.title),
+                message: Text(alertManager.alertState.message),
+                primaryButton: .default(Text("Ok")) {
+                    
+                },
+                secondaryButton: .cancel()
+            )
+        }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
     
     var textEmpty: Bool {
         let text = message.trimmingCharacters(in: .whitespacesAndNewlines)
         return text.isEmpty
+    }
+    
+    func showMaxImagesAlert() {
+        AlertManager.shared.showAlert(
+            title: "Error".localized(using: currentLanguage),
+            message: "You can upload up to \(imageCount) images only.".localized(using: currentLanguage)
+        )
+    }
+    
+    func canAddMoreImages() -> Bool {
+        return selectedImages.count < imageCount
     }
 }
 

@@ -9,9 +9,9 @@ import Foundation
 import FirebaseFirestore
 
 struct Community: Identifiable, Hashable {
-    var id: String?
-    let name: String
-    let description: String
+    @DocumentID var id: String?
+    let name: [String]
+    let description: [String]
     var members: [String]
     
     var memberOfCommunity: Bool

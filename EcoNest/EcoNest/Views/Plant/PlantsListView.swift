@@ -59,25 +59,30 @@ struct PlantsListView: View {
 
                 // Plant list
                 List(viewModel.filteredPlants) { plant in
-                    HStack {
-                        // Plant image
-                        WebImage(url: URL(string: plant.image)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(width: 60, height: 60)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        
-                        // Plant info
-                        VStack(alignment: .leading) {
-                            Text(plant.name)
-                                .fontWeight(.semibold)
-                            Text(plant.category.joined(separator: ", "))
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                    NavigationLink {
+                        PlantDetails(plantName: plant.name)
+                    } label: {
+                        HStack {
+                            // Plant image
+                            WebImage(url: URL(string: plant.image)) { image in
+                                image.resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 60, height: 60)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                            // Plant info
+                            VStack(alignment: .leading) {
+                                Text(plant.name)
+                                    .fontWeight(.semibold)
+                                Text(plant.category.joined(separator: ", "))
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
+
                 }
                 .id(currentLanguage)
                 .listStyle(.plain)

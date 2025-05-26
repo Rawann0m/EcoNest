@@ -48,7 +48,7 @@ struct CommunityHomeView: View {
                             
                             VStack {
                                 HStack {
-                                    Text(community.name)
+                                    Text(currentLanguage == "en" ? community.name[0] : community.name[1])
                                         .font(.title)
                                         .bold()
                                     
@@ -56,6 +56,7 @@ struct CommunityHomeView: View {
                                     
                                     Text(community.memberOfCommunity ? "Leave".localized(using: currentLanguage): "Join".localized(using: currentLanguage))
                                         .frame(width: 70)
+                                        .foregroundColor(.black)
                                         .padding()
                                         .bold()
                                         .background {
@@ -102,15 +103,22 @@ struct CommunityHomeView: View {
                                         .foregroundColor(.gray)
                                         .font(.caption)
                                     
-                                    Text("\(community.members.count) members")
+                                    Group {
+                                        if community.members.count == 1 {
+                                            Text(String(format: "memberCommunity".localized(using: currentLanguage), community.members.count))
+                                        } else {
+                                            Text(String(format: "membersCommunity".localized(using: currentLanguage), community.members.count))
+                                        }
+                                    }
                                         .font(.caption)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                                 
-                                Text(community.description)
+                                Text(currentLanguage == "en" ? community.description[0] : community.description[1])
                                     .font(.caption)
-                                    .padding()
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 8)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 
                                 HStack {
