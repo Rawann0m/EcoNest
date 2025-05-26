@@ -13,6 +13,10 @@ import SDWebImageSwiftUI
 
 struct AllProductsView: View {
     let products: [Product]
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var themeManager: ThemeManager
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+
     
     var body: some View {
         ScrollView {
@@ -28,10 +32,23 @@ struct AllProductsView: View {
             }
             .padding()
         }
-        .navigationTitle("All Products")
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
+        .toolbar {
+                  ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
+                      CustomBackward(title: "All Products".localized(using: currentLanguage), tapEvent: { dismiss() })
+                  }
+
+            }
+              .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+              .navigationBarBackButtonHidden(true)
+          }
+      }
+
+
+
+
+
+
 struct ProductRowCard: View {
     let product: Product
     
@@ -46,7 +63,7 @@ struct ProductRowCard: View {
                     case .success(let img):
                         img.resizable()
                             .scaledToFill()
-                            .frame(width: 100, height: 100)
+                            .frame(width: 90, height: 90)
                             .clipped()
                             .cornerRadius(10)
                     case .failure:
@@ -72,7 +89,8 @@ struct ProductRowCard: View {
 
             Spacer()
         }
-        .padding()
+        .padding(.vertical , 6)
+        .padding(.horizontal)
         .background(.ultraThinMaterial)
         .cornerRadius(12)
     }
