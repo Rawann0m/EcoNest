@@ -11,50 +11,61 @@ import SDWebImageSwiftUI
 struct FavoritesView: View {
     @StateObject var favoriteVM = FavoritesViewModel()
     @State private var selectedPlant: Plant?
+    @EnvironmentObject var themeManager: ThemeManager
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @Environment(\.dismiss) var dismiss
+    
+    
     
     var body: some View {
         
         List {
-            ForEach(favoriteVM.favoritePlants, id: \.self) { plant in
-                if let plantId = plant.id {
-                    Button {
-                        selectedPlant = plant
+            ForEach(favoriteVM.favoritePlants) { plant in
+                Button {
+                    selectedPlant = plant
+                } label: {
+                    FavoriteCard(plant: plant)
+                }
+                
+                .buttonStyle(.plain)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        favoriteVM.removeFavoritePlant(plantId: plant.id ?? "")
                     } label: {
-                        FavoriteCard(plant: plant)
-                    }
-                    .buttonStyle(.plain)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            favoriteVM.removeFavoritePlant(plantId: plantId)
-                        } label: {
-                            Label("Delete", systemImage: "trash")
-                        }
+                        Label("Delete", systemImage: "trash")
                     }
                 }
+                
             }
             
             
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
+                CustomBackward(title: "Favorites".localized(using: currentLanguage), tapEvent: {dismiss()})
+            }
         }
         .listStyle(.plain)
         .navigationDestination(item: $selectedPlant) { plant in
             PlantDetails(plantName: plant.name)
         }
-        .navigationTitle("Favorites")
         .onAppear {
             favoriteVM.fetchFavorites()
         }
-        .onChange(of: favoriteVM.favoritePlants) { _ in
-            print("🌱 Favorite plants updated.")
-        }
         .onDisappear {
             favoriteVM.removeListeners()
-        }  
+        }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
 
 
 struct FavoriteCard: View {
     let plant: Plant
+    @EnvironmentObject var themeManager: ThemeManager
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+
     
     var body: some View {
         HStack(spacing: 12) {
@@ -78,12 +89,14 @@ struct FavoriteCard: View {
             }
             
             Spacer()
-            Image(systemName: "chevron.right")
+            Image(systemName: currentLanguage == "ar" ? "chevron.left" : "chevron.right")
                 .foregroundColor(.gray)
         }
+        .foregroundStyle(themeManager.isDarkMode ? .white : .black)
         .padding()
-        .background(Color.white)
+        .background(themeManager.isDarkMode ? Color(.secondarySystemBackground) : Color.white)
         .cornerRadius(12)
         .shadow(radius: 2)
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }

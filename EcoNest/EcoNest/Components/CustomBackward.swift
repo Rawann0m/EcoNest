@@ -18,15 +18,15 @@ func CustomBackward(title: String, tapEvent: @escaping () -> Void) -> some View 
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     HStack{
         // Back icon with tap event to dimiss the view
-        Image(systemName: currentLanguage == "ar" ? "arrow.right" : "arrow.left")
-            .font(.system(size: 22))
+        Image(systemName: currentLanguage == "ar" ? "chevron.right" : "chevron.left")
+            .font(.system(size: 18))
             .contentShape(Rectangle())
-            .onTapGesture {
-                tapEvent()
-            }
-        // Page title 
+            
+        // Page title
         Text(title)
             .font(.system(size: 22))
             .bold()
+    }.onTapGesture {
+        tapEvent()
     }
 }

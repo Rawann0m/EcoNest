@@ -15,6 +15,7 @@ struct PlantDetails: View {
     @StateObject var plantDetailsVM : PlantDetailsViewModel
     
     @State var outOf: Double = 100
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     init(plantName: String) {
         self.plantName = plantName
@@ -31,9 +32,10 @@ struct PlantDetails: View {
                         .fill(Color("DarkGreen"))
                         .frame(width: UIScreen.main.bounds.width, height: 350)
                         .ignoresSafeArea(edges: .top)
+                        .shadow(radius: 5)
                     
                     PlantDetailBar(
-                        plantName: plantName,
+                        plantName: "Details".localized(using: currentLanguage),
                         viewModel: plantDetailsVM,
                         userId: userId,
                         plantId: plantDetailsVM.plant?.id ?? ""
@@ -41,26 +43,10 @@ struct PlantDetails: View {
                     
                     
                     
-                    if let imageUrl = plantDetailsVM.plant?.image,
-                       let url = URL(string: imageUrl) {
-                        WebImage(url: url) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 300)
-                                    .padding(.top, 100)
-                            case .failure:
-                                Image(systemName: "photo")
-                                    .foregroundColor(.white)
-                            @unknown default:
-                                EmptyView()
-                            }
-                        }
+                    if let imageUrl = plantDetailsVM.plant?.image {
+                        PlantImage(imageUrl: imageUrl)
                     }
+                    
                 }
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -86,32 +72,7 @@ struct PlantDetails: View {
                 
                 
                 if !plantDetailsVM.products.isEmpty {
-                    HStack {
-                        Text("Recommended Products:")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity, alignment: .leading)   // ← pins to left
-                            .padding(.horizontal)
-                        Spacer()
-                        Button {
-                            // TODO: present full-list view or sheet
-                            print("See All tapped")
-                        } label: {
-                            Text("See All")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                                .padding(.horizontal)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 16) {
-                            ForEach(plantDetailsVM.products) { product in
-                                ProductCard(product: product)
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
+                    RecommendedProductsSection(products: plantDetailsVM.products)
                 }
                 
                 
@@ -120,7 +81,9 @@ struct PlantDetails: View {
         }
         .onChange(of: plantDetailsVM.plant?.id) { newPlantId in
             if let id = newPlantId {
-                plantDetailsVM.checkFavoriteStatus(userId: userId, plantId: id)
+                if FirebaseManager.shared.isLoggedIn {
+                    plantDetailsVM.checkFavoriteStatus(userId: userId, plantId: id)
+                }
             }
         }
         .scrollIndicators(.hidden)
@@ -130,6 +93,73 @@ struct PlantDetails: View {
     }
     
 }
+
+struct RecommendedProductsSection: View {
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    let products: [Product]
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text("RecommendedProducts:".localized(using: currentLanguage))
+                    .font(.headline)
+                Spacer()
+                NavigationLink(destination: AllProductsView(products: products)) {
+                    Text("SeeAll".localized(using: currentLanguage))
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                .buttonStyle(.plain)
+
+            }
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 16) {
+                    ForEach(products) { product in
+                        NavigationLink {
+                            ProductDetailsView(productId: product.id ?? "")
+                        } label: {
+                            ProductCard(product: product)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+    }
+}
+
+
+struct PlantImage: View {
+    let imageUrl: String
+    
+    var body: some View {
+        if let url = URL(string: imageUrl) {
+            WebImage(url: url) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 300)
+                        .padding(.top, 100)
+                case .failure:
+                    Image(systemName: "photo")
+                        .foregroundColor(.white)
+                @unknown default:
+                    EmptyView()
+                }
+            }
+        } else {
+            EmptyView()
+        }
+    }
+}
+
 
 struct ProductCard: View {
     let product: Product

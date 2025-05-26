@@ -12,10 +12,7 @@ struct AppBar: View {
     
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @ObservedObject var viewModel: CartViewModel
-    
-    /// Theme manager to apply dynamic styling based on light/dark mode.
-    @EnvironmentObject var themeManager: ThemeManager
-    
+    @State var isPresented: Bool = false
     var body: some View {
 
             VStack(alignment: .leading) {
@@ -27,36 +24,42 @@ struct AppBar: View {
                     
                     Spacer()
                     
-                    // Favorite icon with navigation
-                    IconNavigationLink(systemImageName: "heart", destination: FavoritesView())
-                        .padding(.horizontal, 10)
-                    // Cart icon with navigation
-                    //IconNavigationLink(systemImageName: "cart", destination: CartView(cartViewModel: viewModel))
-                    ZStack(alignment: .topTrailing) {
-                        NavigationLink {
-                            CartView(cartViewModel: viewModel)
-                        } label: {
-                            Image(systemName: "cart")
-                                .foregroundStyle(.black)
-                                .background {
-                                    Circle()
-                                        .fill(Color("LimeGreen"))
-                                        .frame(width: 35, height: 35)
-                                }
+                    IconNavigationLink(
+                        systemImageName: "heart",
+                        destination: FavoritesView(),
+                        isEnabled: FirebaseManager.shared.isLoggedIn,
+                        onBlockedAccess: {
+                            AlertManager.shared.showAlert(
+                                title: "Alert".localized(using: currentLanguage),
+                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                                primaryLabel: "Login".localized(using: currentLanguage),
+                                secondaryLabel: "Cancel".localized(using: currentLanguage)
+                            )
                         }
-                        
-                        if viewModel.cartProducts.count > 0 {
-                            Text("\(viewModel.cartProducts.count)")
-                                .font(.caption)
-                                .foregroundStyle(themeManager.isDarkMode ? Color("DarkGreen") : .white)
-                                .background {
-                                    Circle()
-                                        .fill(themeManager.isDarkMode ? .white : Color("DarkGreen"))
-                                        .frame(width: 20, height: 20)
-                                }
-                                .offset(x: 4, y: -5)
+                    ).padding(.horizontal, 10)
+                    
+                    IconNavigationLink(
+                        systemImageName: "cart",
+                        destination: CartView(cartViewModel: viewModel),
+                        isEnabled: FirebaseManager.shared.isLoggedIn,
+                        onBlockedAccess: {
+                            AlertManager.shared.showAlert(
+                                title: "Alert".localized(using: currentLanguage),
+                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                                primaryLabel: "Login".localized(using: currentLanguage),
+                                secondaryLabel: "Cancel".localized(using: currentLanguage)
+                            )
+
                         }
-                    }
+                    )
+                    
+                    
+//                    // Favorite icon with navigation
+//                    IconNavigationLink(systemImageName: "heart", destination: FavoritesView())
+//                        .padding(.horizontal, 10)
+//                    // Cart icon with navigation
+//                    IconNavigationLink(systemImageName: "cart", destination: CartView(cartViewModel: viewModel))
+
                     
                 }
                 .font(.system(size: 20))
@@ -66,23 +69,50 @@ struct AppBar: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color("LimeGreen"))
             }
-            .padding(.horizontal, 16) 
-        
+            .padding(.horizontal, 16)
+
     }
 }
 
 // MARK: - IconNavigationLink (Reusable Navigation Icon with Background)
+//struct IconNavigationLink<Destination: View>: View {
+//    
+//    // System image name
+//    let systemImageName: String
+//    
+//    // View to navigate to on tap
+//    let destination: Destination
+//    
+//    var body: some View {
+//        NavigationLink {
+//            destination // Destination view
+//        } label: {
+//            Image(systemName: systemImageName)
+//                .foregroundStyle(.black)
+//                .background {
+//                    Circle()
+//                        .fill(Color("LimeGreen"))
+//                        .frame(width: 35, height: 35)
+//                }
+//        }
+//    }
+//}
+
 struct IconNavigationLink<Destination: View>: View {
-    
-    // System image name
     let systemImageName: String
-    
-    // View to navigate to on tap
     let destination: Destination
+    var isEnabled: Bool
+    var onBlockedAccess: (() -> Void)? = nil
+    
+    @State private var isActive = false
     
     var body: some View {
-        NavigationLink {
-            destination // Destination view
+        Button {
+            if isEnabled {
+                isActive = true
+            } else {
+                onBlockedAccess?()
+            }
         } label: {
             Image(systemName: systemImageName)
                 .foregroundStyle(.black)
@@ -92,5 +122,12 @@ struct IconNavigationLink<Destination: View>: View {
                         .frame(width: 35, height: 35)
                 }
         }
+        .background(
+            NavigationLink(destination: destination, isActive: $isActive) {
+                EmptyView()
+            }
+            .hidden()
+        )
     }
 }
+
