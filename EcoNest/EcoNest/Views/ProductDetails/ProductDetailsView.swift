@@ -67,7 +67,7 @@ struct ProductDetailsView: View {
                                 }
                             }, label: {
                                 HStack {
-                                    Text(isAddedToCart ? "Add" : "remove")
+                                    Text(isAddedToCart ? "Remove" : "Add")
                                         .font(.headline)
                                         .bold()
                                     Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
@@ -229,4 +229,3 @@ struct ProductSizeCard: View {
         )
     }
 }
-

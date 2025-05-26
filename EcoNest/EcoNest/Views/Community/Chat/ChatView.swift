@@ -100,6 +100,7 @@ struct ChatView: View {
                                         proxy.scrollTo("empty", anchor: .bottom)
                                     }
                                 }
+                                viewModel.markMessagesAsRead(toId: viewModel.chatUser?.id ?? "")
                             }
                         }
                         
@@ -165,14 +166,14 @@ struct ChatView: View {
                             let trimmedText = viewModel.chatText.trimmingCharacters(in: .whitespacesAndNewlines)
                             
                             if let image = selectedImage {
+                                self.selectedImage = nil
+                                self.selectedItem = nil
+                                viewModel.chatText = ""
                                 PhotoUploaderManager.shared.uploadImages(image: image) { result in
                                     switch result {
                                     case .success(let url):
                                         let contentArray = [trimmedText, url.absoluteString].filter { !$0.isEmpty }
                                         viewModel.handleSendMessage(content: contentArray)
-                                        self.selectedImage = nil
-                                        self.selectedItem = nil
-                                        viewModel.chatText = ""
                                     case .failure(let error):
                                         print("Image upload failed: \(error.localizedDescription)")
                                     }
@@ -228,6 +229,9 @@ struct ChatView: View {
                         }
                     }
                 }
+            }
+            .onAppear{
+                viewModel.markMessagesAsRead(toId: viewModel.chatUser?.id ?? "")
             }
             .onDisappear{
                 viewModel.firestoreListener?.remove()
