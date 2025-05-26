@@ -95,7 +95,4 @@ struct PlantsListView: View {
         }
     }
 }
-//
-//#Preview {
-//    PlantsListView()
-//}
+
