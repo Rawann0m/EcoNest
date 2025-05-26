@@ -102,12 +102,13 @@ struct RecommendedProductsSection: View {
                 Text("Recommended Products:")
                     .font(.headline)
                 Spacer()
-                Button("See All") {
-                    // future action
+                NavigationLink(destination: AllProductsView(products: products)) {
+                    Text("See All")
+                        .font(.caption)
+                        .foregroundColor(.gray)
                 }
-                .font(.caption)
                 .buttonStyle(.plain)
-                .foregroundColor(.gray)
+
             }
             .padding(.horizontal)
             
