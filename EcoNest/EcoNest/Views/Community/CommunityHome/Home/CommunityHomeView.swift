@@ -193,13 +193,19 @@ struct CommunityHomeView: View {
                 }
             }
             .alert(isPresented: $alertManager.alertState.isPresented) {
-                Alert(
-                    title: Text(alertManager.alertState.title),
-                    message: Text(alertManager.alertState.message),
-                    primaryButton: .default(Text("Login")) {
-                        navigateToLogin = true
+                let st = alertManager.alertState
+                
+                return Alert(
+                    title: Text(st.title),
+                    message: Text(st.message),
+                    primaryButton: .default(Text(st.primaryLabel)) {
+                        if st.primaryLabel == "Login".localized(using: currentLanguage) {
+                            navigateToLogin = true
+                        }
                     },
-                    secondaryButton: .cancel()
+                    secondaryButton: st.secondaryLabel != nil
+                        ? .cancel(Text(st.secondaryLabel!))
+                        : .cancel()
                 )
             }
             .fullScreenCover(isPresented: $navigateToLogin) {
