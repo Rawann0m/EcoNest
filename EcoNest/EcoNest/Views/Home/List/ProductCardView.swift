@@ -83,7 +83,7 @@ struct ProductCardView: View {
                     }, label: {
                         Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
                             .resizable()
-                            .foregroundStyle(isAddedToCart ? .black.opacity(0.15) : Color("LimeGreen"))
+                            .foregroundStyle(isAddedToCart ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15) : Color("LimeGreen"))
                             .frame(width: 35, height: 35)
                     })
                     //.disabled(isAddedToCart)
