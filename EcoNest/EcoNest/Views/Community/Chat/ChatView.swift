@@ -166,14 +166,14 @@ struct ChatView: View {
                             let trimmedText = viewModel.chatText.trimmingCharacters(in: .whitespacesAndNewlines)
                             
                             if let image = selectedImage {
-                                PhotoUploaderManager.shared.uploadImages(image: image) { result in
+                                self.selectedImage = nil
+                                self.selectedItem = nil
+                                viewModel.chatText = ""
+                                PhotoUploaderManager.shared.uploadImages(image: image, isPost: false) { result in
                                     switch result {
                                     case .success(let url):
                                         let contentArray = [trimmedText, url.absoluteString].filter { !$0.isEmpty }
                                         viewModel.handleSendMessage(content: contentArray)
-                                        self.selectedImage = nil
-                                        self.selectedItem = nil
-                                        viewModel.chatText = ""
                                     case .failure(let error):
                                         print("Image upload failed: \(error.localizedDescription)")
                                     }

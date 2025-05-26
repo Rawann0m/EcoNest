@@ -18,6 +18,7 @@ struct ProductCardView: View {
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     @ObservedObject var cartViewModel: CartViewModel
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     var product: Product
     
@@ -30,7 +31,6 @@ struct ProductCardView: View {
                 VStack(alignment: .leading) {
                     
                     // Product image with styling
-                    //Image(product.image)
                     WebImage(url: URL(string: product.image ?? ""))
                         .resizable()
                         .background(Color.gray.opacity(0.15))
@@ -42,6 +42,10 @@ struct ProductCardView: View {
                         .font(.subheadline)
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                         .padding(.vertical, 1)
+                    
+                    Text(product.size ?? "")
+                        .foregroundStyle(.gray)
+                        .font(.caption)
                     
                     // Price and currency image
                     HStack {
@@ -55,43 +59,55 @@ struct ProductCardView: View {
                     }
                     
                 }
-                .padding(.bottom, 10)
                 
+                let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
                 // Add-to-cart button
-                Button(action: {
-                    if FirebaseManager.shared.isLoggedIn {
-                        viewModel.addToCart(product: product)
-                    } else {
-                        AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
-                    }
-                    
-                }, label: {
-                    if cartViewModel.cartProducts.contains(where: { $0.product.id == product.id }) {
-                        Image(systemName: "checkmark.circle.fill")
+                    Button(action: {
+                        if FirebaseManager.shared.isLoggedIn {
+                            if isAddedToCart {
+                                if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
+                                    cartViewModel.removeFormCart(cart: cartItem)
+                                }
+                            } else {
+                                viewModel.addToCart(product: product)
+                            }
+                            
+                        } else {
+                            AlertManager.shared.showAlert(
+                                title: "Alert".localized(using: currentLanguage),
+                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                                primaryLabel: "Login".localized(using: currentLanguage),
+                                secondaryLabel: "Cancel".localized(using: currentLanguage)
+                            )
+                        }
+                    }, label: {
+                        Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
                             .resizable()
-                            .foregroundStyle(Color("LightGreen"))
+                            .foregroundStyle(isAddedToCart ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15) : Color("LimeGreen"))
                             .frame(width: 35, height: 35)
-                    } else {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .foregroundStyle(Color("LimeGreen"))
-                            .frame(width: 35, height: 35)
+                    })
+                    //.disabled(isAddedToCart)
+                    .alert(isPresented: $alertManager.alertState.isPresented) {
+                        let st = alertManager.alertState
+                        
+                        return Alert(
+                            title: Text(st.title),
+                            message: Text(st.message),
+                            primaryButton: .default(Text(st.primaryLabel)) {
+                                if st.primaryLabel == "Login".localized(using: currentLanguage) {
+                                    navigateToLogin = true
+                                }
+                            },
+                            secondaryButton: st.secondaryLabel != nil
+                                ? .cancel(Text(st.secondaryLabel!))
+                                : .cancel()
+                        )
                     }
-                })
-                .accessibilityIdentifier("AddToCart_\(product.name ?? "Unknown")")
-                .alert(isPresented: $alertManager.alertState.isPresented) {
-                    Alert(
-                        title: Text(alertManager.alertState.title),
-                        message: Text(alertManager.alertState.message),
-                        primaryButton: .default(Text("Login")) {
-                            navigateToLogin = true
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
+                
+                
             }
         }
-        .frame(width: 175, height: 240)
+        .frame(width: 175, height: 260)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(.gray.opacity(0.3), lineWidth: 2)

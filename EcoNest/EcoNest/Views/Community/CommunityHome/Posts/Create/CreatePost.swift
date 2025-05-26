@@ -14,7 +14,7 @@ struct CreatePost: View {
     @State var message: String = ""
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = CreatePostViewModel()
-    @ObservedObject var settingsViewModel = SettingsViewModel()
+    @StateObject var settingsViewModel = SettingsViewModel()
     var communityId: String
     @State var selectedImages: [UIImage] = []
     @State private var selectedItems: [PhotosPickerItem] = []
@@ -28,10 +28,10 @@ struct CreatePost: View {
             VStack(alignment: .leading){
                 HStack(alignment: .center){
                     VStack{
-                        if settingsViewModel.user?.profileImage == "" {
+                        if settingsViewModel.profileImage == "" {
                             Image("profile")
                                 .resizable()
-                        }  else if let imageURL = URL(string: settingsViewModel.user?.profileImage ?? ""){
+                        }  else if let imageURL = URL(string: settingsViewModel.profileImage){
                             WebImage(url: imageURL)
                                 .resizable()
                         }
@@ -43,7 +43,7 @@ struct CreatePost: View {
                             .stroke(Color(red: 7/255, green: 39/255, blue: 29/255), lineWidth: 3)
                     }
                     
-                    Text(settingsViewModel.user?.username ?? "User")
+                    Text(settingsViewModel.name)
                         .bold()
                 }
                 
@@ -128,7 +128,7 @@ struct CreatePost: View {
                     
                     Button{
                         if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                            PhotoUploaderManager.shared.uploadImages(images: selectedImages) { result in
+                            PhotoUploaderManager.shared.uploadImages(images: selectedImages, isPost: true) { result in
                                 switch result {
                                 case .success(let urls):
                                     let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
@@ -177,8 +177,8 @@ struct CreatePost: View {
         .onChange(of: selectedItems) { _, newItems in
             Task {
                 selectedItems = []
+                if !canAddMoreImages() { return }
                 for item in newItems {
-                    if !canAddMoreImages() { break }
                     if let data = try? await item.loadTransferable(type: Data.self),
                        let uiImage = UIImage(data: data) {
                         selectedImages.append(uiImage)

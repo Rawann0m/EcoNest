@@ -19,9 +19,17 @@ class FirebaseManager {
     // Singleton pattern to create a shared instance of FirebaseManager
     static let shared = FirebaseManager()
     
-    // check if the user is logged in or not
     var isLoggedIn: Bool {
         return auth.currentUser != nil
     }
+    
+    func getCurrentUser() -> DocumentReference? {
+        guard let userId = auth.currentUser?.uid else {
+            print("User not logged in")
+            return nil
+        }
+        return firestore.collection("users").document(userId)
+    }
+
 
 }

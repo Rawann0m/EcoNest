@@ -8,12 +8,12 @@
 import Foundation
 import FirebaseFirestore
 
-struct Plant: Identifiable, Codable {
-    var id: String?
+struct Plant: Identifiable, Codable, Hashable {
+    @DocumentID var id: String?
     let name: String
     let description: String
-    let water: String
-    let light: String
+    let water: Double
+    let light: Double
     let image: String
     let category: [String]
 }

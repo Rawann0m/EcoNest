@@ -19,7 +19,7 @@ struct DirectMessageListView: View {
                     .frame(height: 500)
             } else {
                 List {
-                    ForEach(viewModel.recentMessages){ message in
+                    ForEach(viewModel.recentMessages.sorted(by: { $0.timestamp > $1.timestamp })){ message in
                         RecentMessageRow(username: message.username, email: "", image: message.profileImage ?? "", time: message.timeAgo, message: message.content[0], count: message.unreadMessages)
                             .listRowSeparator(.hidden)
                             .onTapGesture {

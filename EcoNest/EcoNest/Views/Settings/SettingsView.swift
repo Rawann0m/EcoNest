@@ -103,23 +103,25 @@ struct SettingsView: View {
                         VStack(spacing: 5){
                             if isEdit{
                                 TextField("Name", text: $viewModel.name)
-                                    .frame(width: 200)
+                                    .frame(maxWidth: Geometry.size.width * 0.85 - 15)
                                     .multilineTextAlignment(.center)
+                                    .lineLimit(1)
                                     .foregroundColor(themeManager.textColor)
                                     .accessibilityIdentifier("Name")
                                 
                             } else {
                                 TextField("Name", text: $viewModel.name)
-                                    .frame(width: 200)
+                                    .frame(maxWidth: Geometry.size.width * 0.85 - 15)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.textColor)
                                     .disabled(true)
-                                
                             }
                             
                             if FirebaseManager.shared.isLoggedIn {
                                 Text(viewModel.email)
-                                    .frame(width: 200)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: Geometry.size.width * 0.85 - 15)
+                                    .multilineTextAlignment(.center)
                                     .foregroundColor(themeManager.textColor)
                                 
                             } else {
@@ -151,8 +153,7 @@ struct SettingsView: View {
                         
                         settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
                             NavigationLink{
-                                // go to orders page
-                                Text("orders")
+                                OrderView(currentLanguage: currentLanguage)
                             } label:{
                                 Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                     .foregroundColor(Color("LimeGreen"))

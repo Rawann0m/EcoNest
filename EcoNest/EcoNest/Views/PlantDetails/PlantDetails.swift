@@ -6,62 +6,193 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+import FirebaseAuth
 
 struct PlantDetails: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    let plantName: String
+    @State var plantName: String
     
-    var btnBack : some View { Button(action: {
-        self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(systemName: "chevron.backward")
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
-            Text(plantName)
-                .foregroundColor(.white)
-        }
-    }
-    }
+    @StateObject var plantDetailsVM : PlantDetailsViewModel
     
-    var favBtn : some View {
-        Button(action: {
-            // Button Action
-        }) {
-            Image(systemName: "heart")
-                .foregroundColor(.white)
-        }
+    @State var outOf: Double = 100
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
+    init(plantName: String) {
+        self.plantName = plantName
+        _plantDetailsVM = StateObject(wrappedValue: PlantDetailsViewModel(PlantName: plantName))
+        
     }
+    let userId = Auth.auth().currentUser?.uid ?? ""
     
     var body: some View {
-        
-        VStack {
-            ZStack {
-                CustomRoundedRectangle(topLeft: 0, topRight: 0, bottomLeft: 45, bottomRight: 45)
-                    .path(in: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 400))
-                    .fill(Color("DarkGreen"))
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-//                    Image()
-                    Text("Details for \(plantName)")
-                        .font(.title)
-                }
-            }.navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        btnBack
+        ScrollView {
+            VStack(spacing: 16){
+                ZStack(alignment: .top) {
+                    CustomRoundedRectangle(topLeft: 0, topRight: 0, bottomLeft: 45, bottomRight: 45)
+                        .fill(Color("DarkGreen"))
+                        .frame(width: UIScreen.main.bounds.width, height: 350)
+                        .ignoresSafeArea(edges: .top)
+                        .shadow(radius: 5)
+                    
+                    PlantDetailBar(
+                        plantName: "Details".localized(using: currentLanguage),
+                        viewModel: plantDetailsVM,
+                        userId: userId,
+                        plantId: plantDetailsVM.plant?.id ?? ""
+                    )
+                    
+                    
+                    
+                    if let imageUrl = plantDetailsVM.plant?.image {
+                        PlantImage(imageUrl: imageUrl)
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        favBtn
-                    }
+                    
                 }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    if let plant = plantDetailsVM.plant {
+                        Text("\(String(describing: plant.name)):")
+                            .font(.title)
+                            .bold()
+                    }
+                    
+                    if let desc = plantDetailsVM.plant?.description {
+                        Text(desc)
+                            .font(.title3)
+                        
+                    }
+                }.padding(.horizontal)
+                
+                HStack {
+                    ShapeView(usedWaterAmount: CGFloat(plantDetailsVM.waterLevel ?? 0.0), maxWaterAmount: CGFloat(outOf), color: Color("LimeGreen").opacity(0.4), icon: "drop.fill")
+                    
+                    ShapeView(usedWaterAmount: CGFloat(plantDetailsVM.lightLevel ?? 0.0), maxWaterAmount: CGFloat(outOf), color: Color("LimeGreen").opacity(0.4), icon: "sun.max.fill")
+                }
+                
+                
+                
+                if !plantDetailsVM.products.isEmpty {
+                    RecommendedProductsSection(products: plantDetailsVM.products)
+                }
+                
+                
+            }
+            
         }
-        
-        
+        .onChange(of: plantDetailsVM.plant?.id) { newPlantId in
+            if let id = newPlantId {
+                if FirebaseManager.shared.isLoggedIn {
+                    plantDetailsVM.checkFavoriteStatus(userId: userId, plantId: id)
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+        .ignoresSafeArea(edges: .top)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationBarBackButtonHidden(true)
+    }
+    
+}
+
+struct RecommendedProductsSection: View {
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    let products: [Product]
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text("RecommendedProducts:".localized(using: currentLanguage))
+                    .font(.headline)
+                Spacer()
+                NavigationLink(destination: AllProductsView(products: products)) {
+                    Text("SeeAll".localized(using: currentLanguage))
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                .buttonStyle(.plain)
+
+            }
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 16) {
+                    ForEach(products) { product in
+                        NavigationLink {
+                            ProductDetailsView(productId: product.id ?? "")
+                        } label: {
+                            ProductCard(product: product)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
 
-#Preview {
-    PlantDetails(plantName: "Rose")
+
+struct PlantImage: View {
+    let imageUrl: String
+    
+    var body: some View {
+        if let url = URL(string: imageUrl) {
+            WebImage(url: url) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 300)
+                        .padding(.top, 100)
+                case .failure:
+                    Image(systemName: "photo")
+                        .foregroundColor(.white)
+                @unknown default:
+                    EmptyView()
+                }
+            }
+        } else {
+            EmptyView()
+        }
+    }
 }
 
+
+struct ProductCard: View {
+    let product: Product
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let url = URL(string: product.image ?? "") {
+                WebImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let img):
+                        img.resizable()
+                            .scaledToFit()
+                            .frame(width: 140, height: 120)
+                            .clipped()
+                    case .failure:
+                        Image(systemName: "photo")
+                            .foregroundColor(.white)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
+            Text(product.name ?? "").font(.subheadline).bold()
+                .frame(maxWidth: .infinity, alignment: .center)
+            Text("SAR \(product.price ?? 0.0, specifier: "%.2f")")
+                .font(.caption)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .frame(width: 140)
+        .padding(8)
+        .background(.ultraThinMaterial)
+        .cornerRadius(12)
+    }
+}

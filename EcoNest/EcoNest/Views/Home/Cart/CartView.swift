@@ -10,34 +10,41 @@ import SwiftUI
 /// A SwiftUI view that displays the user's cart items or an empty state if no items are added.
 struct CartView: View {
     
-    /// Manages dark/light mode theming throughout the app.
+    /// View model responsible for cart interactions.
+    @ObservedObject var cartViewModel: CartViewModel
+    
+    /// View model responsible for handling location data.
+    @EnvironmentObject private var locationViewModel: LocationViewModel
+    
+    /// Theme manager to apply dynamic styling based on light/dark mode.
     @EnvironmentObject var themeManager: ThemeManager
     
-    /// ViewModel that handles cart operations like fetching and updating cart data.
-    @ObservedObject var viewModel: CartViewModel
-    
-    /// Stores and observes the current language preference (used for localization).
-    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    /// Allows dismissing the current view.
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var locationViewModel: LocationViewModel
+    
+    /// Stores and observes the current language preference.
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     var body: some View {
         
         NavigationStack {
             
-            if viewModel.isLoading {
+            // Show loading indicator if data is being fetched
+            if cartViewModel.isLoading {
                 ProgressView()
             }
-            // Show empty state if cart is empty
-            else if viewModel.cartProducts.isEmpty {
+            
+            // Show empty state if the cart has no products
+            else if cartViewModel.cartProducts.isEmpty {
+                
                 VStack(spacing: 10) {
                     
-                    // Display cart image
+                    // Cart image placeholder
                     Image("Cart")
                         .resizable()
                         .frame(width: 230, height: 230)
                     
-                    // Localized message when the cart is empty
+                    // Localized text indicating the cart is empty
                     Text("YourCartEmpty".localized(using: currentLanguage))
                         .font(.headline)
                         .foregroundColor(.gray)
@@ -49,26 +56,32 @@ struct CartView: View {
                     
                 }
                 .padding()
-            } else {
-                // Display list of cart products when cart is not empty
+            }
+            
+            // Display cart items when the cart is not empty
+            else {
+                
                 List {
-                    ForEach(viewModel.cartProducts) { cart in
-                        CartProductRow(cartProduct: cart, viewModel: viewModel)
-                            .listRowSeparator(.hidden) // Hide separator for a cleaner look
+                    ForEach(cartViewModel.cartProducts) { cart in
+                        // Reusable row view for each cart item
+                        CartProductRow(viewModel: cartViewModel, cartProduct: cart)
+                            .listRowSeparator(.hidden) // Remove default separators
                     }
-                    .onDelete(perform: viewModel.removeFormCart)
+                    //.onDelete(perform: cartViewModel.removeFormCart) // Enable swipe-to-delete
                 }
                 .listStyle(.plain)
                 
+                // Bottom section: total price and continue button
                 HStack {
-                    // Left side: total price display
+                    
+                    // Left side: display total cart price
                     HStack {
-                        // Show the calculated total
-                        Text("\(viewModel.calculateTotal(), specifier: "%.2f")")
+                        
+                        Text("\(cartViewModel.calculateTotal(), specifier: "%.2f")")
                             .font(.title)
                             .fontWeight(.bold)
                         
-                        // Display the currency icon
+                        // Currency icon that adapts to theme mode
                         Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                             .resizable()
                             .frame(width: 30, height: 30)
@@ -77,9 +90,12 @@ struct CartView: View {
                     
                     Spacer()
                     
-                    // Right side: Continue button
-                    NavigationLink(destination: ReviewView(viewModel: viewModel, currentLanguage: currentLanguage) .environmentObject(locationViewModel)) {
-                        // Localized button label
+                    // Right side: continue to review
+                    NavigationLink(destination:
+                        CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage)
+                            .environmentObject(locationViewModel)
+                    ) {
+                        
                         Text("Continue".localized(using: currentLanguage))
                             .font(.title2)
                             .fontWeight(.heavy)
@@ -91,22 +107,26 @@ struct CartView: View {
                     }
                     .padding(.horizontal)
                 }
-                .padding([.top, .bottom]) 
+                .padding([.top, .bottom])
             }
         }
         .padding(.top)
         .toolbar {
+            // Custom back button title with localized label
             ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
-                CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: {dismiss()})
+                CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: { dismiss() })
             }
+            
+            // Navigation to order history (bag icon)
             ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarLeading : .navigationBarTrailing) {
-                NavigationLink (destination: OrderView(currentLanguage: currentLanguage)) {
+                NavigationLink(destination: OrderView(currentLanguage: currentLanguage)) {
                     Image(systemName: "bag")
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                 }
             }
         }
+        // Adjust layout direction based on language (RTL for Arabic)
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(true) // Hide default back button
     }
 }
