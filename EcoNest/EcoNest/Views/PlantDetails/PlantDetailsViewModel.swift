@@ -121,7 +121,6 @@ class PlantDetailsViewModel: ObservableObject {
     }
     
     func getPlants(named PlantName: String) {
-        
         db.collection("plantsDetails")
             .whereField( "name", isEqualTo: PlantName)
             .getDocuments { snapshot, error in

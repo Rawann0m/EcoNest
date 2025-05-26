@@ -80,7 +80,9 @@ struct PlantDetails: View {
         }
         .onChange(of: plantDetailsVM.plant?.id) { newPlantId in
             if let id = newPlantId {
-                plantDetailsVM.checkFavoriteStatus(userId: userId, plantId: id)
+                if FirebaseManager.shared.isLoggedIn {
+                    plantDetailsVM.checkFavoriteStatus(userId: userId, plantId: id)
+                }
             }
         }
         .scrollIndicators(.hidden)
