@@ -146,7 +146,7 @@ struct PostDetailView: View {
                                     selectedImages.removeAll()
                                     selectedItems.removeAll()
                                     if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                                        PhotoUploaderManager.shared.uploadImages(images: images) { result in
+                                        PhotoUploaderManager.shared.uploadImages(images: images, isPost: true) { result in
                                             switch result {
                                             case .success(let urls):
                                                 let contentArray = [replay] + urls.map { $0.absoluteString }
