@@ -56,6 +56,7 @@ struct FavoritesView: View {
         .onDisappear {
             favoriteVM.removeListeners()
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         
         
         
@@ -66,6 +67,8 @@ struct FavoritesView: View {
 struct FavoriteCard: View {
     let plant: Plant
     @EnvironmentObject var themeManager: ThemeManager
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+
     
     var body: some View {
         HStack(spacing: 12) {
@@ -89,7 +92,7 @@ struct FavoriteCard: View {
             }
             
             Spacer()
-            Image(systemName: "chevron.right")
+            Image(systemName: currentLanguage == "ar" ? "chevron.left" : "chevron.right")
                 .foregroundColor(.gray)
         }
         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
@@ -97,5 +100,6 @@ struct FavoriteCard: View {
         .background(themeManager.isDarkMode ? Color(.secondarySystemBackground) : Color.white)
         .cornerRadius(12)
         .shadow(radius: 2)
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
