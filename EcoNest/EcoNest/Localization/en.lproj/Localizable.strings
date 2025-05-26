@@ -56,12 +56,16 @@
 "Search" = "Search ...";
 "Explore" = "Explore";
 "NoProductsFound" = "No Products Found";
+"Alert" = "Alert";
+"Youneedtologinfirst!" = "You need to log in first!";
 
 // Cart
 "YourCartEmpty" = "Your Cart is Empty";
 "AddProductsHere" = "Add a products to see it here.";
 "MyCart" = "My Cart";
 "Continue" = "Continue";
+"Login" = "Login";
+"Cancel" = "Cancel";
 
 // Review
 "ReviewConfirm" = "Review and Confirm";
@@ -135,3 +139,9 @@
 
 
 "Favorites" = "Favorites";
+"Details" = "Details";
+"Product" = "Product";
+"Remove" = "Remove";
+"Add" = "Add";
+"RecommendedProducts:" = "Recommended Products:";
+"SeeAll" = "See All";

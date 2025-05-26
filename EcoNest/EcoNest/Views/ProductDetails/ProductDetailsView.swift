@@ -8,6 +8,7 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+// MARK: - Main view
 struct ProductDetailsView: View {
     var productId: String
     
@@ -17,116 +18,19 @@ struct ProductDetailsView: View {
     @EnvironmentObject var themeManager: ThemeManager
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
+    @AppStorage("AppleLanguages") var currentLanguage: String =
+        Locale.current.language.languageCode?.identifier ?? "en"
     
-    
+    // MARK: Body
     var body: some View {
         Group {
             if let product = productVM.product {
                 ScrollView {
                     VStack(spacing: 16) {
-                        ZStack(alignment: .top) {
-                            CustomRoundedRectangle(topLeft: 0, topRight: 0, bottomLeft: 45, bottomRight: 45)
-                                .fill(Color("DarkGreen"))
-                                .frame(width: UIScreen.main.bounds.width, height: 350)
-                                .ignoresSafeArea(edges: .top)
-                                .shadow(radius: 5)
-                            
-                            ProductDetailBar(productName: product.name ?? "")
-                            
-                            if let imageUrl = product.image {
-                                PlantImage(imageUrl: imageUrl)
-                            }
-                        }
-                        
-                        HStack {
-                            // Price and currency image
-                            HStack {
-                                Text("\(product.price ?? 0.0, specifier: "%.2f")")
-                                    .foregroundStyle(themeManager.isDarkMode ? .white : .black)
-                                    .font(.system(size: 24, weight: .bold, design: .default))
-                                
-                                Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
-                                    .resizable()
-                                    .frame(width: 25, height: 25)
-                            }
-                            
-                            Spacer()
-                            let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
-                            Button(action: {
-                                if FirebaseManager.shared.isLoggedIn {
-                                    if isAddedToCart {
-                                        if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
-                                            cartViewModel.removeFormCart(cart: cartItem)
-                                        }
-                                    } else {
-                                        homeViewModel.addToCart(product: product)
-                                    }
-                                    
-                                } else {
-                                    AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
-                                }
-                            }, label: {
-                                HStack {
-                                    Text(isAddedToCart ? "Remove" : "Add")
-                                        .font(.headline)
-                                        .bold()
-                                    Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                }
-                                .frame(width: 100)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                                .foregroundColor(.white)
-                                .background(isAddedToCart ? Color("DarkGreen") : Color("LimeGreen"))
-                                .cornerRadius(15)
-                                .shadow(radius: 5)
-                                
-                            })
-                            //.disabled(isAddedToCart)
-                            .alert(isPresented: $alertManager.alertState.isPresented) {
-                                Alert(
-                                    title: Text(alertManager.alertState.title),
-                                    message: Text(alertManager.alertState.message),
-                                    primaryButton: .default(Text("Login")) {
-                                        navigateToLogin = true
-                                    },
-                                    secondaryButton: .cancel()
-                                )
-                            }
-                        }.padding()
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text(product.name ?? "Unknown")
-                                .font(.title)
-                                .bold()
-                            
-                            Text((product.description ?? "No description").replacingOccurrences(of: ". ", with: ".\n"))
-                                .font(.body)
-                                .bold()
-                                .multilineTextAlignment(.leading)
-                            
-                            Text("Plant Sizes:").font(.headline)
-                        }.frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                        
-                        
-                        if !productVM.availableSizes.isEmpty {
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 12) {
-                                    ForEach(productVM.availableSizes) { sizeProduct in
-                                        let isSelected = sizeProduct.id == productVM.product?.id
-                                        
-                                        Button {
-                                            productVM.selectedProductId = sizeProduct.id
-                                        } label: {
-                                            ProductSizeCard(product: sizeProduct, isSelected: isSelected)
-                                        }
-                                    }                                }
-                                .padding(.horizontal)
-                            }
-                        }
-                        
+                        headerSection(product)
+                        priceAndCartSection(product)
+                        descriptionSection(product)
+                        sizesSection
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -140,19 +44,163 @@ struct ProductDetailsView: View {
             } else {
                 ProgressView("Loading...")
             }
-            
-        }.onAppear {
-            productVM.fetchProductDetails(productId: productId)
-        }.onChange(of: productVM.selectedProductId) { newId in
+        }
+        .onAppear { productVM.fetchProductDetails(productId: productId) }
+        .onChange(of: productVM.selectedProductId) { newId in
             if let id = newId {
                 productVM.fetchProductDetails(productId: id)
             }
-        }.fullScreenCover(isPresented: $navigateToLogin) {
+        }
+        .fullScreenCover(isPresented: $navigateToLogin) {
             AuthViewPage()
         }
-        
-        
-        
+    }
+}
+
+// MARK: - Private sub-views (pure refactors)
+
+private extension ProductDetailsView {
+    
+    // Header with top shape, back bar, and hero image
+    @ViewBuilder
+    func headerSection(_ product: Product) -> some View {
+        ZStack(alignment: .top) {
+            CustomRoundedRectangle(topLeft: 0, topRight: 0,
+                                   bottomLeft: 45, bottomRight: 45)
+                .fill(Color("DarkGreen"))
+                .frame(width: UIScreen.main.bounds.width, height: 350)
+                .ignoresSafeArea(edges: .top)
+                .shadow(radius: 5)
+            
+            ProductDetailBar(productName: "Product".localized(using: currentLanguage))
+            
+            if let imageUrl = product.image {
+                PlantImage(imageUrl: imageUrl)
+            }
+        }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+
+    }
+    
+    // Price text, currency icon, and add/remove button
+    @ViewBuilder
+    func priceAndCartSection(_ product: Product) -> some View {
+        HStack {
+            // Price and currency image
+            HStack {
+                Text("\(product.price ?? 0.0, specifier: "%.2f")")
+                    .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                    .font(.system(size: 24, weight: .bold, design: .default))
+                
+                Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                    .resizable()
+                    .frame(width: 25, height: 25)
+            }
+            
+            Spacer()
+            let isAddedToCart =
+                cartViewModel.cartProducts.contains { $0.product.id == product.id }
+            
+            Button {
+                if FirebaseManager.shared.isLoggedIn {
+                    if isAddedToCart {
+                        if let cartItem =
+                            cartViewModel.cartProducts
+                                .first(where: { $0.product.id == product.id }) {
+                            cartViewModel.removeFormCart(cart: cartItem)
+                        }
+                    } else {
+                        homeViewModel.addToCart(product: product)   // <-- SAME CALL
+                    }
+                } else {
+                    AlertManager.shared.showAlert(
+                        title: "Alert".localized(using: currentLanguage),
+                        message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                        primaryLabel: "Login".localized(using: currentLanguage),
+                        secondaryLabel: "Cancel".localized(using: currentLanguage)
+                    )
+                }
+            } label: {
+                HStack {
+                    Text(isAddedToCart
+                         ? "Remove".localized(using: currentLanguage)
+                         : "Add".localized(using: currentLanguage))
+                        .font(.headline)
+                        .bold()
+                    Image(systemName: isAddedToCart
+                                   ? "minus.circle.fill"
+                                   : "plus.circle.fill")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
+                .frame(width: 100)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .foregroundColor(.white)
+                .background(isAddedToCart ? Color("DarkGreen") : Color("LimeGreen"))
+                .cornerRadius(15)
+                .shadow(radius: 5)
+            }
+            .alert(isPresented: $alertManager.alertState.isPresented) {
+                let st = alertManager.alertState
+                
+                return Alert(
+                    title: Text(st.title),
+                    message: Text(st.message),
+                    primaryButton: .default(Text(st.primaryLabel)) {
+                        if st.primaryLabel == "Login".localized(using: currentLanguage) {
+                            navigateToLogin = true
+                        }
+                    },
+                    secondaryButton: st.secondaryLabel != nil
+                        ? .cancel(Text(st.secondaryLabel!))
+                        : .cancel()
+                )
+            }
+        }
+        .padding()
+    }
+    
+    // Name, description, and “Plant Sizes:” headline
+    @ViewBuilder
+    func descriptionSection(_ product: Product) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(product.name ?? "Unknown")
+                .font(.title)
+                .bold()
+            
+            Text(
+                (product.description ?? "No description")
+                    .replacingOccurrences(of: ". ", with: ".\n")
+            )
+            .font(.body)
+            .bold()
+            .multilineTextAlignment(.leading)
+            
+            Text("Plant Sizes:")
+                .font(.headline)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
+    }
+    
+    // Horizontal list of other sizes
+    @ViewBuilder
+    var sizesSection: some View {
+        if !productVM.availableSizes.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(productVM.availableSizes) { sizeProduct in
+                        let isSelected = sizeProduct.id == productVM.product?.id
+                        Button {
+                            productVM.selectedProductId = sizeProduct.id
+                        } label: {
+                            ProductSizeCard(product: sizeProduct, isSelected: isSelected)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
     }
 }
 

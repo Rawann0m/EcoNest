@@ -55,12 +55,16 @@
 "Search" = "ابحث ...";
 "Explore" = "استكشاف";
 "NoProductsFound" = "لم يتم العثور على منتجات";
+"Alert" = "تنبيه";
+"Youneedtologinfirst!" = "!يجب تسجيل الدخول أولآ";
 
 // Cart
 "YourCartEmpty" = "سلة التسوق الخاصة بك فارغة";
 "AddProductsHere" = "أضف منتجات لعرضها هنا";
 "MyCart" = "سلتي";
 "Continue" = "استمرار";
+"Login" = "تسجيل الدخول";
+"Cancel" = "إلغاء";
 
 // Review
 "ReviewConfirm" = "مراجعة وتأكيد";
@@ -135,3 +139,9 @@
 
 
 "Favorites" = "المفضلة";
+"Details" = "التفاصيل";
+"Product" = "المنتج";
+"Remove" = "حذف";
+"Add" = "إضافة";
+"RecommendedProducts:" = "منتجات مقترحة:";
+"SeeAll" = "المزيد";
