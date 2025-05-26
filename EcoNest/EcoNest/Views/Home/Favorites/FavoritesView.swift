@@ -48,10 +48,7 @@ struct FavoritesView: View {
         }
         .onDisappear {
             favoriteVM.removeListeners()
-        }
-        
-        
-        
+        }  
     }
 }
 

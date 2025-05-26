@@ -75,7 +75,9 @@ struct HomeView: View {
                         else {
                             LazyVGrid(columns: gridLayout, spacing: 15) {
                                 ForEach(homeViewModel.filtered.prefix(12)) { product in
-                                    ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
+                                    NavigationLink(destination: Text(product.name ?? "")) {
+                                        ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
+                                    }
                                 }
                             }
                             .padding(.horizontal, 16)

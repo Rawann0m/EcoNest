@@ -49,7 +49,7 @@ struct LocationPreviewView: View {
                         .frame(width: 125, height: 35)
                 }
                 .buttonStyle(.borderedProminent)
-                
+                .tint(Color("LimeGreen"))
             }
             
         }
