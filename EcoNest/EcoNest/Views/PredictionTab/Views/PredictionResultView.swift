@@ -49,7 +49,7 @@ struct PredictionResultView: View {
                             Spacer()
                             Text(String(format: "%.2f%%", prediction.1))
                                 .font(.body)
-                            Image(systemName: "chevron.right")
+                            Image(systemName: currentLanguage == "ar" ? "chevron.left" : "chevron.right")
                                 .font(.subheadline)
                                 .padding(.trailing)
                                 .foregroundColor(.secondary)
@@ -72,7 +72,7 @@ struct PredictionResultView: View {
             .background(Color("LimeGreen").opacity(0.9))
             .cornerRadius(15)
             .shadow(radius: 5)
-        }
+        }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         
         
     }
