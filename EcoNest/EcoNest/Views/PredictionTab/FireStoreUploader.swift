@@ -10,7 +10,11 @@ import Foundation
 import FirebaseFirestore
 
 
-
+/// A utility class responsible for importing product data from a local JSON file
+/// and uploading it to Firestore.
+///
+/// `FireStoreUploader` is intended for development or admin tasks such as seeding Firestore
+/// with bulk data.
 class FireStoreUploader {
     
 //    Button("Check JSON File") {
@@ -22,7 +26,8 @@ class FireStoreUploader {
 //    }
 //    
   
-    
+    /// Loads product data from a bundled `products.json` file.
+        /// - Returns: An array of `Product` objects if decoding succeeds, or `nil` on failure.
     func loadPlantsFromJSON() -> [Product]? {
     guard let url = Bundle.main.url(forResource: "products", withExtension: "json"),
           let data = try? Data(contentsOf: url) else {
@@ -42,7 +47,14 @@ class FireStoreUploader {
 
 
 
-
+    /// Uploads an array of `Product` objects to Firestore.
+        ///
+        /// Each product is assigned a new document ID and written to the "product" collection.
+        /// The operation is asynchronous and uses `DispatchGroup` to track completion.
+        ///
+        /// - Parameters:
+        ///   - products: The array of products to upload.
+        ///   - completion: A closure called when all uploads complete, with a success or the first encountered error.
     func uploadPlantsToFirestore(products: [Product], completion: @escaping (Result<Void, Error>) -> Void) {
         let db = Firestore.firestore()
         var errors: [Error] = []

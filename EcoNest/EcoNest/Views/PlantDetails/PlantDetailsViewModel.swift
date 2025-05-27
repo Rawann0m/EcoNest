@@ -1,4 +1,4 @@
-//
+`//
 //  PlantDetailsViewModel.swift
 //  EcoNest
 //
@@ -8,20 +8,41 @@
 import FirebaseFirestore
 import SwiftUI
 
+/// Manages and provides data for the plant detail screen, including plant info, product recommendations,
+/// water/light levels, and favorite state.
+///
+/// `PlantDetailsViewModel` fetches data from Firestore based on a plant's name or ID, and supports
+/// favoriting/unfavoriting logic with real-time status checking.
 class PlantDetailsViewModel: ObservableObject {
+    
+    /// Current plant details retrieved from Firestore.
     @Published var plant : Plant?
+    
+    /// Products associated with the selected plant.
     @Published var products: [Product] = []
+    
+    /// Water usage level of the plant.
     @Published var waterLevel: Double?
+    
+    /// Light exposure level of the plant.
     @Published var lightLevel: Double?
+    
+    /// Indicates whether the plant is in the user's favorites.
     @Published var isFavorite: Bool = false
     
-    
+    /// Firestore instance.
     private var db = Firestore.firestore()
     
+    /// Initializes the view model and begins fetching the plant by name.
+    /// - Parameter PlantName: Name used to query the `plantsDetails` collection.
     init(PlantName: String) {
         getPlants(named: PlantName)
     }
     
+    /// Toggles the plant’s favorite status in the UI and database.
+    /// - Parameters:
+    ///   - userId: The user's ID.
+    ///   - plantId: The ID of the plant to favorite/unfavorite.
     func toggleFavorite(userId: String, plantId: String) {
         isFavorite.toggle()
         if isFavorite {
@@ -30,7 +51,11 @@ class PlantDetailsViewModel: ObservableObject {
             removeFavoritePlant(userId: userId, plantId: plantId)
         }
     }
-
+    
+    /// Checks if a plant is already in the user's favorites.
+    /// - Parameters:
+    ///   - userId: The user’s ID.
+    ///   - plantId: The plant’s ID.
     func checkFavoriteStatus(userId: String, plantId: String) {
         FirebaseManager.shared.firestore.collection("users")
             .document(userId)
@@ -46,6 +71,7 @@ class PlantDetailsViewModel: ObservableObject {
             }
     }
     
+    /// Adds a plant to the user's favorites in Firestore.
     func addFavoritePlant(userId: String, plantId: String) {
         FirebaseManager.shared.firestore.collection("users")
             .document(userId)
@@ -60,6 +86,7 @@ class PlantDetailsViewModel: ObservableObject {
             }
     }
     
+    /// Removes a plant from the user's favorites in Firestore.
     func removeFavoritePlant(userId: String, plantId: String) {
         FirebaseManager.shared.firestore.collection("users")
             .document(userId)
@@ -73,7 +100,9 @@ class PlantDetailsViewModel: ObservableObject {
                 }
             }
     }
-
+    
+    /// Retrieves the water level for a plant.
+    /// - Parameter plantId: The plant document ID.
     func getWaterLevel(for plantId: String) {
         db.collection("plantsDetails")
             .document(plantId).getDocument { (snapshot, error) in
@@ -89,6 +118,8 @@ class PlantDetailsViewModel: ObservableObject {
             }
     }
     
+    /// Retrieves the light level for a plant.
+    /// - Parameter plantId: The plant document ID.
     func getLightLevel(for plantId: String) {
         db.collection("plantsDetails").document(plantId).getDocument { (snapshot, error) in
             if let error = error {
@@ -103,6 +134,8 @@ class PlantDetailsViewModel: ObservableObject {
         }
     }
     
+    /// Asynchronously fetches recommended products related to the plant.
+    /// - Parameter plantId: The plant's ID used to filter products.
     @MainActor
     func fetchProducts(for plantId: String) async {
         
@@ -120,6 +153,8 @@ class PlantDetailsViewModel: ObservableObject {
         }
     }
     
+    /// Fetches a plant by its name and populates associated data (products, water, light).
+    /// - Parameter PlantName: The name of the plant to query.
     func getPlants(named PlantName: String) {
         db.collection("plantsDetails")
             .whereField( "name", isEqualTo: PlantName)
@@ -154,3 +189,4 @@ class PlantDetailsViewModel: ObservableObject {
             }
     }
 }
+`

@@ -8,11 +8,28 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+
+/// Displays a list of plants that the user has marked as favorites.
+///
+/// `FavoritesView` enables browsing, deleting, and navigating to details of favorite plants.
+/// It supports right-to-left layout for Arabic and uses a shared `ThemeManager` for styling.
+///
+/// The view listens for updates to the user's favorites and cleans up listeners on disappear.
 struct FavoritesView: View {
+    
+    /// View model managing favorite plant logic.
     @StateObject var favoriteVM = FavoritesViewModel()
+    
+    /// Selected plant for navigation to its detail screen.
     @State private var selectedPlant: Plant?
+    
+    /// Theme manager to adjust styling (light/dark).
     @EnvironmentObject var themeManager: ThemeManager
+    
+    /// Currently selected language for layout and labels.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
+    /// Dismiss handler for the current view.
     @Environment(\.dismiss) var dismiss
     
     
@@ -60,10 +77,19 @@ struct FavoritesView: View {
     }
 }
 
-
+/// A visual card showing brief info about a favorite plant.
+///
+/// `FavoriteCard` presents the plant image, name, and a short description.
+/// It dynamically adapts styling based on the app's dark/light theme and supports localization direction.
 struct FavoriteCard: View {
+    
+    /// The plant data to display.
     let plant: Plant
+    
+    /// Theme manager used to adapt the style.
     @EnvironmentObject var themeManager: ThemeManager
+    
+    /// Current language code for layout direction.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
 
     

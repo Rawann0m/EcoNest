@@ -11,10 +11,22 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+/// Displays a scrollable list of all products related to a specific plant or category.
+///
+/// `AllProductsView` shows each product using a concise row card layout,
+/// and supports Arabic localization, dark/light themes, and navigation to detailed product views.
 struct AllProductsView: View {
+    
+    /// Products to display in the list.
     let products: [Product]
+    
+    /// Dismiss handler for navigation control.
     @Environment(\.dismiss) private var dismiss
+    
+    /// Theme manager for styling consistency.
     @EnvironmentObject var themeManager: ThemeManager
+    
+    /// Current language for layout and labels.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
 
     
@@ -48,8 +60,13 @@ struct AllProductsView: View {
 
 
 
-
+/// A horizontally-aligned row card showing a product's image, name, and price.
+///
+/// `ProductRowCard` uses SDWebImage to load images and adjusts layout responsively.
+/// It's designed for use in product listing views like `AllProductsView`.
 struct ProductRowCard: View {
+    
+    /// Product to display.
     let product: Product
     
     var body: some View {
