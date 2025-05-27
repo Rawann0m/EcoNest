@@ -18,6 +18,7 @@
 "ValidEmail" = "Please enter a valid email address";
 "PasswordMismatch" = "Password Mismatch";
 "PasswordMismatchMsg" = "Please enter matched passwords";
+"WeakPassword" = "Weak Password";
 "WeakPasswordMsg" = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
 "WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
 "SignupFailed" = "Signup Failed";

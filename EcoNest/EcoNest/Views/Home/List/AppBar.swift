@@ -70,7 +70,6 @@ struct AppBar: View {
                     .foregroundStyle(Color("LimeGreen"))
             }
             .padding(.horizontal, 16)
-
     }
 }
 

@@ -86,7 +86,7 @@ struct HomeView: View {
                     }
                 }
             }
-        }
+        }.navigationBarBackButtonHidden(true)
         // Observe changes in the search term and filter products accordingly
         .onChange(of: homeViewModel.search) { oldValue, newValue in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

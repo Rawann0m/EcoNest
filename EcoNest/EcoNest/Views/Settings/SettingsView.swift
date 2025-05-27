@@ -253,7 +253,6 @@ struct SettingsView: View {
                                 } , secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage))))
                             }
                         }
-                        NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
                         Spacer()
                         
                     }
@@ -301,7 +300,7 @@ struct SettingsView: View {
                         }
                     }
                     if !FirebaseManager.shared.isLoggedIn {
-                        viewModel.name = "Gest"
+                        viewModel.name = "Guest"
                     }
                     
                     print(FirebaseManager.shared.auth.currentUser?.uid ?? "no user")
