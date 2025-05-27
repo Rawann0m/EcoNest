@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 // MARK: - Main view
 struct ProductDetailsView: View {
     var productId: String
-    
+    @State private var selectedTab = 0
     @StateObject var productVM = ProductDetailsViewModel()
     @ObservedObject private var cartViewModel = CartViewModel()
     @ObservedObject private var homeViewModel = HomeViewModel()
@@ -27,7 +27,7 @@ struct ProductDetailsView: View {
             if let product = productVM.product {
                 ScrollView {
                     VStack(spacing: 16) {
-                        headerSection(product)
+                        headerSection(product,selectedTab: $selectedTab)
                         priceAndCartSection(product)
                         descriptionSection(product)
                         sizesSection
@@ -44,7 +44,7 @@ struct ProductDetailsView: View {
             } else {
                 ProgressView("Loading...")
             }
-        }
+        }.navigationBarBackButtonHidden(true)
         .onAppear { productVM.fetchProductDetails(productId: productId) }
         .onChange(of: productVM.selectedProductId) { newId in
             if let id = newId {
@@ -63,7 +63,7 @@ private extension ProductDetailsView {
     
     // Header with top shape, back bar, and hero image
     @ViewBuilder
-    func headerSection(_ product: Product) -> some View {
+    func headerSection(_ product: Product,selectedTab: Binding<Int>) -> some View {
         ZStack(alignment: .top) {
             CustomRoundedRectangle(topLeft: 0, topRight: 0,
                                    bottomLeft: 45, bottomRight: 45)
@@ -72,19 +72,23 @@ private extension ProductDetailsView {
             .ignoresSafeArea(edges: .top)
             .shadow(radius: 5)
             
-            TabView {
+            TabView(selection: selectedTab) {
                 if let imageUrl = product.image {
                     PlantImage(imageUrl: imageUrl)
+                        .tag(0)
                 }
                 if let image3D = product.name?.capitalized.replacingOccurrences(of: " ", with: ""){
-                    Show(modelName: image3D)
+                    SceneKitLoaderView(modelName: image3D)
+                        .tag(1)
                 }
 
             }
             .frame(height: 400)
             .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: .interactive))
-            ProductDetailBar(productName: "Product".localized(using: currentLanguage))
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
+                ProductDetailBar(productName: "Product".localized(using: currentLanguage))
+                    .foregroundColor(selectedTab.wrappedValue == 0 ? .white : Color("LimeGreen"))
+            
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         
@@ -225,7 +229,7 @@ struct ProductDetailBar: View {
                 HStack {
                     Image(systemName: "chevron.backward")
                     Text(productName)
-                }.foregroundColor(.white)
+                }
                 
             }
             Spacer()
