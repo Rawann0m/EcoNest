@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlantDetailBar: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     var plantName: String
     @ObservedObject var viewModel: PlantDetailsViewModel
     var userId: String
@@ -20,7 +21,7 @@ struct PlantDetailBar: View {
                 presentationMode.wrappedValue.dismiss()
             }) {
                 HStack {
-                    Image(systemName: "chevron.backward")
+                    Image(systemName: currentLanguage == "ar" ? "chevron.right" : "chevron.left")
                     Text(plantName)
                 }
                 .foregroundColor(.white)
@@ -29,17 +30,17 @@ struct PlantDetailBar: View {
             Spacer()
             
             if FirebaseManager.shared.isLoggedIn {
-            Button(action: {
+                Button(action: {
                     viewModel.toggleFavorite(userId: userId, plantId: plantId)
- 
-            }) {
-                Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(viewModel.isFavorite ? Color("DarkGreen") : Color("DarkGreenLight"))
-                    .frame(width: 35, height: 35)
-                    .background(Circle().fill(Color.white))
-            }
-            .foregroundColor(.white)
+                    
+                }) {
+                    Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(viewModel.isFavorite ? Color("DarkGreen") : Color("DarkGreenLight"))
+                        .frame(width: 35, height: 35)
+                        .background(Circle().fill(Color.white))
+                }
+                .foregroundColor(.white)
             }
             
         }.font(.headline)
@@ -50,5 +51,6 @@ struct PlantDetailBar: View {
                     viewModel.checkFavoriteStatus(userId: userId, plantId: plantId)
                 }
             }
+            .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }

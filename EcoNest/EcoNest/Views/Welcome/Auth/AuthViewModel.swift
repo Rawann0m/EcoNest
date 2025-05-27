@@ -221,15 +221,6 @@ class AuthViewModel:ObservableObject {
             
             let username = data["username"] as? String ?? ""
             let email = data["email"] as? String ?? ""
-            //            let user = User(
-            //                username: username,
-            //                email: email,
-            //                password: "",
-            //                image: nil,
-            //                transactions: [],
-            //                budgets: [],
-            //                categories: []
-            //            )
             completion(true)
         }
     }

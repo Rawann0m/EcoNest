@@ -18,6 +18,7 @@ struct ProductCardView: View {
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     @ObservedObject var cartViewModel: CartViewModel
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     var product: Product
     
@@ -72,23 +73,29 @@ struct ProductCardView: View {
                             }
                             
                         } else {
-                            AlertManager.shared.showAlert(title: "Alert", message: "You need to log in first!")
+                            AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                         }
                     }, label: {
                         Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
                             .resizable()
-                            .foregroundStyle(isAddedToCart ? .black.opacity(0.15) : Color("LimeGreen"))
+                            .foregroundStyle(isAddedToCart ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15) : Color("LimeGreen"))
                             .frame(width: 35, height: 35)
                     })
                     //.disabled(isAddedToCart)
                     .alert(isPresented: $alertManager.alertState.isPresented) {
-                        Alert(
-                            title: Text(alertManager.alertState.title),
-                            message: Text(alertManager.alertState.message),
-                            primaryButton: .default(Text("Login")) {
-                                navigateToLogin = true
+                        let st = alertManager.alertState
+                        
+                        return Alert(
+                            title: Text(st.title),
+                            message: Text(st.message),
+                            primaryButton: .default(Text(st.primaryLabel)) {
+                                if st.primaryLabel == "Login".localized(using: currentLanguage) {
+                                    navigateToLogin = true
+                                }
                             },
-                            secondaryButton: .cancel()
+                            secondaryButton: st.secondaryLabel != nil
+                                ? .cancel(Text(st.secondaryLabel!))
+                                : .cancel()
                         )
                     }
                 

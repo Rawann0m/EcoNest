@@ -57,9 +57,6 @@ struct FavoritesView: View {
             favoriteVM.removeListeners()
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-        
-        
-        
     }
 }
 

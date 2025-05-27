@@ -15,6 +15,7 @@ struct PlantDetails: View {
     @StateObject var plantDetailsVM : PlantDetailsViewModel
     
     @State var outOf: Double = 100
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     init(plantName: String) {
         self.plantName = plantName
@@ -34,7 +35,7 @@ struct PlantDetails: View {
                         .shadow(radius: 5)
                     
                     PlantDetailBar(
-                        plantName: plantName,
+                        plantName: "Details".localized(using: currentLanguage),
                         viewModel: plantDetailsVM,
                         userId: userId,
                         plantId: plantDetailsVM.plant?.id ?? ""
@@ -94,20 +95,22 @@ struct PlantDetails: View {
 }
 
 struct RecommendedProductsSection: View {
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     let products: [Product]
     
     var body: some View {
         VStack(spacing: 8) {
             HStack {
-                Text("Recommended Products:")
+                Text("RecommendedProducts:".localized(using: currentLanguage))
                     .font(.headline)
                 Spacer()
-                Button("See All") {
-                    // future action
+                NavigationLink(destination: AllProductsView(products: products)) {
+                    Text("SeeAll".localized(using: currentLanguage))
+                        .font(.caption)
+                        .foregroundColor(.gray)
                 }
-                .font(.caption)
                 .buttonStyle(.plain)
-                .foregroundColor(.gray)
+
             }
             .padding(.horizontal)
             
@@ -124,7 +127,7 @@ struct RecommendedProductsSection: View {
                 }
                 .padding(.horizontal)
             }
-        }
+        }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
 

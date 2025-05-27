@@ -255,7 +255,6 @@ struct SettingsView: View {
                                 } , secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage))))
                             }
                         }
-                        NavigationLink("Show 3D Model", destination: Show(modelName: "ZZPlant"))
                         Spacer()
                         
                     }

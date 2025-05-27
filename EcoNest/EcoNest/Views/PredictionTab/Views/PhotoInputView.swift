@@ -61,10 +61,12 @@ struct PredictionView: View {
                         Task {
                             if let data = try? await newItem?.loadTransferable(type: Data.self),
                                let uiImage = UIImage(data: data) {
+                                viewModel.clearPredictions()
                                 selectedImage = uiImage
                                 capturedImage = nil
                                 selectedItem = nil
                                 viewModel.runPrediction(for: uiImage)
+                               
                             }
                         }
                     }
@@ -102,6 +104,21 @@ struct PredictionView: View {
                 }
             }
             .scrollIndicators(.hidden)
+            .alert("Not a plant?", isPresented: $viewModel.showAlert) {
+                Button("Yes") {
+                    // User wants to proceed anyway, so run the second model
+                    viewModel.proceedWithPlantTypePrediction()
+                }
+                Button("No", role: .cancel) {
+                    // User cancels, do nothing or reset if needed
+                    selectedImage = nil
+                    capturedImage = nil
+                    
+                }
+            } message: {
+                Text("This might not be a plant. Proceed anyway?")
+            }
+
             
         }
     }

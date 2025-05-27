@@ -17,6 +17,8 @@ struct AlertState {
     var isPresented: Bool = false
     var title: String = ""
     var message: String = ""
+    var primaryLabel = "OK"
+    var secondaryLabel: String?
 }
 
 // MARK: - Alert Manager
@@ -33,10 +35,17 @@ class AlertManager: ObservableObject {
     /// - Parameters:
     ///   - title: The title of the alert.
     ///   - message: The message content of the alert.
-    func showAlert(title: String, message: String) {
+    func showAlert(title: String,
+                   message: String,
+                   primaryLabel: String = "OK",
+                   secondaryLabel: String? = nil) {
         print("Attempting to show alert: \(title) - \(message)")
         DispatchQueue.main.async {
-            self.alertState = AlertState(isPresented: true, title: title, message: message)
+            self.alertState = AlertState(isPresented: true,
+                                         title: title,
+                                         message: message,
+                                         primaryLabel: primaryLabel,
+                                         secondaryLabel: secondaryLabel)
             print("Alert state updated: \(self.alertState)")
         }
     }

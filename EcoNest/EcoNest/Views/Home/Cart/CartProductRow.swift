@@ -57,40 +57,54 @@ struct CartProductRow: View {
             
             Spacer()
             
-            // Quantity adjustment section (increase, decrease, or remove)
-            HStack(spacing: 5) {
-                
-                // Increase quantity button
-                Button {
-                    viewModel.updateQuantity(cart: cartProduct, change: true)
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 24))
-                }
-                
-                // Display current quantity
-                Text("\(cartProduct.quantity)")
-                    .font(.headline)
-                    .foregroundColor(themeManager.isDarkMode ? .white : .black)
-                
-                // Decrease quantity or remove item if quantity is 1
-                Button {
-                    if cartProduct.quantity > 1 {
-                        viewModel.updateQuantity(cart: cartProduct, change: false)
-                    } else {
-                        viewModel.removeFormCart(cart: cartProduct)
+            VStack {
+                // Quantity adjustment section (increase, decrease, or remove)
+                HStack(spacing: 5) {
+                    
+                    // Increase quantity button
+                    Button {
+                        if cartProduct.quantity != cartProduct.product.quantity {
+                            viewModel.updateQuantity(cart: cartProduct, change: true)
+                        }
+                        
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 24))
                     }
                     
-                } label: {
+                    // Display current quantity
+                    Text("\(cartProduct.quantity)")
+                        .font(.headline)
+                        .foregroundColor(themeManager.isDarkMode ? .white : .black)
                     
-                    Image(systemName: cartProduct.quantity > 1 ? "minus.circle.fill" : "trash.circle.fill")
-                        .font(.system(size: 24))
+                    // Decrease quantity or remove item if quantity is 1
+                    Button {
+                        if cartProduct.quantity > 1 {
+                            viewModel.updateQuantity(cart: cartProduct, change: false)
+                        } else {
+                            viewModel.removeFormCart(cart: cartProduct)
+                        }
+                        
+                    } label: {
+                        
+                        Image(systemName: cartProduct.quantity > 1 ? "minus.circle.fill" : "trash.circle.fill")
+                            .font(.system(size: 24))
+                    }
+                    .buttonStyle(.plain) // Disable default button animation
+        
                 }
-                .buttonStyle(.plain) // Disable default button animation
-    
+                .foregroundStyle(themeManager.isDarkMode ? .white.opacity(0.2) : .black.opacity(0.2))
+                .font(.system(size: 20))
+                
+                if cartProduct.product.quantity ?? 0 <= 5 {
+                    Spacer()
+                        .frame(height: 30)
+                    
+                    Text("Only \(cartProduct.product.quantity ?? 0) Left")
+                        .font(.caption)
+                        .foregroundStyle(.red.opacity(0.5))
+                }
             }
-            .foregroundStyle(themeManager.isDarkMode ? .white.opacity(0.2) : .black.opacity(0.2))
-            .font(.system(size: 20))
 
         }
         .padding(.horizontal, 8)
