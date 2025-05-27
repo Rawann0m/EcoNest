@@ -30,6 +30,7 @@ struct HomeView: View {
                         
                         // Custom top app bar with title
                         AppBar(viewModel: cartViewModel)
+                            .padding(.top, 14)
                         
                         // Search bar for filtering products
                         SearchView(viewModel: homeViewModel)
@@ -85,7 +86,7 @@ struct HomeView: View {
 
                                 if visibleProductCount < homeViewModel.filtered.count {
                                     
-                                    Text("See More")
+                                    Text("SeeMore".localized(using: currentLanguage))
                                         .font(.headline)
                                         .frame(maxWidth: .infinity)
                                         .padding()

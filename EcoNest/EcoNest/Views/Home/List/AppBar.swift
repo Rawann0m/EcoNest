@@ -12,122 +12,102 @@ struct AppBar: View {
     
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @ObservedObject var viewModel: CartViewModel
-    @State var isPresented: Bool = false
+    @State private var navigateToLogin = false
+    @State private var showLoginAlert = false
+    /// Theme manager to apply dynamic styling based on light/dark mode.
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
-
-            VStack(alignment: .leading) {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("Findyour".localized(using: currentLanguage))
+                    .font(.largeTitle.bold())
                 
-                HStack {
-                    // Title text
-                    Text("Findyour".localized(using: currentLanguage))
-                        .font(.largeTitle.bold())
-                    
-                    Spacer()
-                    
-                    IconNavigationLink(
-                        systemImageName: "heart",
-                        destination: FavoritesView(),
-                        isEnabled: FirebaseManager.shared.isLoggedIn,
-                        onBlockedAccess: {
-                            AlertManager.shared.showAlert(
-                                title: "Alert".localized(using: currentLanguage),
-                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
-                                primaryLabel: "Login".localized(using: currentLanguage),
-                                secondaryLabel: "Cancel".localized(using: currentLanguage)
-                            )
-                        }
-                    ).padding(.horizontal, 10)
-                    
-                    IconNavigationLink(
+                Spacer()
+                
+                IconNavigationLink (
+                    systemImageName: "heart",
+                    destination: FavoritesView(),
+                    currentLanguage: currentLanguage,
+                    showLoginAlert: $showLoginAlert
+                )
+                .padding(.horizontal, 10)
+
+                ZStack(alignment: .topTrailing) {
+                    IconNavigationLink (
                         systemImageName: "cart",
                         destination: CartView(cartViewModel: viewModel),
-                        isEnabled: FirebaseManager.shared.isLoggedIn,
-                        onBlockedAccess: {
-                            AlertManager.shared.showAlert(
-                                title: "Alert".localized(using: currentLanguage),
-                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
-                                primaryLabel: "Login".localized(using: currentLanguage),
-                                secondaryLabel: "Cancel".localized(using: currentLanguage)
-                            )
-
-                        }
+                        currentLanguage: currentLanguage,
+                        showLoginAlert: $showLoginAlert
                     )
                     
-                    
-//                    // Favorite icon with navigation
-//                    IconNavigationLink(systemImageName: "heart", destination: FavoritesView())
-//                        .padding(.horizontal, 10)
-//                    // Cart icon with navigation
-//                    IconNavigationLink(systemImageName: "cart", destination: CartView(cartViewModel: viewModel))
-
-                    
+                    if viewModel.cartProducts.count > 0 {
+                        Text("\(viewModel.cartProducts.count)")
+                            .font(.caption2)
+                            .foregroundStyle(themeManager.isDarkMode ? Color("DarkGreen") : .white)
+                            .background {
+                                Circle()
+                                    .fill(themeManager.isDarkMode ? .white : Color("DarkGreen"))
+                                    .frame(width: 20, height: 20)
+                            }
+                            .offset(x: 5, y: -4)
+                    }
                 }
-                .font(.system(size: 20))
-                
-                // Subtitle text
-                Text("Favoriteplants".localized(using: currentLanguage))
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(Color("LimeGreen"))
             }
-            .padding(.horizontal, 16)
-
+            .font(.system(size: 20))
+            
+            Text("Favoriteplants".localized(using: currentLanguage))
+                .font(.largeTitle.bold())
+                .foregroundStyle(Color("LimeGreen"))
+        }
+        .padding(.horizontal, 16)
+        .alert("Alert".localized(using: currentLanguage), isPresented: $showLoginAlert) {
+            Button("Login".localized(using: currentLanguage)) {
+                navigateToLogin = true
+            }
+            Button("Cancel".localized(using: currentLanguage), role: .cancel) {}
+        } message: {
+            Text("Youneedtologinfirst!".localized(using: currentLanguage))
+        }
+        .fullScreenCover(isPresented: $navigateToLogin) {
+            AuthViewPage()
+        }
     }
 }
 
-// MARK: - IconNavigationLink (Reusable Navigation Icon with Background)
-//struct IconNavigationLink<Destination: View>: View {
-//    
-//    // System image name
-//    let systemImageName: String
-//    
-//    // View to navigate to on tap
-//    let destination: Destination
-//    
-//    var body: some View {
-//        NavigationLink {
-//            destination // Destination view
-//        } label: {
-//            Image(systemName: systemImageName)
-//                .foregroundStyle(.black)
-//                .background {
-//                    Circle()
-//                        .fill(Color("LimeGreen"))
-//                        .frame(width: 35, height: 35)
-//                }
-//        }
-//    }
-//}
 
 struct IconNavigationLink<Destination: View>: View {
+    
     let systemImageName: String
     let destination: Destination
-    var isEnabled: Bool
-    var onBlockedAccess: (() -> Void)? = nil
-    
-    @State private var isActive = false
-    
+    var currentLanguage: String
+    @Binding var showLoginAlert: Bool
+
     var body: some View {
-        Button {
-            if isEnabled {
-                isActive = true
-            } else {
-                onBlockedAccess?()
-            }
-        } label: {
-            Image(systemName: systemImageName)
-                .foregroundStyle(.black)
-                .background {
-                    Circle()
-                        .fill(Color("LimeGreen"))
-                        .frame(width: 35, height: 35)
+        Group {
+            if FirebaseManager.shared.isLoggedIn {
+                NavigationLink {
+                    destination
+                } label: {
+                    iconView
                 }
-        }
-        .background(
-            NavigationLink(destination: destination, isActive: $isActive) {
-                EmptyView()
+            } else {
+                Button {
+                    showLoginAlert = true
+                } label: {
+                    iconView
+                }
             }
-            .hidden()
-        )
+        }
+    }
+
+    var iconView: some View {
+        Image(systemName: systemImageName)
+            .foregroundStyle(.black)
+            .background {
+                Circle()
+                    .fill(Color("LimeGreen"))
+                    .frame(width: 35, height: 35)
+            }
     }
 }
-

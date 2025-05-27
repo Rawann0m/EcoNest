@@ -8,7 +8,9 @@
 import Foundation
 import FirebaseFirestore
 
+/// A model representing a product.
 struct Product: Identifiable, Codable {
+    
     @DocumentID var id: String?
     var plantId: String?
     var name: String?

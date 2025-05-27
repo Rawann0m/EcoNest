@@ -7,35 +7,48 @@
 
 import SwiftUI
 
+/// A SwiftUI view that displays an individual order card with scheduling, product summary, total amount, and cancel option.
 struct OrderCardView: View {
     
-    var order: Order
-    @ObservedObject var viewModel: OrderViewModel
-    @State private var showCancelAlert = false
-    var currentLanguage: String
+    /// View model responsible for handling order-related actions.
+    @ObservedObject var orderViewModel: OrderViewModel
+    
+    /// Theme manager to apply dynamic styling based on light/dark mode.
     @EnvironmentObject var themeManager: ThemeManager
     
+    /// The order data to display in this card.
+    var order: Order
+    
+    /// The current language code used for localization.
+    var currentLanguage: String
+    
     var body: some View {
-        HStack(spacing: 12){
+        
+        HStack(spacing: 12) {
             
+            // MARK: - Scheduled date section
             VStack {
-                Text("Scheduled".localized(using: currentLanguage))
-                Text(order.date.formattedAsOrderDate())
+                Text("Scheduled".localized(using: currentLanguage)) // "Scheduled" title localized
+                Text(order.date.formattedAsOrderDate()) // Formatted order date
             }
             .padding()
             .font(.headline)
             .foregroundStyle(.white)
             .frame(maxHeight: .infinity)
             .background(Color("LimeGreen"))
-                                    
-            VStack(alignment: .leading, spacing: 8, content: {
+            
+            // MARK: - Order details section
+            VStack(alignment: .leading, spacing: 8) {
+                
+                // Product names summary
                 Text(String(format: "PlantO".localized(using: currentLanguage),
                             order.products.map { $0.name ?? "" }.joined(separator: ", ")))
                     .foregroundStyle(.primary)
                 
+                // Total cost and currency image
                 HStack {
-                    
-                    Text(String(format: "TotalO".localized(using: currentLanguage), String(format: "%.2f", order.total)))
+                    Text(String(format: "TotalO".localized(using: currentLanguage),
+                                String(format: "%.2f", order.total)))
                         .foregroundStyle(.primary)
                         .bold()
                     
@@ -44,28 +57,31 @@ struct OrderCardView: View {
                         .frame(width: 16, height: 16)
                 }
                 
+                // Cancel button appears only if status is "awaitingPickup"
                 if order.status == .awaitingPickup {
                     Button(action: {
-                        showCancelAlert = true
+                        orderViewModel.showCancelAlert = true
                     }) {
                         Text("Cancel".localized(using: currentLanguage))
                             .foregroundStyle(.red)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
-                    .alert("CancelOrder".localized(using: currentLanguage), isPresented: $showCancelAlert) {
+                    .alert("CancelOrder".localized(using: currentLanguage), isPresented: $orderViewModel.showCancelAlert) {
+                        
+                        // Confirm cancellation
                         Button("Yes".localized(using: currentLanguage), role: .destructive) {
-                            viewModel.cancelOrders(order: order)
+                            orderViewModel.cancelOrders(order: order)
                         }
+                        
+                        // Dismiss alert
                         Button("No".localized(using: currentLanguage), role: .cancel) { }
                     } message: {
                         Text("CancelThisOrder".localized(using: currentLanguage))
                     }
                 }
-
-            })
+            }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical)
-            
         }
         .padding(.trailing)
         .background(.background, in: RoundedRectangle(cornerRadius: 10))
@@ -76,4 +92,3 @@ struct OrderCardView: View {
         .padding(.horizontal)
     }
 }
-

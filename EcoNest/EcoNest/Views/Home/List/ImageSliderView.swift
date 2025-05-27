@@ -49,7 +49,7 @@ struct ImageSliderView: View {
                                     .font(.subheadline)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 6)
-                                    .background(Color.black.opacity(0.1))
+                                    .background(themeManager.isDarkMode ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                                     .padding([.bottom, .leading])
