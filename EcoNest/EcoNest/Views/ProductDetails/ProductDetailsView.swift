@@ -179,7 +179,7 @@ private extension ProductDetailsView {
             .multilineTextAlignment(.leading)
             
             NavigationLink(destination: PlantDetails(plantName: product.name ?? "Unknown")) {
-                Text("Learn More")
+                Text("LearnMore".localized(using: currentLanguage))
                     .font(.body)
                     .foregroundColor(.gray)
             }
