@@ -16,9 +16,9 @@ struct Show: View {
     var body: some View {
         ZStack {
             if isLoading {
-                Image("loading-placeholder")
-                    .resizable()
-                    .frame(width: 90,height: 90)
+                Text("3D is loading...")
+                    .font(.title)
+                    .fontWeight(.bold)
             } else {
                 SceneKitView(modelName: modelName,isLoading: $isLoading)
                     .edgesIgnoringSafeArea(.all)

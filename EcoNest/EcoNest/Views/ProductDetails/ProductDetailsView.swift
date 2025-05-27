@@ -19,7 +19,7 @@ struct ProductDetailsView: View {
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     @AppStorage("AppleLanguages") var currentLanguage: String =
-        Locale.current.language.languageCode?.identifier ?? "en"
+    Locale.current.language.languageCode?.identifier ?? "en"
     
     // MARK: Body
     var body: some View {
@@ -67,18 +67,27 @@ private extension ProductDetailsView {
         ZStack(alignment: .top) {
             CustomRoundedRectangle(topLeft: 0, topRight: 0,
                                    bottomLeft: 45, bottomRight: 45)
-                .fill(Color("DarkGreen"))
-                .frame(width: UIScreen.main.bounds.width, height: 350)
-                .ignoresSafeArea(edges: .top)
-                .shadow(radius: 5)
+            .fill(Color("DarkGreen"))
+            .frame(width: UIScreen.main.bounds.width, height: 350)
+            .ignoresSafeArea(edges: .top)
+            .shadow(radius: 5)
             
-            ProductDetailBar(productName: "Product".localized(using: currentLanguage))
-            
-            if let imageUrl = product.image {
-                PlantImage(imageUrl: imageUrl)
-            }
-        }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+            TabView {
+                if let imageUrl = product.image {
+                    PlantImage(imageUrl: imageUrl)
+                }
+                if let image3D = product.name?.capitalized.replacingOccurrences(of: " ", with: ""){
+                    Show(modelName: image3D)
+                }
 
+            }
+            .frame(height: 400)
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .interactive))
+            ProductDetailBar(productName: "Product".localized(using: currentLanguage))
+        }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        
     }
     
     // Price text, currency icon, and add/remove button
@@ -98,14 +107,14 @@ private extension ProductDetailsView {
             
             Spacer()
             let isAddedToCart =
-                cartViewModel.cartProducts.contains { $0.product.id == product.id }
+            cartViewModel.cartProducts.contains { $0.product.id == product.id }
             
             Button {
                 if FirebaseManager.shared.isLoggedIn {
                     if isAddedToCart {
                         if let cartItem =
                             cartViewModel.cartProducts
-                                .first(where: { $0.product.id == product.id }) {
+                            .first(where: { $0.product.id == product.id }) {
                             cartViewModel.removeFormCart(cart: cartItem)
                         }
                     } else {
@@ -124,13 +133,13 @@ private extension ProductDetailsView {
                     Text(isAddedToCart
                          ? "Remove".localized(using: currentLanguage)
                          : "Add".localized(using: currentLanguage))
-                        .font(.headline)
-                        .bold()
+                    .font(.headline)
+                    .bold()
                     Image(systemName: isAddedToCart
-                                   ? "minus.circle.fill"
-                                   : "plus.circle.fill")
-                        .resizable()
-                        .frame(width: 20, height: 20)
+                          ? "minus.circle.fill"
+                          : "plus.circle.fill")
+                    .resizable()
+                    .frame(width: 20, height: 20)
                 }
                 .frame(width: 100)
                 .padding(.horizontal, 16)
@@ -152,8 +161,8 @@ private extension ProductDetailsView {
                         }
                     },
                     secondaryButton: st.secondaryLabel != nil
-                        ? .cancel(Text(st.secondaryLabel!))
-                        : .cancel()
+                    ? .cancel(Text(st.secondaryLabel!))
+                    : .cancel()
                 )
             }
         }

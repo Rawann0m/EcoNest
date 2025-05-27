@@ -10,7 +10,9 @@ import SwiftUI
 struct AuthViewPage: View {
     @EnvironmentObject var themeManager: ThemeManager
     @State private var email: String = ""
+    @State private var Semail: String = ""
     @State private var password: String = ""
+    @State private var Spassword: String = ""
     @State private var isPasswordSecure: Bool = true
     @State private var isLoggedIn = true
     @State private var isLoading = false
@@ -129,9 +131,9 @@ struct AuthViewPage: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(themeManager.isDarkMode ? Color("LightGreen"):Color("DarkGreen"))
                                 CustomTextField(placeholder: "Name".localized(using: currentLanguage), text: $username, isSecure: .constant(false)).accessibilityIdentifier("SignUpName")
-                                CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $email, isSecure: .constant(false)).accessibilityIdentifier("SignUpEmail")
+                                CustomTextField(placeholder: "Email".localized(using: currentLanguage), text: $Semail, isSecure: .constant(false)).accessibilityIdentifier("SignUpEmail")
                                 ZStack(alignment: .trailing) {
-                                    CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $password, isSecure: $isPasswordSecure).accessibilityIdentifier("SignUpPassword")
+                                    CustomTextField(placeholder: "Password".localized(using: currentLanguage), text: $Spassword, isSecure: $isPasswordSecure).accessibilityIdentifier("SignUpPassword")
                                     Button(action: {
                                         isPasswordSecure.toggle()
                                     }) {
@@ -163,13 +165,11 @@ struct AuthViewPage: View {
                                         }
                                         // Create User with Firebase
                                         isLoading = true
-                                        authViewModel.signUp(name: username, email: email, password: password,confirmPassword: confirmPassword) { success, message in
+                                        authViewModel.signUp(name: username, email: Semail, password: Spassword,confirmPassword: confirmPassword) { success, message in
                                             isLoading = false
                                             if success {
-                                                authViewModel.savePasswordIfNeeded(account: email, newPassword: password)
+                                                authViewModel.savePasswordIfNeeded(account: Semail, newPassword: Spassword)
                                                 goToHome = true
-                                            } else if let message = message {
-                                                AlertManager.shared.showAlert(title: "Error".localized(using: currentLanguage), message: message)
                                             }
                                         }
                                     }
@@ -212,5 +212,6 @@ struct AuthViewPage: View {
         }
             .ignoresSafeArea(.all)
             .navigationBarBackButtonHidden(true)
+            .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
     }
 }
