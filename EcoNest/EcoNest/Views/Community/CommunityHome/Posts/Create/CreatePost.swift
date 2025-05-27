@@ -22,6 +22,7 @@ struct CreatePost: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var showCamera: Bool = false
     @StateObject var alertManager = AlertManager.shared
+    @Binding var isLoading: Bool
     let imageCount = 4
     var body: some View {
         NavigationStack{
@@ -128,11 +129,13 @@ struct CreatePost: View {
                     
                     Button{
                         if let userId = FirebaseManager.shared.auth.currentUser?.uid {
+                            isLoading  = true
                             PhotoUploaderManager.shared.uploadImages(images: selectedImages, isPost: true) { result in
                                 switch result {
                                 case .success(let urls):
                                     let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
                                     viewModel.addPost(communityId: communityId, post: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
+                                    isLoading  = false
                                     dismiss()
                                 case .failure(let error):
                                     print("Image upload failed: \(error.localizedDescription)")
@@ -190,10 +193,10 @@ struct CreatePost: View {
             Alert(
                 title: Text(alertManager.alertState.title),
                 message: Text(alertManager.alertState.message),
-                primaryButton: .default(Text("Ok")) {
+                primaryButton: .default(Text("OK".localized(using: currentLanguage))) {
                     
                 },
-                secondaryButton: .cancel()
+                secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
             )
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)

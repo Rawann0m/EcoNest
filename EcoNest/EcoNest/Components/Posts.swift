@@ -20,9 +20,6 @@ import SDWebImageSwiftUI
 ///   - viewModel: The `PostsListViewModel` used to manage state and handle actions.
 ///   - isReplay: A `Bool` indicating if the post is a reply (defaults to `false`).
 ///   - postId: Optional post ID used when handling replies.
-//@ViewBuilder
-//func Posts(post: Post, user: User, communityId: String, viewModel: PostsListViewModel, isReplay: Bool = false, postId: String? = nil) -> some View {
-//   // @State var showPic: Bool = false
 struct Posts: View {
     let post: Post
     let user: User
@@ -78,7 +75,8 @@ struct Posts: View {
                 if images.count == 1 {
                     // Single image display
                     if let url = URL(string: images[0]) {
-                        WebImage(url: url)
+                        WebImage(url: url){ image in
+                            image
                             .resizable()
                             .scaledToFill()
                             .frame(maxWidth: .infinity, maxHeight: 300)
@@ -89,6 +87,10 @@ struct Posts: View {
                                 viewModel.selectedPic = images[0]
                                 viewModel.showPic.toggle()
                             }
+                        } placeholder:{
+                            ProgressView()
+                                .frame(maxWidth: .infinity, maxHeight: 300, alignment: .center)
+                        }
                     }
                 } else if images.count == 2 {
                     // Display 2 images in a row
@@ -96,10 +98,11 @@ struct Posts: View {
                         HStack(alignment: .center, spacing: 5) {
                             ForEach(rowItems, id: \.self) { item in
                                 if let url = URL(string: item) {
-                                    WebImage(url: url)
+                                    WebImage(url: url){ image in
+                                        image
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(minHeight: 200, maxHeight: 300)
+                                        .frame(minHeight: 200, maxHeight: 250)
                                         .frame(width: (UIScreen.main.bounds.width - 25)/2)
                                         .clipped()
                                         .contentShape(Rectangle())
@@ -108,6 +111,11 @@ struct Posts: View {
                                             viewModel.selectedPic = item
                                             viewModel.showPic.toggle()
                                         }
+                                } placeholder:{
+                                       ProgressView()
+                                        .frame(minHeight: 200, maxHeight: 250, alignment: .center)
+                                        .frame(width: (UIScreen.main.bounds.width - 25)/2)
+                                   }
                                 }
                             }
                         }
@@ -118,10 +126,11 @@ struct Posts: View {
                         VStack(alignment: .center, spacing: 5) {
                             ForEach(rowItems, id: \.self) { item in
                                 if let url = URL(string: item) {
-                                    WebImage(url: url)
+                                    WebImage(url: url){ image in
+                                        image
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(minHeight: 100, maxHeight: 300)
+                                        .frame(minHeight: 100, maxHeight: 250)
                                         .frame(width: (UIScreen.main.bounds.width - 25)/2)
                                         .clipped()
                                         .contentShape(Rectangle())
@@ -130,6 +139,11 @@ struct Posts: View {
                                             viewModel.selectedPic = item
                                             viewModel.showPic.toggle()
                                         }
+                                } placeholder:{
+                                       ProgressView()
+                                        .frame(minHeight: 100, maxHeight: 250, alignment: .center)
+                                        .frame(width: (UIScreen.main.bounds.width - 25)/2)
+                                   }
                                 }
                             }
                         }
@@ -222,12 +236,7 @@ struct Posts: View {
         }
         .frame(maxWidth: 500)
         .padding(10)
-        
-//        if viewModel.showPic {
-//             if let pic = viewModel.selectedPic {
-//                 PicView(pic: pic, showPic: $viewModel.showPic)
-//             }
-//         }
+
      }
      .padding(.horizontal,10)
      .padding(.top, 10)

@@ -19,13 +19,13 @@ struct CommunityHomeView: View {
     @State private var navigateToLogin = false
     @ObservedObject var communityViewModel: CommunityViewModel
     @StateObject var viewModel: PostsListViewModel
-    @ObservedObject var memberViewModel: MembersListViewModel
+    @StateObject var memberViewModel: MembersListViewModel
     @EnvironmentObject var themeManager: ThemeManager
-    
+    @State var isLoading: Bool = false
     init(communityViewModel: CommunityViewModel){
         self.communityViewModel = communityViewModel
         _viewModel = StateObject(wrappedValue: PostsListViewModel(communityId: communityViewModel.selectedCommunity?.id ?? ""))
-        self.memberViewModel = .init(members: communityViewModel.selectedCommunity?.members ?? [])
+        _memberViewModel = StateObject(wrappedValue:(MembersListViewModel(members: communityViewModel.selectedCommunity?.members ?? [])))
     }
     
     var body: some View {
@@ -91,7 +91,7 @@ struct CommunityHomeView: View {
                                                     }
                                                 }
                                             } else {
-                                                AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                                AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                                             }
                                         }
                                 }
@@ -158,7 +158,8 @@ struct CommunityHomeView: View {
                                 }
                                 
                                 if showPosts {
-                                    PostsListView(viewModel: viewModel, communityId: community.id ?? "")
+                                    
+                                    PostsListView(viewModel: viewModel, communityId: community.id ?? "", isLoading: $isLoading)
     
                                 } else {
                                     MembersListView(members: communityViewModel.selectedCommunityMembers, viewModel: memberViewModel)
@@ -170,7 +171,7 @@ struct CommunityHomeView: View {
                             
                         }
                         .fullScreenCover(isPresented: $showCreatePost){
-                            CreatePost(communityId: community.id ?? "")
+                            CreatePost(communityId: community.id ?? "", isLoading: $isLoading)
                         }
                     }
                     if showPosts && community.memberOfCommunity{
@@ -178,7 +179,7 @@ struct CommunityHomeView: View {
                             if FirebaseManager.shared.isLoggedIn {
                                 showCreatePost.toggle()
                             } else {
-                                AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                             }
                         }) {
                             Image(systemName: "plus")
@@ -196,10 +197,10 @@ struct CommunityHomeView: View {
                 Alert(
                     title: Text(alertManager.alertState.title),
                     message: Text(alertManager.alertState.message),
-                    primaryButton: .default(Text("Login")) {
+                    primaryButton: .default(Text("Login".localized(using: currentLanguage))) {
                         navigateToLogin = true
                     },
-                    secondaryButton: .cancel()
+                    secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
                 )
             }
             .fullScreenCover(isPresented: $navigateToLogin) {
@@ -221,7 +222,7 @@ struct CommunityHomeView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Image(systemName: "chevron.backward")
                         .bold()
-                        .foregroundColor(.primary)
+                        .foregroundColor(.black)
                         .onTapGesture {
                             dismiss()
                         }

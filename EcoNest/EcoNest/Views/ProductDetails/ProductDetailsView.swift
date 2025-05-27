@@ -63,7 +63,7 @@ struct ProductDetailsView: View {
                                     }
                                     
                                 } else {
-                                    AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
+                                    AlertManager.shared.showAlert(title: "Alert", message: "You need to log in first!")
                                 }
                             }, label: {
                                 HStack {

@@ -19,7 +19,7 @@ extension Timestamp {
         let week = 7 * day
 
         if secondsAgo < minute {
-            return "\(secondsAgo) seconds ago"
+            return "just now"
         } else if secondsAgo < hour {
             return "\(secondsAgo / minute) minutes ago"
         } else if secondsAgo < day {

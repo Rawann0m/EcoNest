@@ -56,12 +56,16 @@
 "Search" = "Search ...";
 "Explore" = "Explore";
 "NoProductsFound" = "No Products Found";
+"Alert" = "Alert";
+"YouNeedToLoginFirst" = "You need to log in first!";
 
 // Cart
 "YourCartEmpty" = "Your Cart is Empty";
 "AddProductsHere" = "Add a products to see it here.";
 "MyCart" = "My Cart";
 "Continue" = "Continue";
+"Login" = "Login";
+"Cancel" = "Cancel";
 
 // Review
 "ReviewConfirm" = "Review and Confirm";
@@ -124,6 +128,7 @@
 "FilterCategories"= "Filter Categories";
 "Apply" = "Apply";
 "DeleteAccountMessage" = "Deleting your account will erase all your data.";
+"LogOutMessage" = "Are you sure you want to log out?";
 "Delete" = "Delete";
 "Sure" = "Are you sure?";
 "allowDR" = "Receive Messages";

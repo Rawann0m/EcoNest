@@ -18,7 +18,8 @@ struct SettingsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var selectedLanguageIndex: Int = 0
     @Environment(\.openURL) var openURL
-    @State var showAlert: Bool = false
+    @State var showLogoutAlert: Bool = false
+    @State var showDeleteAlert: Bool = false
     @State var login: Bool = false
     @StateObject var viewModel = SettingsViewModel()
     @State var selectedImage: UIImage? = nil
@@ -138,7 +139,7 @@ struct SettingsView: View {
                                 }
                             }
                         }
-                        .offset(y:   Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.135 : Geometry.size.height * 0.145)
+                        .offset(y: Geometry.size.width > smallDeviceWidth ? Geometry.size.height * 0.135 : Geometry.size.height * 0.145)
                         
                     }
                     .ignoresSafeArea(.all)
@@ -229,22 +230,23 @@ struct SettingsView: View {
                         if FirebaseManager.shared.isLoggedIn {
                             settingRow(icon: "rectangle.portrait.and.arrow.right", text: "LogOut".localized(using: currentLanguage), function: {
                                 // log out
-                                if FirebaseManager.shared.isLoggedIn{
-                                    print("logout")
+                                showLogoutAlert.toggle()
+                            }, color: themeManager.textColor)
+                            .alert(isPresented: $showLogoutAlert) {
+                                Alert(title: Text("Sure".localized(using: currentLanguage)), message: Text("LogOutMessage".localized(using: currentLanguage)), primaryButton: .destructive(Text("LogOut".localized(using: currentLanguage))){
                                     authViewModel.logOut()
                                     viewModel.profileImage = ""
                                     viewModel.name="Guest"
-                                } else {
-                                    
-                                }
-                            }, color: themeManager.textColor)
+                                } , secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage))))
+                            }
+                            
                             
                             settingRow(icon: "trash", text: "DeleteAccount".localized(using: currentLanguage), function: {
                                 // show alert and delete account
-                                showAlert.toggle()
+                                showDeleteAlert.toggle()
                                 
                             }, color: themeManager.textColor)
-                            .alert(isPresented: $showAlert) {
+                            .alert(isPresented: $showDeleteAlert) {
                                 Alert(title: Text("Sure".localized(using: currentLanguage)), message: Text("DeleteAccountMessage".localized(using: currentLanguage)), primaryButton: .destructive(Text("Delete".localized(using: currentLanguage))){
                                     handleDeleteAccount(email: viewModel.email)
                                     
@@ -301,7 +303,7 @@ struct SettingsView: View {
                         }
                     }
                     if !FirebaseManager.shared.isLoggedIn {
-                        viewModel.name = "Gest"
+                        viewModel.name = "Guest"
                     }
                     
                     print(FirebaseManager.shared.auth.currentUser?.uid ?? "no user")

@@ -52,7 +52,7 @@ struct MembersListView: View {
                                                     showChat.toggle()
                                                 }
                                             } else {
-                                                AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                                AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                                             }
                                         }
                                 }
@@ -74,10 +74,10 @@ struct MembersListView: View {
             Alert(
                 title: Text(alertManager.alertState.title),
                 message: Text(alertManager.alertState.message),
-                primaryButton: .default(Text("Login")) {
+                primaryButton: .default(Text("Cancel".localized(using: currentLanguage))) {
                     navigateToLogin = true
                 },
-                secondaryButton: .cancel()
+                secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
             )
         }
     }

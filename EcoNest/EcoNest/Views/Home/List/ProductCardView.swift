@@ -72,7 +72,7 @@ struct ProductCardView: View {
                             }
                             
                         } else {
-                            AlertManager.shared.showAlert(title: "Error", message: "You need to log in first!")
+                            AlertManager.shared.showAlert(title: "Alert", message: "You need to log in first!")
                         }
                     }, label: {
                         Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")

@@ -176,11 +176,6 @@ struct PostDetailView: View {
                         .background(themeManager.isDarkMode ? .black : .white)
                     }
                 }
-                if viewModel.showPic {
-                    if let pic = viewModel.selectedPic {
-                        PicView(pic: pic, showPic: $viewModel.showPic)
-                    }
-                }
             }
             if viewModel.showPic {
                 if let pic = viewModel.selectedPic {
@@ -229,10 +224,10 @@ struct PostDetailView: View {
             Alert(
                 title: Text(alertManager.alertState.title),
                 message: Text(alertManager.alertState.message),
-                primaryButton: .default(Text("Ok")) {
+                primaryButton: .default(Text("OK".localized(using: currentLanguage))) {
                     
                 },
-                secondaryButton: .cancel()
+                secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
             )
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)

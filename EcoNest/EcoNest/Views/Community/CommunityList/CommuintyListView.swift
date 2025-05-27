@@ -34,6 +34,7 @@ struct CommuintyListView: View {
                                         Text(currentLanguage == "en" ? community.name[0] : community.name[1])
                                             .font(.title)
                                             .foregroundColor(.white)
+                                            .background(.gray.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
                                             .bold()
                                             .frame(width: 320, alignment: .leading)
                                         
@@ -46,6 +47,7 @@ struct CommuintyListView: View {
                                         }
                                         .font(.title3)
                                         .foregroundColor(.white)
+                                        .background(.gray.opacity(0.2))
                                         .bold()
                                         .frame(width: 320, alignment: .leading)
                                     }
@@ -63,14 +65,13 @@ struct CommuintyListView: View {
                                             .offset(y: 50)
                                             .onTapGesture {
                                                 if FirebaseManager.shared.isLoggedIn {
-                                                    
                                                     if let userId = FirebaseManager.shared.auth.currentUser?.uid, let communityId = community.id{
                                                         
                                                         communityViewModel.addUserIDToMembers(communityId: communityId, userId: userId)
                                                     }
                                                     
                                                 } else {
-                                                    AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                                    AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                                                 }
                                             }
                                     }
@@ -84,22 +85,22 @@ struct CommuintyListView: View {
                     }
                 }
             }
+            .alert(isPresented: $alertManager.alertState.isPresented) {
+                Alert(
+                    title: Text(alertManager.alertState.title),
+                    message: Text(alertManager.alertState.message),
+                    primaryButton: .default(Text("Login".localized(using: currentLanguage))) {
+                        navigateToLogin = true
+                    },
+                    secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
+                )
+            }
             .scrollIndicators(.hidden)
             .onAppear{
                 communityViewModel.fetchCommunities()
             }
             .onDisappear{
                 communityViewModel.communityListener?.remove()
-            }
-            .alert(isPresented: $alertManager.alertState.isPresented) {
-                Alert(
-                    title: Text(alertManager.alertState.title),
-                    message: Text(alertManager.alertState.message),
-                    primaryButton: .default(Text("Login")) {
-                        navigateToLogin = true
-                    },
-                    secondaryButton: .cancel()
-                )
             }
         }
         .fullScreenCover(isPresented: $showCommunity) {
