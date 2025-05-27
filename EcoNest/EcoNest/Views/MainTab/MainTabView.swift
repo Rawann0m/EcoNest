@@ -10,6 +10,8 @@ import SwiftUI
 /// The main view that contains a TabView and a custom bottom tab bar.
 struct MainTabView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    /// Theme manager to apply dynamic styling based on light/dark mode.
+    @EnvironmentObject var themeManager: ThemeManager
     // Tracks the currently selected tab index
     @State private var selectedTabIndex = 1
     
@@ -29,6 +31,7 @@ struct MainTabView: View {
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
             .ignoresSafeArea()
         }
+        .id(themeManager.isDarkMode)
         .navigationBarBackButtonHidden(true)
         .onAppear {
             // Set the badge count of the app icon to 0

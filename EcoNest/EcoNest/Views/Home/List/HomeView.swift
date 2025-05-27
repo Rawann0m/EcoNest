@@ -16,7 +16,8 @@ struct HomeView: View {
     // State objects for managing cart and product data
     @StateObject private var cartViewModel = CartViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
-    
+    @State private var visibleProductCount = 12
+
     var body: some View {
         
         ZStack(alignment: .top) {
@@ -73,11 +74,26 @@ struct HomeView: View {
                         }
                         
                         else {
-                            LazyVGrid(columns: gridLayout, spacing: 15) {
-                                ForEach(homeViewModel.filtered.prefix(12)) { product in
-                                    NavigationLink(destination: ProductDetailsView(productId: product.id ?? "")) {
-                                        ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
+                            VStack(spacing: 16) {
+                                LazyVGrid(columns: gridLayout, spacing: 15) {
+                                    ForEach(homeViewModel.filtered.prefix(visibleProductCount)) { product in
+                                        NavigationLink(destination: ProductDetailsView(productId: product.id ?? "")) {
+                                            ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
+                                        }
                                     }
+                                }
+
+                                if visibleProductCount < homeViewModel.filtered.count {
+                                    
+                                    Text("See More")
+                                        .font(.headline)
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .foregroundColor(Color("LimeGreen"))
+                                        .cornerRadius(10)
+                                        .onTapGesture {
+                                            visibleProductCount += 12
+                                        }
                                 }
                             }
                             .padding(.horizontal, 16)

@@ -67,7 +67,7 @@ struct CartView: View {
                         CartProductRow(viewModel: cartViewModel, cartProduct: cart)
                             .listRowSeparator(.hidden) // Remove default separators
                     }
-                    //.onDelete(perform: cartViewModel.removeFormCart) // Enable swipe-to-delete
+                    .onDelete(perform: cartViewModel.removeFormCart) // Enable swipe-to-delete
                 }
                 .listStyle(.plain)
                 

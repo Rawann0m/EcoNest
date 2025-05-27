@@ -56,7 +56,7 @@
 "Explore" = "استكشاف";
 "NoProductsFound" = "لم يتم العثور على منتجات";
 "Alert" = "تنبيه";
-"Youneedtologinfirst!" = "!يجب تسجيل الدخول أولآ";
+"YouNeedToLoginFirst" = "يجب عليك تسجيل الدخول أولاً!";
 
 // Cart
 "YourCartEmpty" = "سلة التسوق الخاصة بك فارغة";

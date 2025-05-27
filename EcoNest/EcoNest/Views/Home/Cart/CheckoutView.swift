@@ -127,7 +127,7 @@ struct CheckoutView: View {
                 .padding(.horizontal)
                 .padding(.top, 10)
             }
-            .padding()
+            .padding(.horizontal)
             .navigationBarBackButtonHidden(true)
             .fullScreenCover(isPresented: $show) {
                 ConfirmationAlert()
