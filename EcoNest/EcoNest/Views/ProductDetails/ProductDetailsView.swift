@@ -189,6 +189,12 @@ private extension ProductDetailsView {
             .bold()
             .multilineTextAlignment(.leading)
             
+            NavigationLink(destination: PlantDetails(plantName: product.name ?? "Unknown")) {
+                Text("Learn More")
+                    .font(.body)
+                    .foregroundColor(.gray)
+            }
+            
             Text("Plant Sizes:")
                 .font(.headline)
         }
