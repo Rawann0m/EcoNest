@@ -12,6 +12,7 @@ struct MainTabView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     // Tracks the currently selected tab index
     @State private var selectedTabIndex = 1
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         NavigationStack {
@@ -29,6 +30,7 @@ struct MainTabView: View {
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
             .ignoresSafeArea()
         }
+        .id(themeManager.isDarkMode)
         .navigationBarBackButtonHidden(true)
         .onAppear {
             // Set the badge count of the app icon to 0

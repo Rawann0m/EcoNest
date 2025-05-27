@@ -225,4 +225,23 @@ class ChatViewModel: ObservableObject {
             }
     }
     
+    func markLastSeenMessage(toId: String, lastMessageId: String){
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
+        
+        FirebaseManager.shared.firestore.collection("recentMessages")
+            .document(uid)
+            .collection("messages")
+            .document(toId)
+            .updateData([
+                "lastSeenMessage": lastMessageId
+            ]) { error in
+                if let error = error {
+                    print("Error adding user to members: \(error)")
+                } else {
+                    print("Successfully added userID to members")
+                }
+            }
+    }
+    
 }

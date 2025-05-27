@@ -13,6 +13,7 @@ struct PostsListView: View {
     var communityId: String
     @State private var savedId: String?
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @Binding var isLoading: Bool
     var body: some View {
         NavigationStack{
             if viewModel.isLoading{
@@ -33,6 +34,12 @@ struct PostsListView: View {
                                 .padding()
                                 .disableAutocorrection(true) // Prevent autocorrect suggestions
                                 .textInputAutocapitalization(.none) // Disable auto-capitalization for accurate search matching
+                            
+                            if isLoading {
+                                ProgressView()
+                                    .padding(.vertical)
+                            }
+                            
                             ForEach(getPosts()) { post in
                                 if let user = post.user {
                                     Posts(post: post, user: user, communityId: communityId, viewModel: viewModel, isReplay: false, postId: post.id)

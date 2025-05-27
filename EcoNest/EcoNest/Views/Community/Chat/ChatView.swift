@@ -15,6 +15,8 @@ struct ChatView: View {
     @State var selectedImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
+    @State var showCamera: Bool = false
+    @EnvironmentObject var themeManager: ThemeManager
     @StateObject var viewModel: ChatViewModel
     let chatUser: User?
     @State var showPic: Bool = false
@@ -22,6 +24,7 @@ struct ChatView: View {
         self.chatUser = chatUser
         _viewModel = StateObject(wrappedValue: ChatViewModel(chatUser: chatUser))
     }
+    @State var isLoading: Bool = false
     var body: some View {
         ZStack{
             NavigationStack{
@@ -36,16 +39,21 @@ struct ChatView: View {
                                                 Spacer()
                                                 if contentItem.lowercased().hasPrefix("http"),
                                                    let url = URL(string: contentItem) {
-                                                    WebImage(url: url)
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 350 ,height: 200)
-                                                        .clipped()
-                                                        .cornerRadius(10)
-                                                        .onTapGesture {
-                                                            viewModel.selectedPic = contentItem
-                                                            showPic.toggle()
-                                                        }
+                                                    WebImage(url: url) { image in
+                                                        image
+                                                            .resizable()
+                                                            .scaledToFill()
+                                                            .frame(width: 350 ,height: 200)
+                                                            .clipped()
+                                                            .cornerRadius(10)
+                                                            .onTapGesture {
+                                                                viewModel.selectedPic = contentItem
+                                                                showPic.toggle()
+                                                            }
+                                                    } placeholder:{
+                                                        ProgressView()
+                                                            .frame(width: 350 ,height: 200, alignment: .center)
+                                                    }
                                                 } else {
                                                     Text(contentItem)
                                                         .foregroundColor(.white)
@@ -90,6 +98,11 @@ struct ChatView: View {
                                 }
                             }
                             
+                            if isLoading {
+                                ProgressView()
+                                    .padding(.vertical)
+                            }
+                            
                             HStack{
                                 Spacer()
                             }
@@ -131,27 +144,34 @@ struct ChatView: View {
                     
                     HStack(spacing: 16){
                         
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.system(size: 28))
-                            .foregroundColor(Color("LimeGreen"))
-                            .onTapGesture {
+                        Menu{
+                            Button("Camera") {
+                                showCamera = true
+                            }
+                            
+                            Button("Photo Picker") {
                                 showImagePicker.toggle()
                             }
-                            .photosPicker(
-                                isPresented: $showImagePicker,
-                                selection: $selectedItem,
-                                matching: .images
-                            )
-                            .onChange(of: selectedItem) { _ , newItem in
-                                Task { @MainActor in
-                                    if let newItem,
-                                       let data = try? await newItem.loadTransferable(type: Data.self),
-                                       let uiImage = UIImage(data: data) {
-                                        self.selectedImage = uiImage
-                                        print("Updated selectedImage: \(uiImage)")
-                                    }
+                        } label: {
+                            Image(systemName: "photo.on.rectangle")
+                                .font(.system(size: 28))
+                                .foregroundColor(themeManager.isDarkMode ? Color("LightGreen") : Color("DarkGreen"))
+                        }
+                        .photosPicker(
+                            isPresented: $showImagePicker,
+                            selection: $selectedItem,
+                            matching: .images
+                        )
+                        .onChange(of: selectedItem) { _ , newItem in
+                            Task { @MainActor in
+                                if let newItem,
+                                   let data = try? await newItem.loadTransferable(type: Data.self),
+                                   let uiImage = UIImage(data: data) {
+                                    self.selectedImage = uiImage
+                                    print("Updated selectedImage: \(uiImage)")
                                 }
                             }
+                        }
                         
                         ZStack{
                             Text("TypeMessage".localized(using: currentLanguage))
@@ -169,6 +189,7 @@ struct ChatView: View {
                                 self.selectedImage = nil
                                 self.selectedItem = nil
                                 viewModel.chatText = ""
+                                isLoading = true
                                 PhotoUploaderManager.shared.uploadImages(image: image, isPost: false) { result in
                                     switch result {
                                     case .success(let url):
@@ -177,6 +198,7 @@ struct ChatView: View {
                                     case .failure(let error):
                                         print("Image upload failed: \(error.localizedDescription)")
                                     }
+                                    isLoading = false
                                 }
                             } else if !trimmedText.isEmpty {
                                 viewModel.handleSendMessage(content: [trimmedText])
@@ -196,7 +218,6 @@ struct ChatView: View {
                     .padding(.horizontal)
                     .padding(.vertical, 8)
                     
-                    
                 }
                 .navigationTitle(viewModel.chatUser?.username ?? "Chat")
                 .navigationBarTitleDisplayMode(.inline)
@@ -205,7 +226,11 @@ struct ChatView: View {
                         Image(systemName: "chevron.backward")
                             .foregroundColor(.primary)
                             .onTapGesture{
-                                dismiss()
+                                viewModel.markLastSeenMessage(toId: viewModel.chatUser?.id ?? "", lastMessageId: viewModel.chatMessages.last?.id ?? "")
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    dismiss()
+                                }
                             }
                     }
                     
@@ -229,6 +254,12 @@ struct ChatView: View {
                         }
                     }
                 }
+            }
+            .fullScreenCover(isPresented: $showCamera) {
+                ImagePicker(sourceType: .camera) { image in
+                    selectedImage = image
+                }
+                .ignoresSafeArea(.all)
             }
             .onAppear{
                 viewModel.markMessagesAsRead(toId: viewModel.chatUser?.id ?? "")

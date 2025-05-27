@@ -58,7 +58,8 @@
 "Explore" = "Explore";
 "NoProductsFound" = "No Products Found";
 "Alert" = "Alert";
-"Youneedtologinfirst!" = "You need to log in first!";
+"YouNeedToLoginFirst" = "You need to log in first!";
+
 
 // Cart
 "YourCartEmpty" = "Your Cart is Empty";
@@ -129,6 +130,7 @@
 "FilterCategories"= "Filter Categories";
 "Apply" = "Apply";
 "DeleteAccountMessage" = "Deleting your account will erase all your data.";
+"LogOutMessage" = "Are you sure you want to log out?";
 "Delete" = "Delete";
 "Sure" = "Are you sure?";
 "allowDR" = "Receive Messages";
