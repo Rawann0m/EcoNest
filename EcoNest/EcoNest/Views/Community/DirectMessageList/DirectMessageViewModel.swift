@@ -68,7 +68,7 @@ class DirectMessageViewModel: ObservableObject {
                     let content = data["content"] as? [String] ?? []
                     let toId = data["toId"] as? String ?? ""
                     let fromId = data["fromId"] as? String ?? ""
-                    let timestamp = (data["timestamp"] as? Timestamp)?.dateValue() ?? Date()
+                    let timestamp = data["timestamp"] as? Timestamp ?? Timestamp()
                     let username = data["username"] as? String ?? ""
                     let profileImage = data["profileImage"] as? String ?? ""
                     

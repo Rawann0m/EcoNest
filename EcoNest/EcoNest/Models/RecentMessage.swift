@@ -14,20 +14,10 @@ struct RecentMessage: Identifiable, Codable {
     let content: [String]
     let toId: String
     let fromId: String
-    let timestamp: Date
+    let timestamp: Timestamp
     let username: String
     let profileImage: String?
+    var lastSeenMessage: String?
     var unreadMessages: Int = 0
     
-    var timeAgo: String {
-        let secondsAgo = Int(Date().timeIntervalSince(timestamp))
-        
-        if secondsAgo < 5 {
-            return "just now"
-        }
-        
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: timestamp, relativeTo: Date())
-    }
 }

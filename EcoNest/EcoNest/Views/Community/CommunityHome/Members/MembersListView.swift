@@ -52,7 +52,7 @@ struct MembersListView: View {
                                                     showChat.toggle()
                                                 }
                                             } else {
-                                                AlertManager.shared.showAlert(title: "Error", message: "You need to login first!")
+                                                AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                                             }
                                         }
                                 }
@@ -71,19 +71,13 @@ struct MembersListView: View {
             ChatView(chatUser: viewModel.selectedMember )
         }
         .alert(isPresented: $alertManager.alertState.isPresented) {
-            let st = alertManager.alertState
-            
-            return Alert(
-                title: Text(st.title),
-                message: Text(st.message),
-                primaryButton: .default(Text(st.primaryLabel)) {
-                    if st.primaryLabel == "Login".localized(using: currentLanguage) {
-                        navigateToLogin = true
-                    }
+            Alert(
+                title: Text(alertManager.alertState.title),
+                message: Text(alertManager.alertState.message),
+                primaryButton: .default(Text("Cancel".localized(using: currentLanguage))) {
+                    navigateToLogin = true
                 },
-                secondaryButton: st.secondaryLabel != nil
-                    ? .cancel(Text(st.secondaryLabel!))
-                    : .cancel()
+                secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
             )
         }
     }

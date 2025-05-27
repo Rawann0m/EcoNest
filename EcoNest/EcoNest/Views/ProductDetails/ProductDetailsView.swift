@@ -89,6 +89,7 @@ private extension ProductDetailsView {
                 ProductDetailBar(productName: "Product".localized(using: currentLanguage))
                     .foregroundColor(selectedTab.wrappedValue == 0 ? .white : Color("LimeGreen"))
             
+            
         }
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         
@@ -125,12 +126,7 @@ private extension ProductDetailsView {
                         homeViewModel.addToCart(product: product)   // <-- SAME CALL
                     }
                 } else {
-                    AlertManager.shared.showAlert(
-                        title: "Alert".localized(using: currentLanguage),
-                        message: "Youneedtologinfirst!".localized(using: currentLanguage),
-                        primaryLabel: "Login".localized(using: currentLanguage),
-                        secondaryLabel: "Cancel".localized(using: currentLanguage)
-                    )
+                    AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                 }
             } label: {
                 HStack {

@@ -17,7 +17,7 @@ struct AlertState {
     var isPresented: Bool = false
     var title: String = ""
     var message: String = ""
-    var primaryLabel = "OK"
+    var primaryLabel = ""
     var secondaryLabel: String?
 }
 
@@ -37,7 +37,7 @@ class AlertManager: ObservableObject {
     ///   - message: The message content of the alert.
     func showAlert(title: String,
                    message: String,
-                   primaryLabel: String = "OK",
+                   primaryLabel: String = "",
                    secondaryLabel: String? = nil) {
         print("Attempting to show alert: \(title) - \(message)")
         DispatchQueue.main.async {

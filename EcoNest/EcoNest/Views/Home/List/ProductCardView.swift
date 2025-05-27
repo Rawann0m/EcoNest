@@ -73,12 +73,7 @@ struct ProductCardView: View {
                             }
                             
                         } else {
-                            AlertManager.shared.showAlert(
-                                title: "Alert".localized(using: currentLanguage),
-                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
-                                primaryLabel: "Login".localized(using: currentLanguage),
-                                secondaryLabel: "Cancel".localized(using: currentLanguage)
-                            )
+                            AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
                         }
                     }, label: {
                         Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")

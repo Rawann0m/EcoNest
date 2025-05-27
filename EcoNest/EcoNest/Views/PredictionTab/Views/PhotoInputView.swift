@@ -86,8 +86,8 @@ struct PredictionView: View {
                                 destination: CreatePost(
                                     message: shareText,
                                     communityId: "0ScXYeMDgcTz0pcDpkin",
-                                    selectedImages: [image]
-                                    
+                                    selectedImages: [image],
+                                    isLoading: .constant(false)
                                 ),
                                 isActive: $navigateToCreatePost
                             ) {
