@@ -150,22 +150,15 @@ private extension ProductDetailsView {
                 .shadow(radius: 5)
             }
             .alert(isPresented: $alertManager.alertState.isPresented) {
-                let st = alertManager.alertState
-                
-                return Alert(
-                    title: Text(st.title),
-                    message: Text(st.message),
-                    primaryButton: .default(Text(st.primaryLabel)) {
-                        if st.primaryLabel == "Login".localized(using: currentLanguage) {
-                            navigateToLogin = true
-                        }
+                Alert(
+                    title: Text(alertManager.alertState.title),
+                    message: Text(alertManager.alertState.message),
+                    primaryButton: .default(Text("Login".localized(using: currentLanguage))) {
+                        navigateToLogin = true
                     },
-                    secondaryButton: st.secondaryLabel != nil
-                    ? .cancel(Text(st.secondaryLabel!))
-                    : .cancel()
+                    secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
                 )
-            }
-        }
+            }        }
         .padding()
     }
     
@@ -184,6 +177,12 @@ private extension ProductDetailsView {
             .font(.body)
             .bold()
             .multilineTextAlignment(.leading)
+            
+            NavigationLink(destination: PlantDetails(plantName: product.name ?? "Unknown")) {
+                Text("Learn More")
+                    .font(.body)
+                    .foregroundColor(.gray)
+            }
             
             Text("Plant Sizes:")
                 .font(.headline)

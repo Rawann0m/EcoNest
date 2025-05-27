@@ -1,11 +1,9 @@
 //
 //  AlertState.swift
-//  EcoNest
+//  ExpanseTracker
 //
-//  Created by Rawan on 05/05/2025.
+//  Created by Rawan on 17/10/1446 AH.
 //
-
-
 
 import SwiftUI
 
@@ -17,8 +15,6 @@ struct AlertState {
     var isPresented: Bool = false
     var title: String = ""
     var message: String = ""
-    var primaryLabel = ""
-    var secondaryLabel: String?
 }
 
 // MARK: - Alert Manager
@@ -35,17 +31,10 @@ class AlertManager: ObservableObject {
     /// - Parameters:
     ///   - title: The title of the alert.
     ///   - message: The message content of the alert.
-    func showAlert(title: String,
-                   message: String,
-                   primaryLabel: String = "",
-                   secondaryLabel: String? = nil) {
+    func showAlert(title: String, message: String) {
         print("Attempting to show alert: \(title) - \(message)")
         DispatchQueue.main.async {
-            self.alertState = AlertState(isPresented: true,
-                                         title: title,
-                                         message: message,
-                                         primaryLabel: primaryLabel,
-                                         secondaryLabel: secondaryLabel)
+            self.alertState = AlertState(isPresented: true, title: title, message: message)
             print("Alert state updated: \(self.alertState)")
         }
     }
