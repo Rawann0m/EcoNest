@@ -126,7 +126,12 @@ private extension ProductDetailsView {
                         homeViewModel.addToCart(product: product)   // <-- SAME CALL
                     }
                 } else {
-                    AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
+                    AlertManager.shared.showAlert(
+                        title: "Alert".localized(using: currentLanguage),
+                        message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                        primaryLabel: "Login".localized(using: currentLanguage),
+                        secondaryLabel: "Cancel".localized(using: currentLanguage)
+                    )
                 }
             } label: {
                 HStack {

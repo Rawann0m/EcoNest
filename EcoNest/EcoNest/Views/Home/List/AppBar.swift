@@ -29,7 +29,12 @@ struct AppBar: View {
                         destination: FavoritesView(),
                         isEnabled: FirebaseManager.shared.isLoggedIn,
                         onBlockedAccess: {
-                            AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
+                            AlertManager.shared.showAlert(
+                                title: "Alert".localized(using: currentLanguage),
+                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                                primaryLabel: "Login".localized(using: currentLanguage),
+                                secondaryLabel: "Cancel".localized(using: currentLanguage)
+                            )
                         }
                     ).padding(.horizontal, 10)
                     
@@ -38,7 +43,12 @@ struct AppBar: View {
                         destination: CartView(cartViewModel: viewModel),
                         isEnabled: FirebaseManager.shared.isLoggedIn,
                         onBlockedAccess: {
-                            AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
+                            AlertManager.shared.showAlert(
+                                title: "Alert".localized(using: currentLanguage),
+                                message: "Youneedtologinfirst!".localized(using: currentLanguage),
+                                primaryLabel: "Login".localized(using: currentLanguage),
+                                secondaryLabel: "Cancel".localized(using: currentLanguage)
+                            )
 
                         }
                     )
