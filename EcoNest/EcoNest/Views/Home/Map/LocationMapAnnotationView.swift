@@ -8,16 +8,27 @@
 import SwiftUI
 
 
+/// A custom SwiftUI view used to display a map annotation with a selectable state.
 struct LocationMapAnnotationView: View {
+    
+    /// Indicates whether the annotation is currently selected.
     var isSelected: Bool
 
     var body: some View {
         VStack {
             ZStack {
+                // Background circle appears only when the annotation is selected
                 Circle()
-                    .fill(isSelected ? ThemeManager().isDarkMode ? Color("LightGreen").opacity(0.5) : Color("LimeGreen").opacity(0.5) : Color.clear)
+                    .fill(
+                        isSelected
+                            ? (ThemeManager().isDarkMode
+                                ? Color("LightGreen").opacity(0.5)
+                                : Color("LimeGreen").opacity(0.5))
+                            : Color.clear
+                    )
                     .frame(width: 45, height: 45)
 
+                // Central marker image
                 Image("MapMarker")
                     .resizable()
                     .scaledToFit()
@@ -29,4 +40,3 @@ struct LocationMapAnnotationView: View {
         }
     }
 }
-
