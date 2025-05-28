@@ -1,0 +1,151 @@
+/* 
+  Localizable.strings
+  EcoNest
+
+  Created by Rawan on 05/05/2025.
+  
+*/
+"Home" = "Home";
+"Plant" = "Plant";
+"Community" = "Community";
+"Setting" = "Setting";
+
+"AssociatedEmail" = "This email address is already associated with another account.";
+
+"Error" = "Error";
+"FillAll" = "Please fill in all fields";
+"InvalidEmail" = "Invalid Email";
+"ValidEmail" = "Please enter a valid email address";
+"PasswordMismatch" = "Password Mismatch";
+"PasswordMismatchMsg" = "Please enter matched passwords";
+"WeakPassword" = "Weak Password";
+"WeakPasswordMsg" = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
+"WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
+"SignupFailed" = "Signup Failed";
+"LoginFailed" = "Login Failed";
+
+"CredentialsError" = "The login credentials are incorrect or the account does not exist. Please check your email and password, then try again.";
+
+"General" = "General";
+"Orders" = "Orders";
+"Language" = "Language";
+"DarkMode" = "Dark Mode";
+"DeleteAccount" = "Delete Account";
+"LogOut" = "Log Out";
+"CustomerSupport" = "Customer Support";
+"DirectMessages" = "Direct Messages";
+"JoinNow" = "Join Now";
+"Send" = "Send";
+"Name" = "Name";
+"Email" = "Email";
+"Password" = "Password";
+"ForgotPassword" = "Forgot Password ?";
+"ConfirmPassword" = "Confirm Password";
+"ResetPassword" = "Reset Password";
+"SignUp" = "Sign up";
+"SignUp2" = "Sign up";
+"LogIn2" = "Log in";
+"HaveAccount" = "Already have an account?";
+"LogIn" = "Log in";
+"LogIn2" = "Log in";
+"DHaveAccount" = "Don't have an account?";
+"Success" = "Success";
+
+// Home
+"Findyour" = "Find your";
+"Favoriteplants" = "Favorite plants";
+"Search" = "Search ...";
+"Explore" = "Explore";
+"NoProductsFound" = "No Products Found";
+"Alert" = "Alert";
+"SeeMore" = "See More";
+"YouNeedToLoginFirst" = "You need to log in first!";
+
+// Cart
+"YourCartEmpty" = "Your Cart is Empty";
+"AddProductsHere" = "Add a products to see it here.";
+"MyCart" = "My Cart";
+"Continue" = "Continue";
+"Login" = "Login";
+"Cancel" = "Cancel";
+
+// Review
+"ReviewConfirm" = "Review and Confirm";
+"Confirm" = "Confirm";
+"qty" = "qty: %@";
+"PickupLocation" = "Pickup Location:";
+"PickupDate" = "Pickup Date:";
+"Total" = "Total:";
+"Next" = "Next";
+"OrderSuccessfuly" = "Order confirmed Successfuly";
+"Home" = "Home";
+"Orders" = "Orders";
+"GoBack" = "Go Back";
+
+// Order
+"Order" = "Order";
+"Awaiting pickup" = "Awaiting pickup";
+"Cancelled" = "Cancelled";
+"Scheduled" = "Scheduled:";
+"PlantO" = "Plant: %@";
+"TotalO" = "Total: %@";
+"Cancel" = "Cancel";
+"CancelOrder" = "Cancel Order";
+"Yes" = "Yes";
+"No" = "No";
+"CancelThisOrder" = "Are you sure you want to cancel this order?";
+"NoOrdersYet" = "No Orders Yet";
+"NoCancelledOrders" = "No Cancelled Orders";
+
+"Members" = "Members";
+"Posts" = "Posts";
+"UnknownError" = "An unknown error occurred. Please try again.";
+"EmailInvalid" = "The email address entered is invalid.";
+"WeakPasswordMsg2" = "The password is too weak. Please choose a stronger one.";
+"NetworkError" =  "A network error occurred. Please check your connection and try again.";
+"2Many" = "Too many attempts. Please wait and try again later.";
+"InternalError" = "An internal error occurred. Please try again later.";
+"PasswordReset" = "Password reset email sent.";
+
+//PhotoInput
+"SelectPhoto" = "Select Photo";
+"TakePhoto" = "Take Photo";
+"TopPredictions:" = "Top Predictions:";
+"SelectOrTakePhoto" = "Select Or Take Photo";
+"TypeMessage" = "Type a message...";
+"Replies" = "Replies";
+"Norepliesyet" = "No replies yet.";
+"PostDetails" = "Post Details";
+"TypeReplay" = "Type a replay...";
+"Reply" = "Reply";
+"Nomembersfound" = "No members found";
+"NoPostsfound" = "No Posts found";
+"Leave" = "Leave";
+"Cancel" = "Cancel";
+"Post" ="Post";
+"Join" ="Join";
+
+//plantsListView
+"AllPlants"= "All Plants";
+"FilterCategories"= "Filter Categories";
+"Apply" = "Apply";
+"DeleteAccountMessage" = "Deleting your account will erase all your data.";
+"LogOutMessage" = "Are you sure you want to log out?";
+"Delete" = "Delete";
+"Sure" = "Are you sure?";
+"allowDR" = "Receive Messages";
+"postNumber" = "You can only add up to 3 photos per post.";
+"OK" = "OK";
+"membersCommunity" = "%d members";
+"memberCommunity" = "%d member";
+"chat" = "chat";
+
+
+"Favorites" = "Favorites";
+"Details" = "Details";
+"Product" = "Product";
+"Remove" = "Remove";
+"Add" = "Add";
+"RecommendedProducts:" = "Recommended Products:";
+"SeeAll" = "See All";
+"LearnMore" = "Learn More";
