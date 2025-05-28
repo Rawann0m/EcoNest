@@ -41,6 +41,11 @@ struct PredictionView: View {
     
     var body: some View {
         NavigationStack {
+            ZStack{
+                Image("bg1")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                    .padding(.top,-20)
             ScrollView {
                 VStack(spacing: 20) {
                     Spacer()
@@ -66,7 +71,7 @@ struct PredictionView: View {
                                 capturedImage = nil
                                 selectedItem = nil
                                 viewModel.runPrediction(for: uiImage)
-                               
+                                
                             }
                         }
                     }
@@ -118,7 +123,7 @@ struct PredictionView: View {
             } message: {
                 Text("This might not be a plant. Proceed anyway?")
             }
-
+        }
             
         }
     }

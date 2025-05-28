@@ -20,7 +20,7 @@ struct PredictionResultView: View {
                 .scaledToFit()
                 .cornerRadius(15)
                 .shadow(radius: 5)
-                .frame(width: 300, height: 300)
+                .frame(width: 360, height: 360)
             
             
             
@@ -29,7 +29,7 @@ struct PredictionResultView: View {
                     Text("TopPredictions:".localized(using: currentLanguage))
                         .font(.title)
                         .padding()
-                    
+                    Spacer()
                     Button(action: onShare) {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
@@ -39,7 +39,7 @@ struct PredictionResultView: View {
                     }
                     .buttonStyle(.plain)
                     
-                }
+                }.padding(.trailing)
                 ForEach(predictions, id: \.0) { prediction in
                     NavigationLink(destination: PlantDetails(plantName: prediction.0)) {
                         HStack {
@@ -68,10 +68,10 @@ struct PredictionResultView: View {
                 
                 
             }
-            .frame(maxWidth: 300)
-            .background(Color("LimeGreen").opacity(0.9))
+            //.frame(maxWidth: 300)
+            //.background(Color.gray.opacity(0.9))
             .cornerRadius(15)
-            .shadow(radius: 5)
+           // .shadow(radius: 5)
         }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         
         
