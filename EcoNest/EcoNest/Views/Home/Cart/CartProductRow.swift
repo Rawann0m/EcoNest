@@ -66,7 +66,7 @@ struct CartProductRow: View {
                         .font(.system(size: 24))
                         .onTapGesture {
                             if cartProduct.quantity != cartProduct.product.quantity {
-                                viewModel.updateQuantity(cart: cartProduct, change: true)
+                                viewModel.updateQuantityLocally(cart: cartProduct, change: true)
                             }
                         }
                     
@@ -80,7 +80,7 @@ struct CartProductRow: View {
                         .font(.system(size: 24))
                         .onTapGesture {
                             if cartProduct.quantity > 1 {
-                                viewModel.updateQuantity(cart: cartProduct, change: false)
+                                viewModel.updateQuantityLocally(cart: cartProduct, change: false)
                             } else {
                                 viewModel.removeFormCart(cart: cartProduct)
                             }

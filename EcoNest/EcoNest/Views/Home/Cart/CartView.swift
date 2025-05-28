@@ -24,6 +24,7 @@ struct CartView: View {
     
     /// Stores and observes the current language preference.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @State private var goToCheckout = false
     
     var body: some View {
         
@@ -91,11 +92,10 @@ struct CartView: View {
                     Spacer()
                     
                     // Right side: continue to review
-                    NavigationLink(destination:
-                        CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage)
-                            .environmentObject(locationViewModel)
-                    ) {
-                        
+                    Button {
+                        cartViewModel.commitQuantityChanges()
+                        goToCheckout = true // Trigger navigation AFTER update is called
+                    } label: {
                         Text("Continue".localized(using: currentLanguage))
                             .font(.title2)
                             .fontWeight(.heavy)
@@ -106,6 +106,14 @@ struct CartView: View {
                             .cornerRadius(8)
                     }
                     .padding(.horizontal)
+
+                    // Navigation link that activates when goToCheckout is true
+                    NavigationLink(
+                        destination: CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage)
+                            .environmentObject(locationViewModel),
+                        isActive: $goToCheckout,
+                        label: { EmptyView() }
+                    )
                 }
                 .padding([.top, .bottom])
             }

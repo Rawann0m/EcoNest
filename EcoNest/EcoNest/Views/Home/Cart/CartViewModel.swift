@@ -163,40 +163,56 @@ class CartViewModel: ObservableObject {
     private func clearCartFromFirestore() {
         guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
+        // Temporarily remove Firestore listener
+        cartListener?.remove()
+
         userDoc.collection("cart").getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {
                 print("No cart items found.")
+                DispatchQueue.main.async {
+                    self.cartProductsRaw.removeAll()
+                }
                 return
             }
 
+            let group = DispatchGroup()
             for doc in documents {
-                doc.reference.delete()
+                group.enter()
+                doc.reference.delete { _ in group.leave() }
             }
 
-            DispatchQueue.main.async {
+            group.notify(queue: .main) {
                 self.cartProductsRaw.removeAll()
                 print("Cart cleared after order placement.")
+
+                // Re-enable real-time updates
+                self.fetchCartData()
             }
         }
     }
 
-    func updateQuantity(cart: Cart, change: Bool) {
+    func updateQuantityLocally(cart: Cart, change: Bool) {
         guard let index = cartProductsRaw.firstIndex(where: { $0.id == cart.id }) else { return }
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
         if change {
             cartProductsRaw[index].quantity += 1
         } else {
             cartProductsRaw[index].quantity = max(cartProductsRaw[index].quantity - 1, 1)
         }
+    }
 
-        userDoc.collection("cart")
-            .document(cart.id)
-            .updateData(["quantity": cartProductsRaw[index].quantity]) { error in
-                if let error = error {
-                    print("Failed to update quantity: \(error.localizedDescription)")
+    func commitQuantityChanges() {
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
+
+        for cart in cartProductsRaw {
+            userDoc.collection("cart")
+                .document(cart.id)
+                .updateData(["quantity": cart.quantity]) { error in
+                    if let error = error {
+                        print("Failed to update quantity for \(cart.id): \(error.localizedDescription)")
+                    }
                 }
-            }
+        }
     }
 
     func removeFormCart(index: IndexSet) {
