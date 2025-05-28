@@ -19,6 +19,8 @@ class FirebaseManager {
     // Singleton pattern to create a shared instance of FirebaseManager
     static let shared = FirebaseManager()
     
+    private init() {}
+    
     var isLoggedIn: Bool {
         return auth.currentUser != nil
     }

@@ -10,6 +10,7 @@ import SDWebImageSwiftUI
 import PhotosUI
 
 struct ChatView: View {
+    // MARK: - variabels
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @Environment(\.dismiss) var dismiss
     @State var selectedImage: UIImage? = nil
@@ -25,6 +26,7 @@ struct ChatView: View {
         _viewModel = StateObject(wrappedValue: ChatViewModel(chatUser: chatUser))
     }
     @State var isLoading: Bool = false
+    // MARK: - UI Design
     var body: some View {
         ZStack{
             NavigationStack{

@@ -15,6 +15,8 @@ class PhotoUploaderManager {
     /// Shared singleton instance
     static let shared = PhotoUploaderManager()
     
+    private init() {}
+    
     /// Uploads multiple images to Firebase Storage under the "Posts" directory.
     /// - Parameters:
     ///   - images: An array of `UIImage` objects to upload.

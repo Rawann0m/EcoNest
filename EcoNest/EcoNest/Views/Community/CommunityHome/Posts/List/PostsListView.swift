@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct PostsListView: View {
+    // MARK: - variabels
     @State var showPostDetails: Bool = false
     @ObservedObject var viewModel: PostsListViewModel
     var communityId: String
     @State private var savedId: String?
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @Binding var isLoading: Bool
+    // MARK: - UI Design
     var body: some View {
         NavigationStack{
             if viewModel.isLoading{
