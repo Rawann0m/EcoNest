@@ -5,9 +5,6 @@
 //  Created by Mac on 28/11/1446 AH.
 //
 
-
-
-// AllProductsView.swift
 import SwiftUI
 import SDWebImageSwiftUI
 
@@ -28,11 +25,11 @@ struct AllProductsView: View {
     
     /// Current language for layout and labels.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
+                // MARK: - Product Cards List
                 ForEach(products) { product in
                     NavigationLink {
                         ProductDetailsView(productId: product.id ?? "")
@@ -44,21 +41,19 @@ struct AllProductsView: View {
             }
             .padding()
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-                  ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
-                      CustomBackward(title: "All Products".localized(using: currentLanguage), tapEvent: { dismiss() })
-                  }
-
+            // MARK: - Custom Back Button
+            ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
+                CustomBackward(title: "All Products".localized(using: currentLanguage)) {
+                    dismiss()
+                }
             }
-              .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-              .navigationBarBackButtonHidden(true)
-          }
-      }
-
-
-
-
+        }
+    }
+}
 
 /// A horizontally-aligned row card showing a product's image, name, and price.
 ///
@@ -71,6 +66,7 @@ struct ProductRowCard: View {
     
     var body: some View {
         HStack(spacing: 12) {
+            // MARK: - Product Image
             if let url = URL(string: product.image ?? "") {
                 WebImage(url: url) { phase in
                     switch phase {
@@ -94,7 +90,8 @@ struct ProductRowCard: View {
                     }
                 }
             }
-
+            
+            // MARK: - Product Info
             VStack(alignment: .leading, spacing: 4) {
                 Text(product.name ?? "")
                     .font(.headline)
@@ -103,10 +100,10 @@ struct ProductRowCard: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-
+            
             Spacer()
         }
-        .padding(.vertical , 6)
+        .padding(.vertical, 6)
         .padding(.horizontal)
         .background(.ultraThinMaterial)
         .cornerRadius(12)

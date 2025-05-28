@@ -23,7 +23,7 @@ struct CartProductRow: View {
     
     var body: some View {
         
-        HStack(spacing: 20) {
+        HStack(spacing: 15) {
             
             // Product image
             WebImage(url: URL(string: cartProduct.product.image ?? ""))
@@ -32,6 +32,7 @@ struct CartProductRow: View {
                 .background(.gray.opacity(0.15))
                 .frame(width: 70, height: 80)
                 .cornerRadius(8)
+                
             
             // Product name and price
             VStack(alignment: .leading, spacing: 8) {
@@ -53,24 +54,21 @@ struct CartProductRow: View {
                         .frame(width: 16, height: 16)
                 }
             }
-            .padding(.vertical)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-            Spacer()
             
             VStack {
                 // Quantity adjustment section (increase, decrease, or remove)
                 HStack(spacing: 5) {
                     
                     // Increase quantity button
-                    Button {
-                        if cartProduct.quantity != cartProduct.product.quantity {
-                            viewModel.updateQuantity(cart: cartProduct, change: true)
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 24))
+                        .onTapGesture {
+                            if cartProduct.quantity != cartProduct.product.quantity {
+                                viewModel.updateQuantity(cart: cartProduct, change: true)
+                            }
                         }
-                        
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 24))
-                    }
                     
                     // Display current quantity
                     Text("\(cartProduct.quantity)")
@@ -78,19 +76,15 @@ struct CartProductRow: View {
                         .foregroundColor(themeManager.isDarkMode ? .white : .black)
                     
                     // Decrease quantity or remove item if quantity is 1
-                    Button {
-                        if cartProduct.quantity > 1 {
-                            viewModel.updateQuantity(cart: cartProduct, change: false)
-                        } else {
-                            viewModel.removeFormCart(cart: cartProduct)
+                    Image(systemName: cartProduct.quantity > 1 ? "minus.circle.fill" : "trash.circle.fill")
+                        .font(.system(size: 24))
+                        .onTapGesture {
+                            if cartProduct.quantity > 1 {
+                                viewModel.updateQuantity(cart: cartProduct, change: false)
+                            } else {
+                                viewModel.removeFormCart(cart: cartProduct)
+                            }
                         }
-                        
-                    } label: {
-                        
-                        Image(systemName: cartProduct.quantity > 1 ? "minus.circle.fill" : "trash.circle.fill")
-                            .font(.system(size: 24))
-                    }
-                    .buttonStyle(.plain) // Disable default button animation
         
                 }
                 .foregroundStyle(themeManager.isDarkMode ? .white.opacity(0.2) : .black.opacity(0.2))
@@ -105,9 +99,9 @@ struct CartProductRow: View {
                         .foregroundStyle(.red.opacity(0.5))
                 }
             }
-
+            
         }
-        .padding(.horizontal, 8)
+        .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(themeManager.isDarkMode ? .white.opacity(0.2) : .black.opacity(0.2), lineWidth: 1)

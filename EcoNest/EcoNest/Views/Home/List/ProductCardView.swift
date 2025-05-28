@@ -81,7 +81,6 @@ struct ProductCardView: View {
                             .foregroundStyle(isAddedToCart ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15) : Color("LimeGreen"))
                             .frame(width: 35, height: 35)
                     })
-                    //.disabled(isAddedToCart)
                     .alert(isPresented: $alertManager.alertState.isPresented) {
                         Alert(
                             title: Text(alertManager.alertState.title),

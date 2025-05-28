@@ -86,7 +86,7 @@ class CartViewModel: ObservableObject {
             }
 
             group.notify(queue: .main) {
-                self.cartProducts = fetchedCart
+                self.cartProducts = fetchedCart.sorted(by: { $0.id < $1.id })
                 self.isLoading = false
             }
         }

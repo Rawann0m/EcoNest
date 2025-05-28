@@ -49,7 +49,7 @@ struct ConfirmationAlert: View {
                 
                 // Navigation button to go back to main view
                 HStack(spacing: 20){
-                    NavigationLink(destination: MainTabView()) {
+                    Button(action: {dismiss()}) {
                         Text("GoBack".localized(using: currentLanguage))
                             .foregroundStyle(.white)
                             .bold()

@@ -32,7 +32,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		99EBBF072DE2F6A00020EFB3 /* EcoNest */ = {
+		992113712DC7C19700F80334 /* EcoNest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = EcoNest;
 			sourceTree = "<group>";
@@ -67,9 +67,9 @@
 		992113662DC7C19700F80334 = {
 			isa = PBXGroup;
 			children = (
+				992113712DC7C19700F80334 /* EcoNest */,
 				992114B42DC8A3D800F80334 /* Frameworks */,
 				992113702DC7C19700F80334 /* Products */,
-				99EBBF072DE2F6A00020EFB3 /* EcoNest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,7 +125,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				99EBBF072DE2F6A00020EFB3 /* EcoNest */,
+				992113712DC7C19700F80334 /* EcoNest */,
 			);
 			name = EcoNest;
 			packageProductDependencies = (

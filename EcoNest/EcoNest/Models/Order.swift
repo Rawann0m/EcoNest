@@ -7,7 +7,9 @@
 
 import Foundation
 
+/// A model representing a customer's order.
 struct Order: Identifiable {
+    
     var id: String
     var products: [Product]
     var total: Double
