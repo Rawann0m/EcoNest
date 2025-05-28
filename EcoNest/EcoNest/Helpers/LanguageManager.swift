@@ -13,6 +13,7 @@ class LanguageManager: ObservableObject {
     // Shared instance of LanguageManager.
     static let shared = LanguageManager()
     
+    
     // The currently selected language code (e.g., "en", "ar").
     @Published var language: String {
         didSet{

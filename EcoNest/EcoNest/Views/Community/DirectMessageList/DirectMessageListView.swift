@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct DirectMessageListView: View {
+    // MARK: - variabels
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @StateObject var viewModel = DirectMessageViewModel()
     @State private var selectedUser: User?
-    
+    // MARK: - UI Design
     var body: some View {
         NavigationStack{
             if viewModel.recentMessages.isEmpty {

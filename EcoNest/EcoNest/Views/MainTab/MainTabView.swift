@@ -30,7 +30,8 @@ struct MainTabView: View {
             .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
             .ignoresSafeArea()
         }
-        .id(themeManager.isDarkMode)
+        //.id(themeManager.isDarkMode)
+        .preferredColorScheme(themeManager.isDarkMode ? .dark : .light) 
         .navigationBarBackButtonHidden(true)
         .onAppear {
             // Set the badge count of the app icon to 0

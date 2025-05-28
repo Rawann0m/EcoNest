@@ -400,14 +400,6 @@ class PostsListViewModel: ObservableObject {
                     }
                 }
             }
-        
-//        deleteRepliesForPost(postId: postId) { error in
-//            if let error = error {
-//                print("Error deleting replies: \(error.localizedDescription)")
-//            } else {
-//                print("Replies deleted successfully.")
-//            }
-//        }
     }
     
     /// Deletes a reply to a post from a community.

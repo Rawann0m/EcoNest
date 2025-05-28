@@ -8,12 +8,11 @@
 
 import SwiftUI
 struct CommunityHomeView: View {
+    // MARK: - variabels
     @State var showPosts: Bool = true
     @Namespace var namespace
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @Environment(\.dismiss) var dismiss
-    @State private var isAnimating = false
-    @State private var scale: CGFloat = 1.0
     @State var showCreatePost: Bool = false
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
@@ -27,7 +26,7 @@ struct CommunityHomeView: View {
         _viewModel = StateObject(wrappedValue: PostsListViewModel(communityId: communityViewModel.selectedCommunity?.id ?? ""))
         _memberViewModel = StateObject(wrappedValue:(MembersListViewModel(members: communityViewModel.selectedCommunity?.members ?? [])))
     }
-    
+    // MARK: - UI Design
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing){

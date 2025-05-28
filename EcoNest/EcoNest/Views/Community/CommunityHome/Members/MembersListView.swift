@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MembersListView: View {
+    // MARK: - variabels
     @State var showChat: Bool = false
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
@@ -15,7 +16,7 @@ struct MembersListView: View {
     @ObservedObject var viewModel: MembersListViewModel
     @State private var savedId: String?
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    
+    // MARK: - UI Design
     var body: some View {
         VStack{
             if viewModel.isLoading {

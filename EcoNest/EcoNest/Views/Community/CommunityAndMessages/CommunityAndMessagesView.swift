@@ -7,10 +7,12 @@
 import SwiftUI
 
 struct CommunityAndMessagesView: View {
+    // MARK: - variabels
     @State var isCommunity: Bool = true
     @Namespace var namespace
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @EnvironmentObject var themeManager: ThemeManager
+    // MARK: - UI Design
     var body: some View {
         NavigationStack {
             VStack {
@@ -65,6 +67,9 @@ struct CommunityAndMessagesView: View {
                 
                 Spacer()
             }
+        }
+        .onAppear {
+            isCommunity = true
         }
     }
 }
