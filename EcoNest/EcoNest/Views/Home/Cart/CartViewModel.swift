@@ -96,33 +96,44 @@ class CartViewModel: ObservableObject {
         }
     }
 
-    func addOrder(locationId: String) {
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-
-        let productData = cartProducts.map {
-            [
-                "name": $0.product.name ?? "",
-                "price": $0.price,
-                "quantity": $0.quantity,
-                "image": $0.product.image ?? "",
-                "size": $0.product.size ?? ""
+    
+    /// Adds a new order to the user's "orders" collection in Firestore.
+    /// - Parameter locationId: The ID of the selected pickup location.
+    func addOrder(locationId: String, completion: @escaping (Bool) -> Void) {
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else {
+            completion(false)
+            return
+        }
+        
+        let productData = cartProducts.map { cart in
+            return [
+                "name": cart.product.name ?? "",
+                "price": cart.price,
+                "quantity": cart.quantity,
+                "image": cart.product.image ?? "",
+                "size": cart.product.size ?? "",
             ]
         }
 
-        userDoc.collection("orders").document().setData([
-            "products": productData,
-            "total": calculateTotal(),
-            "date": Timestamp(date: selectedDate),
-            "pickupLocation": locationId,
-            "status": OrderStatus.awaitingPickup.rawValue
-        ]) { error in
-            if let error = error {
-                print("Failed to place order: \(error.localizedDescription)")
-                return
-            }
-
-            self.reduceQuantity()
-            self.clearCartFromFirestore()
+        userDoc
+            .collection("orders")
+            .document()
+            .setData([
+                "products": productData,
+                "total": calculateTotal(),
+                "date": Timestamp(date: selectedDate),
+                "pickupLocation": locationId,
+                "status": OrderStatus.awaitingPickup.rawValue
+            ]) { error in
+                if let error = error {
+                    print("Failed to place order: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                self.reduceQuantity()
+                self.clearCartFromFirestore()
+                completion(true)
         }
     }
 

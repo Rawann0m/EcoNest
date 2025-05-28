@@ -14,7 +14,8 @@ struct CheckoutView: View {
     @ObservedObject var viewModel: CartViewModel
     var currentLanguage: String
     @Environment(\.dismiss) var dismiss
-    
+    @State private var isOrderPlaced = false
+
     @State private var mapRegion: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 24.46833, longitude: 39.61083),
         span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -105,17 +106,21 @@ struct CheckoutView: View {
                     }
                     
                     Button {
-                        viewModel.addOrder(locationId: locViewModel.mapLocation.id)
-                        NotificationManager.shared.requestPermission { granted in
-                            if granted {
-                                NotificationManager.shared.scheduleNotification(
-                                    title: "It's Pickup Day! ✨",
-                                    body: "Just a reminder that your order is ready for pickup today. We look forward to seeing you!",
-                                    date: viewModel.selectedDate
-                                )
+                        viewModel.addOrder(locationId: locViewModel.mapLocation.id) { success in
+                            if success {
+                                isOrderPlaced = true
+                                NotificationManager.shared.requestPermission { granted in
+                                    if granted {
+                                        NotificationManager.shared.scheduleNotification(
+                                            title: "It's Pickup Day! ✨",
+                                            body: "Just a reminder that your order is ready for pickup today. We look forward to seeing you!",
+                                            date: viewModel.selectedDate
+                                        )
+                                    }
+                                }
+                                show.toggle()
                             }
                         }
-                        show.toggle()
                     } label: {
                         Text("Confirm".localized(using: currentLanguage))
                             .font(.title2)
@@ -123,9 +128,10 @@ struct CheckoutView: View {
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color("LimeGreen"))
+                            .background(isOrderPlaced ? Color.gray : Color("LimeGreen"))
                             .cornerRadius(8)
                     }
+                    .disabled(isOrderPlaced)
                     .padding([.top, .bottom], 10)
                 }
                 .padding(.horizontal)

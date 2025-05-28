@@ -8,26 +8,39 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-// An auto-sliding image carousel view
+/// An auto-sliding image carousel view displaying the least products from the home view model.
 struct ImageSliderView: View {
     
-    // Tracks the currently displayed image index
+    /// View model providing the list of least products to display.
+    @ObservedObject var viewModel: HomeViewModel
+    
+    /// Tracks the index of the currently displayed image.
     @State private var currentIndex = 0
     
+    /// Theme manager to apply dynamic styling based on light/dark mode.
     @EnvironmentObject var themeManager: ThemeManager
-    @ObservedObject var viewModel: HomeViewModel
+    
+    /// Timer to automatically advance the carousel.
     @State private var timer: Timer? = nil
     
     var body: some View {
         
         ZStack(alignment: .bottomLeading) {
             
+            // Ensure currentIndex is within valid range before showing the TabView
             if viewModel.leastProducts.indices.contains(currentIndex) {
                 
+                // A page-style TabView to allow swiping between product cards
                 TabView(selection: $currentIndex) {
+                    
                     ForEach(viewModel.leastProducts.indices, id: \.self) { index in
+                        
+                        // Each tab navigates to its corresponding product detail
                         NavigationLink(destination: ProductDetailsView(productId: viewModel.leastProducts[index].id ?? "")) {
+                            
                             ZStack(alignment: .bottomLeading) {
+                                
+                                // Product image
                                 WebImage(url: URL(string: viewModel.leastProducts[index].image ?? "")) { image in
                                     image
                                         .resizable()
@@ -40,45 +53,53 @@ struct ImageSliderView: View {
                                                 .background(Color.gray.opacity(0.15).cornerRadius(15))
                                         )
                                 } placeholder: {
+                                    // Placeholder while loading image
                                     ProgressView()
                                         .frame(height: 180)
                                 }
                                 
-                                // Overlayed Text at top left
+                                // Product name
                                 Text(viewModel.leastProducts[index].name ?? "")
                                     .font(.subheadline)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 6)
-                                    .background(themeManager.isDarkMode ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
+                                    .background(
+                                        themeManager.isDarkMode
+                                            ? Color.white.opacity(0.1)
+                                            : Color.black.opacity(0.1)
+                                    )
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                                     .padding([.bottom, .leading])
                             }
-                            .tag(index)
+                            .tag(index) // Tag each tab to sync with currentIndex
                         }
                     }
                 }
-                .tabViewStyle(.page)
-                .indexViewStyle(.page(backgroundDisplayMode: .interactive))
-                .frame(height: 220)
-                
+                .tabViewStyle(.page) // Enable swipeable pagination
+                .indexViewStyle(.page(backgroundDisplayMode: .interactive)) // Dots at the bottom
+                .frame(height: 220) // Fixed height for the carousel
             }
-            
         }
         .padding()
         .onAppear {
-            startTimer()
+            startTimer() // Start auto-scrolling on appear
         }
         .onDisappear {
-            stopTimer()
+            stopTimer() // Stop timer when the view disappears
         }
     }
     
     // MARK: - Timer Control
     
+    /// Starts or restarts the auto-slide timer, cycling every 5 seconds.
     private func startTimer() {
-        stopTimer() // Invalidate any existing timer
+        
+        stopTimer() // Ensure only one timer is active
+        
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
+            
+            // Advance to the next index or reset to 0
             if self.currentIndex + 1 == viewModel.leastProducts.count {
                 self.currentIndex = 0
             } else {
@@ -87,7 +108,9 @@ struct ImageSliderView: View {
         }
     }
     
+    /// Invalidates and clears the timer.
     private func stopTimer() {
+        
         timer?.invalidate()
         timer = nil
     }
