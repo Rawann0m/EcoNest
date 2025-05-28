@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct CommuintyListView: View {
+    // MARK: - variabels
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State var showCommunity: Bool = false
     @StateObject var communityViewModel = CommunityViewModel()
     @StateObject var alertManager = AlertManager.shared
     @State private var navigateToLogin = false
     @EnvironmentObject var themeManager: ThemeManager
+    // MARK: - UI Design
     var body: some View {
         NavigationStack {
             ScrollView{
@@ -96,9 +98,6 @@ struct CommuintyListView: View {
                 )
             }
             .scrollIndicators(.hidden)
-            .onAppear{
-                communityViewModel.fetchCommunities()
-            }
             .onDisappear{
                 communityViewModel.communityListener?.remove()
             }

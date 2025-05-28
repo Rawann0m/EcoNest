@@ -10,6 +10,7 @@ import PhotosUI
 import SDWebImageSwiftUI
 
 struct SettingsView: View {
+    // MARK: - variabels
     @State var isEdit: Bool = false
     @State private var isArabic: Bool = false
     @EnvironmentObject var themeManager: ThemeManager
@@ -26,6 +27,7 @@ struct SettingsView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State var showImagePicker: Bool = false
     private let smallDeviceWidth: CGFloat = 375
+    // MARK: - UI Design
     var body: some View {
         NavigationStack{
             GeometryReader{ Geometry in
