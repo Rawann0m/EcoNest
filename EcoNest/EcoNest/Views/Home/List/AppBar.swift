@@ -25,6 +25,7 @@ struct AppBar: View {
     /// Stores and observes the current language preference.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
+    @State var openCart: Bool = false
     var body: some View {
         
         VStack(alignment: .leading) {
@@ -48,13 +49,16 @@ struct AppBar: View {
 
                 // Cart icon with item count badge
                 ZStack(alignment: .topTrailing) {
-                    IconNavigationLink (
-                        systemImageName: "cart",
-                        destination: CartView(cartViewModel: viewModel),
-                        currentLanguage: currentLanguage,
-                        showLoginAlert: $showLoginAlert
-                    )
-                    
+                    Image(systemName: "cart")
+                        .foregroundStyle(.black)
+                        .background {
+                            Circle()
+                                .fill(Color("LimeGreen"))
+                                .frame(width: 35, height: 35)
+                        }
+                        .onTapGesture {
+                            openCart = true
+                        }
                     // Cart item count badge
                     if viewModel.cartProducts.count > 0 {
                         Text("\(viewModel.cartProducts.count)")
@@ -77,6 +81,9 @@ struct AppBar: View {
                 .foregroundStyle(Color("LimeGreen"))
         }
         .padding(.horizontal, 16)
+        .fullScreenCover(isPresented: $openCart){
+            CartView(cartViewModel: viewModel, openCart: $openCart)
+        }
         
         // Login alert when unauthenticated user taps an icon
         .alert("Alert".localized(using: currentLanguage), isPresented: $showLoginAlert) {
