@@ -10,12 +10,16 @@ import SwiftUI
 /// A custom tab bar view that includes a curved shape and highlights the middle tab.
 struct CustomTabBar: View {
     
-    @Binding var selectedIndex: Int // Tracks the currently selected tab index
+    /// Tracks the currently selected tab index.
+    @Binding var selectedIndex: Int
     
-    private let screenWidth = UIApplication.shared.screenWidth // Retrieves screen width
+    /// Retrieves screen width.
+    private let screenWidth = UIApplication.shared.screenWidth
     
+    /// Stores and observes the current language preference.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
+    /// Theme manager to apply dynamic styling based on light/dark mode.
     @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
@@ -46,6 +50,7 @@ struct CustomTabBar: View {
                             selectedIndex = index + 1
                         }
                     } label: {
+                        
                         VStack(spacing: 2) {
                             
                             // Tab icon
@@ -67,6 +72,7 @@ struct CustomTabBar: View {
                             
                             // Show label for non-middle tabs only
                             if !isMiddle {
+                                
                                 Text(tab.rawValue.localized(using: currentLanguage))
                                     .font(.caption)
                                     .fontDesign(.rounded)

@@ -32,7 +32,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		99EBBF072DE2F6A00020EFB3 /* EcoNest */ = {
+		992113712DC7C19700F80334 /* EcoNest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = EcoNest;
 			sourceTree = "<group>";
@@ -67,9 +67,9 @@
 		992113662DC7C19700F80334 = {
 			isa = PBXGroup;
 			children = (
+				992113712DC7C19700F80334 /* EcoNest */,
 				992114B42DC8A3D800F80334 /* Frameworks */,
 				992113702DC7C19700F80334 /* Products */,
-				99EBBF072DE2F6A00020EFB3 /* EcoNest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,7 +125,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				99EBBF072DE2F6A00020EFB3 /* EcoNest */,
+				992113712DC7C19700F80334 /* EcoNest */,
 			);
 			name = EcoNest;
 			packageProductDependencies = (
@@ -391,7 +391,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
-				DEVELOPMENT_TEAM = 6KFD3RALFY;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to take photos.";
@@ -405,7 +405,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Rawann.EcoNest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -424,7 +424,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
-				DEVELOPMENT_TEAM = 6KFD3RALFY;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to take photos.";
@@ -438,7 +438,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Rawann.EcoNest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

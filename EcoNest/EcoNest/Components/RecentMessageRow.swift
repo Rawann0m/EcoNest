@@ -40,7 +40,7 @@ func RecentMessageRow(username: String, email: String, image: String, time: Stri
         .background {
             // Adds a circular border to the image
             Circle()
-                .stroke(Color("DarkColor"), lineWidth: 3)
+                .stroke(Color("DarkGreen"), lineWidth: 3)
         }
 
         // Username and message preview section

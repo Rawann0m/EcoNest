@@ -10,25 +10,34 @@ import FirebaseAuth
 import FirebaseFirestore
 import MapKit
 
+/// ViewModel responsible for managing the list of orders, their statuses, and interactions like cancellation.
 class OrderViewModel: ObservableObject {
     
+    /// List of orders fetched from Firestore.
     @Published var orders: [Order] = []
+    
+    /// Flag indicating whether the orders are currently being loaded.
     @Published var isLoading = false
     
+    /// Controls the presentation of the cancel confirmation alert.
+    @Published var showCancelAlert = false
+    
+    /// The currently selected order status category.
+    @Published var selectedCategory: OrderStatus = .awaitingPickup
+
+    
+    /// Fetches the user's orders from Firestore.
     func fetchOrders() {
         
         isLoading = true
         
         let db = FirebaseManager.shared.firestore
         
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("User not logged in")
-            isLoading = false
-            return
-        }
+        // Ensure the user is logged in
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
-        db.collection("users")
-            .document(userId)
+        // Listen for real-time updates to the "orders" collection
+        userDoc
             .collection("orders")
             .addSnapshotListener { snapshot, error in
                 
@@ -45,11 +54,13 @@ class OrderViewModel: ObservableObject {
                 }
 
                 var fetchedOrders: [Order] = []
-                let group = DispatchGroup()
+                let group = DispatchGroup() // Used to wait for all async location fetches to complete
 
                 for doc in documents {
                     let data = doc.data()
                     let id = doc.documentID
+                    
+                    // Extract order fields
                     let total = data["total"] as? Double ?? 0.0
                     let timestamp = data["date"] as? Timestamp
                     let date = timestamp?.dateValue() ?? Date()
@@ -58,6 +69,7 @@ class OrderViewModel: ObservableObject {
                     let pickupLocationId = data["pickupLocation"] as? String ?? ""
                     let productDicts = data["products"] as? [[String: Any]] ?? []
 
+                    // Decode product list
                     var products: [Product] = []
                     for productData in productDicts {
                         let product = Product(
@@ -70,6 +82,7 @@ class OrderViewModel: ObservableObject {
                         products.append(product)
                     }
 
+                    // Fetch related pickup location
                     group.enter()
                     db.collection("pickupLocations")
                         .document(pickupLocationId)
@@ -82,6 +95,7 @@ class OrderViewModel: ObservableObject {
                                 return
                             }
 
+                            // Convert Firestore location data to Location struct
                             let coordinates = CLLocationCoordinate2D(
                                 latitude: locationData["latitude"] as? CLLocationDegrees ?? 0.0,
                                 longitude: locationData["longitude"] as? CLLocationDegrees ?? 0.0
@@ -95,6 +109,7 @@ class OrderViewModel: ObservableObject {
                                 image: locationData["image"] as? String ?? ""
                             )
 
+                            // Assemble the complete Order object
                             let order = Order(
                                 id: id,
                                 products: products,
@@ -108,23 +123,20 @@ class OrderViewModel: ObservableObject {
                         }
                 }
 
+                // Once all locations have been fetched, update the published orders list
                 group.notify(queue: .main) {
                     self.orders = fetchedOrders
                     self.isLoading = false
                 }
             }
     }
-    
-    func cancelOrders(order: Order) {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("User must be logged in to cancel orders.")
-            return
-        }
 
-        let db = FirebaseManager.shared.firestore
+    /// Cancels a given order by updating its status in Firestore.
+    /// - Parameter order: The order to be canceled
+    func cancelOrders(order: Order) {
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
         
-        db.collection("users")
-            .document(userId)
+        userDoc
             .collection("orders")
             .document(order.id)
             .updateData([
@@ -138,4 +150,5 @@ class OrderViewModel: ObservableObject {
             }
     }
 }
+
 

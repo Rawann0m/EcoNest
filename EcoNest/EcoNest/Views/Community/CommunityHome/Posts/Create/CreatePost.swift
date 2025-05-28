@@ -11,6 +11,7 @@ import SDWebImageSwiftUI
 import PhotosUI
 
 struct CreatePost: View {
+    // MARK: - variabels
     @State var message: String = ""
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = CreatePostViewModel()
@@ -24,6 +25,7 @@ struct CreatePost: View {
     @StateObject var alertManager = AlertManager.shared
     @Binding var isLoading: Bool
     let imageCount = 4
+    // MARK: - UI Design
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading){

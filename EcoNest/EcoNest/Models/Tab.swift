@@ -18,6 +18,7 @@ enum Tab: String, CaseIterable {
     
     /// Returns the corresponding SF Symbol name for each tab
     var systemImage: String {
+        
         switch self {
         case .home:
             return "house"

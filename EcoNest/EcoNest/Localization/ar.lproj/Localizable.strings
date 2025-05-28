@@ -58,6 +58,7 @@
 "NoProductsFound" = "لم يتم العثور على منتجات";
 "Alert" = "تنبيه";
 "YouNeedToLoginFirst" = "يجب عليك تسجيل الدخول أولاً!";
+"SeeMore" = "عرض المزيد";
 
 // Cart
 "YourCartEmpty" = "سلة التسوق الخاصة بك فارغة";
@@ -147,3 +148,4 @@
 "Add" = "إضافة";
 "RecommendedProducts:" = "منتجات مقترحة:";
 "SeeAll" = "المزيد";
+"LearnMore" = "اعرف المزيد";

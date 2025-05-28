@@ -10,6 +10,7 @@ import FirebaseFirestore
 import PhotosUI
 
 struct PostDetailView: View {
+    // MARK: - variabels
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @EnvironmentObject var themeManager: ThemeManager
     let post: Post
@@ -24,6 +25,7 @@ struct PostDetailView: View {
     @State private var showCamera: Bool = false
     @StateObject var alertManager = AlertManager.shared
     let imageCount = 4
+    // MARK: - UI Design
     var body: some View {
         ZStack{
             NavigationStack {
