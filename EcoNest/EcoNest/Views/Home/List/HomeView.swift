@@ -30,7 +30,7 @@ struct HomeView: View {
                         
                         // Custom top app bar with title
                         AppBar(viewModel: cartViewModel)
-                            .padding(.top, 14)
+                            .padding(.top)
                         
                         // Search bar for filtering products
                         SearchView(viewModel: homeViewModel)
