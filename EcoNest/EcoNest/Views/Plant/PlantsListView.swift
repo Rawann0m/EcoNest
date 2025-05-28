@@ -4,66 +4,73 @@
 //
 //  Created by Mac on 20/11/1446 AH.
 //
+
 import SwiftUI
 import SDWebImageSwiftUI
 
+/// View displaying a list of plants with search and filter functionalities
 struct PlantsListView: View {
-    @StateObject private var viewModel = PlantViewModel()
-    @State private var showFilterSheet = false
-    @EnvironmentObject var themeManager: ThemeManager
-    // Stores and observes the current language preference
-    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    @StateObject private var viewModel = PlantViewModel()  // ViewModel to manage plants and filters
+    @State private var showFilterSheet = false             // Controls display of filter sheet
+    @EnvironmentObject var themeManager: ThemeManager      // Manages light/dark mode theme
     
+    // Observes the current language preference for localization
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
 
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Green header with title, filter button, and search bar
+                
+                // MARK: - Header (Title + Filter Button + Search Bar)
                 VStack(alignment: .leading, spacing: 12) {
+                    
+                    // Title and Filter Button
                     HStack {
-                        Text("AllPlants".localized(using: currentLanguage))
+                        Text("AllPlants".localized(using: currentLanguage))  // Localized title
                             .font(.title)
-                            .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
+                            .foregroundColor(themeManager.isDarkMode ? .black : .white)
                             .fontWeight(.bold)
+                        
                         Spacer()
+                        
+                        // Filter button
                         Button {
                             showFilterSheet.toggle()
                         } label: {
                             Image(systemName: "line.horizontal.3.decrease.circle")
                                 .font(.title2)
-                                .foregroundColor(themeManager.isDarkMode ? Color.black : Color.white)
-
+                                .foregroundColor(themeManager.isDarkMode ? .black : .white)
                         }
                     }
                     
-                    // Search bar
+                    // Search Bar
                     TextField("🔍 Search plants...", text: $viewModel.searchText)
                         .padding(10)
-                        .background(themeManager.isDarkMode ? Color.black : Color.white)
+                        .background(themeManager.isDarkMode ? .black : .white)
                         .cornerRadius(10)
                         .onChange(of: viewModel.searchText) { _ in
-                            viewModel.applyFilters()
+                            viewModel.applyFilters()  // Apply filter when text changes
                         }
                 }
                 .padding(.horizontal)
                 .padding(.top, 60)
                 .padding(.bottom)
                 .background(
-                    Color("LimeGreen")
+                    Color("LimeGreen") // Custom header background
                         .mask(
                             RoundedRectangle(cornerRadius: 30)
-                                .padding(.top, -30) // Top corners = 0, Bottom corners = 30
+                                .padding(.top, -30) // Makes top corners flat and bottom rounded
                         )
                 )
-                .foregroundColor(themeManager.isDarkMode ? Color.white : Color.black)
+                .foregroundColor(themeManager.isDarkMode ? .white : .black)
 
-                // Plant list
+                // MARK: - Plant List
                 List(viewModel.filteredPlants) { plant in
                     NavigationLink {
-                        PlantDetails(plantName: plant.name)
+                        PlantDetails(plantName: plant.name) // Navigate to detail view
                     } label: {
                         HStack {
-                            // Plant image
+                            // Plant image using SDWebImage
                             WebImage(url: URL(string: plant.image)) { image in
                                 image.resizable()
                             } placeholder: {
@@ -72,7 +79,7 @@ struct PlantsListView: View {
                             .frame(width: 60, height: 60)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             
-                            // Plant info
+                            // Plant details (name and categories)
                             VStack(alignment: .leading) {
                                 Text(plant.name)
                                     .fontWeight(.semibold)
@@ -82,17 +89,15 @@ struct PlantsListView: View {
                             }
                         }
                     }
-
                 }
-                .id(currentLanguage)
+                .id(currentLanguage)  // Reloads the list when language changes
                 .listStyle(.plain)
-                .padding(.bottom , 30)
+                .padding(.bottom, 30)  // Space at bottom for better layout
             }
-            .edgesIgnoringSafeArea(.top)
+            .edgesIgnoringSafeArea(.top)  // Allows header to extend to the top edge
             .sheet(isPresented: $showFilterSheet) {
-                FilterSheet(viewModel: viewModel, isPresented: $showFilterSheet)
+                FilterSheet(viewModel: viewModel, isPresented: $showFilterSheet)  // Filter sheet modal
             }
         }
     }
 }
-
