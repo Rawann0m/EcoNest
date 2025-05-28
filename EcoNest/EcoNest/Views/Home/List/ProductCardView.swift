@@ -20,54 +20,55 @@ struct ProductCardView: View {
     @ObservedObject var cartViewModel: CartViewModel
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var processingProductID: String? = nil
-
+    
     var product: Product
     
     var body: some View {
         
         ZStack {
-        
+            
             ZStack(alignment: .bottomTrailing) {
-                
-                VStack(alignment: .leading) {
-                    
-                    // Product image with styling
-                    WebImage(url: URL(string: product.image ?? ""))
-                        .resizable()
-                        .background(Color.gray.opacity(0.15))
-                        .frame(width: 150, height: 150)
-                        .cornerRadius(8)
+                NavigationLink(destination: ProductDetailsView(productId: product.id ?? "")) {
+                    VStack(alignment: .leading) {
                         
-                    // Product name text
-                    Text(product.name ?? "")
-                        .font(.subheadline)
-                        .foregroundStyle(themeManager.isDarkMode ? .white : .black)
-                        .padding(.vertical, 1)
-                    
-                    Text(product.size ?? "")
-                        .foregroundStyle(.gray)
-                        .font(.caption)
-                    
-                    // Price and currency image
-                    HStack {
-                        Text("\(product.price ?? 0.0, specifier: "%.2f")")
-                            .foregroundStyle(themeManager.isDarkMode ? .white : .black)
-                            .bold()
-                        
-                        Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                        // Product image with styling
+                        WebImage(url: URL(string: product.image ?? ""))
                             .resizable()
-                            .frame(width: 18, height: 18)
+                            .background(Color.gray.opacity(0.15))
+                            .frame(width: 150, height: 150)
+                            .cornerRadius(8)
+                        
+                        // Product name text
+                        Text(product.name ?? "")
+                            .font(.subheadline)
+                            .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                            .padding(.vertical, 1)
+                        
+                        Text(product.size ?? "")
+                            .foregroundStyle(.gray)
+                            .font(.caption)
+                        
+                        // Price and currency image
+                        HStack {
+                            Text("\(product.price ?? 0.0, specifier: "%.2f")")
+                                .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                                .bold()
+                            
+                            Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                                .resizable()
+                                .frame(width: 18, height: 18)
+                        }
+                        
                     }
-                    
                 }
                 
                 let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
                 let isProcessing = processingProductID == product.id
-
+                
                 Button(action: {
                     guard !isProcessing else { return }
                     processingProductID = product.id
-
+                    
                     if FirebaseManager.shared.isLoggedIn {
                         if isAddedToCart {
                             if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
@@ -76,12 +77,12 @@ struct ProductCardView: View {
                         } else {
                             viewModel.addToCart(product: product)
                         }
-
+                        
                         // Reset processing state after Firestore update (can be improved using callback)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             processingProductID = nil
                         }
-
+                        
                     } else {
                         AlertManager.shared.showAlert(
                             title: "Alert".localized(using: currentLanguage),
@@ -125,4 +126,4 @@ struct ProductCardView: View {
     }
 }
 
-   
+
