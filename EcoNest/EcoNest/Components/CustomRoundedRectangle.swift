@@ -4,16 +4,21 @@
 //
 //  Created by Rawan on 06/05/2025.
 //
-
-
 import SwiftUI
 
+// MARK: - CustomRoundedRectangle
+
+/// A custom shape that allows individually rounded corners.
 struct CustomRoundedRectangle: Shape {
     var topLeft: CGFloat = 0
     var topRight: CGFloat = 0
     var bottomLeft: CGFloat = 0
     var bottomRight: CGFloat = 0
 
+    /// Creates a path for the shape in the given rectangle.
+    ///
+    /// - Parameter rect: The rectangle in which to draw the shape.
+    /// - Returns: A `Path` representing the custom rounded rectangle.
     func path(in rect: CGRect) -> Path {
         var path = Path()
 

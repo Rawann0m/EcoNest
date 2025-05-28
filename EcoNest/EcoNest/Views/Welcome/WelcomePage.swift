@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+
 struct WelcomePage: View {
+    
+    // MARK: - Variables
+    
     @EnvironmentObject var themeManager: ThemeManager
     @State private var isAnimating = false
-
+    
+    // MARK: - View
+    
     var body: some View {
         ZStack(alignment: .center) {
             // Background
@@ -26,7 +32,7 @@ struct WelcomePage: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 260, height: 210)
-                    .scaleEffect(isAnimating ? 1.0 : 0.8) // Scale from slightly smaller
+                    .scaleEffect(isAnimating ? 1.0 : 0.8)
                     .opacity(isAnimating ? 1.0 : 0.0)     // Fade in
                     .animation(.easeInOut(duration: 1.0), value: isAnimating) // Combined animation
 
@@ -44,7 +50,7 @@ struct WelcomePage: View {
                         .padding(.horizontal, 20)
                 }
                 .opacity(isAnimating ? 1.0 : 0.0)
-                .offset(y: isAnimating ? 0 : 10) // Slight initial offset
+                .offset(y: isAnimating ? 0 : 10)
                 .animation(.easeOut(duration: 0.8).delay(0.4), value: isAnimating) // Fade and move up
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
