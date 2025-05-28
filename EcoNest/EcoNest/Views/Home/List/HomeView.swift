@@ -17,7 +17,7 @@ struct HomeView: View {
     @StateObject private var cartViewModel = CartViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
     @State private var visibleProductCount = 12
-
+    
     var body: some View {
         
         ZStack(alignment: .top) {
@@ -78,12 +78,10 @@ struct HomeView: View {
                             VStack(spacing: 16) {
                                 LazyVGrid(columns: gridLayout, spacing: 15) {
                                     ForEach(homeViewModel.filtered.prefix(visibleProductCount)) { product in
-                                        NavigationLink(destination: ProductDetailsView(productId: product.id ?? "")) {
-                                            ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
-                                        }
+                                        ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
                                     }
                                 }
-
+                                
                                 if visibleProductCount < homeViewModel.filtered.count {
                                     
                                     Text("SeeMore".localized(using: currentLanguage))
@@ -105,19 +103,19 @@ struct HomeView: View {
             }
         }.navigationBarBackButtonHidden(true)
         // Observe changes in the search term and filter products accordingly
-        .onChange(of: homeViewModel.search) { oldValue, newValue in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                if newValue == homeViewModel.search && !newValue.isEmpty {
-                    homeViewModel.filterData()
+            .onChange(of: homeViewModel.search) { oldValue, newValue in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    if newValue == homeViewModel.search && !newValue.isEmpty {
+                        homeViewModel.filterData()
+                    }
+                }
+                
+                // Reset filtered list if search is cleared
+                if newValue.isEmpty {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        homeViewModel.filtered = homeViewModel.products
+                    }
                 }
             }
-            
-            // Reset filtered list if search is cleared
-            if newValue.isEmpty {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    homeViewModel.filtered = homeViewModel.products
-                }
-            }
-        }
     }
 }
