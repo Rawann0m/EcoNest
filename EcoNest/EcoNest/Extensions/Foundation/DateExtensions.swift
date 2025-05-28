@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Extending the Date class to add custom formatting functionality
+/// Extending the Date class to add custom formatting functionality
 extension Date {
     
     /// Formats the date instance into a string formatted as "day month year"

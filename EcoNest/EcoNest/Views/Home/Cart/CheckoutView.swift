@@ -26,108 +26,110 @@ struct CheckoutView: View {
     var body: some View {
         
         NavigationStack {
-            VStack {
-                ScrollView {
-                    VStack(spacing: 16) {
-                        Map(coordinateRegion: $mapRegion)
-                            .frame(height: 300)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color("DarkGreen"), lineWidth: 2)
-                            )
-                            .onTapGesture {
-                                locViewModel.showMap.toggle()
-                            }
-                        
-                        Divider()
-                        
-                        VStack {
-                            ForEach(viewModel.cartProducts) { cart in
-                                HStack(spacing: 15) {
-                                    Text(cart.product.name ?? "")
-                                        .frame(width: 165, alignment: .leading)
+            GeometryReader { geometry in
+                VStack {
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            Map(coordinateRegion: $mapRegion)
+                                .frame(height: 300)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color("DarkGreen"), lineWidth: 2)
+                                )
+                                .onTapGesture {
+                                    locViewModel.showMap.toggle()
+                                }
+                                .padding(.top)
+                            
+                            Divider()
+                            
+                            VStack {
+                                ForEach(viewModel.cartProducts) { cart in
+                                    HStack(spacing: 15) {
+                                        Text(cart.product.name ?? "")
+                                            .layoutPriority(1) // Let this expand
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                                        Text(String(format: "qty".localized(using: currentLanguage), "\(cart.quantity)"))
+                                            .frame(width: 60, alignment: .leading) // Narrower fixed width
+
+                                        HStack {
+                                            Text("\(cart.price, specifier: "%.2f")")
+                                            Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                                                .resizable()
+                                                .frame(width: 16, height: 16)
+                                        }
+                                        .frame(width: 75, alignment: .leading)
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     
-                                    Text(String(format: "qty".localized(using: currentLanguage), "\(cart.quantity)"))
-                                        .frame(width: 85, alignment: .leading)
+                                    Divider()
+                                }
+                            }
+                            .padding(.bottom)
+                            
+                            VStack {
+                                HStack(spacing: 30) {
+                                    Text("PickupLocation".localized(using: currentLanguage))
+                                        .frame(width: geometry.size.width * 0.45, alignment: .leading)
+                                    
+                                    Text("\(locViewModel.mapLocation.name)")
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                HStack(spacing: 30) {
+                                    Text("PickupDate".localized(using: currentLanguage))
+                                        .frame(width: geometry.size.width * 0.45, alignment: .leading)
+                                    
+                                    DatePicker("", selection: $viewModel.selectedDate, in: Date()..., displayedComponents: [.date])
+                                        .labelsHidden()
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                HStack(spacing: 30) {
+                                    Text("Total".localized(using: currentLanguage))
+                                        .frame(width: geometry.size.width * 0.45, alignment: .leading)
                                     
                                     HStack {
-                                        Text("\(cart.price, specifier: "%.2f")")
+                                        Text("\(viewModel.calculateTotal(), specifier: "%.2f")")
                                         
                                         Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
                                             .resizable()
                                             .frame(width: 16, height: 16)
                                     }
-                                    .frame(width: 90, alignment: .leading)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                
-                                Divider()
                             }
-                        }
-                        .padding(.bottom)
-                        
-                        VStack {
-                            HStack(spacing: 30) {
-                                Text("PickupLocation".localized(using: currentLanguage))
-                                    .frame(width: 150, alignment: .leading)
-                                
-                                Text("\(locViewModel.mapLocation.name)")
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            HStack(spacing: 30) {
-                                Text("PickupDate".localized(using: currentLanguage))
-                                    .frame(width: 150, alignment: .leading)
-                                
-                                DatePicker("", selection: $viewModel.selectedDate, in: Date()..., displayedComponents: [.date])
-                                    .labelsHidden()
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            HStack(spacing: 30) {
-                                Text("Total".localized(using: currentLanguage))
-                                    .frame(width: 150, alignment: .leading)
-                                
-                                HStack {
-                                    Text("\(viewModel.calculateTotal(), specifier: "%.2f")")
-                                    
-                                    Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
-                                        .resizable()
-                                        .frame(width: 16, height: 16)
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
-                }
-                
-                Button {
-                    viewModel.addOrder(locationId: locViewModel.mapLocation.id)
-                    NotificationManager.shared.requestPermission { granted in
-                        if granted {
-                            NotificationManager.shared.scheduleNotification(
-                                title: "It's Pickup Day! ✨",
-                                body: "Just a reminder that your order is ready for pickup today. We look forward to seeing you!",
-                                date: viewModel.selectedDate
-                            )
+                    
+                    Button {
+                        viewModel.addOrder(locationId: locViewModel.mapLocation.id)
+                        NotificationManager.shared.requestPermission { granted in
+                            if granted {
+                                NotificationManager.shared.scheduleNotification(
+                                    title: "It's Pickup Day! ✨",
+                                    body: "Just a reminder that your order is ready for pickup today. We look forward to seeing you!",
+                                    date: viewModel.selectedDate
+                                )
+                            }
                         }
+                        show.toggle()
+                    } label: {
+                        Text("Confirm".localized(using: currentLanguage))
+                            .font(.title2)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color("LimeGreen"))
+                            .cornerRadius(8)
                     }
-                    show.toggle()
-                } label: {
-                    Text("Confirm".localized(using: currentLanguage))
-                        .font(.title2)
-                        .fontWeight(.heavy)
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color("LimeGreen"))
-                        .cornerRadius(8)
+                    .padding([.top, .bottom], 10)
                 }
                 .padding(.horizontal)
-                .padding(.top, 10)
             }
-            .padding()
             .navigationBarBackButtonHidden(true)
             .fullScreenCover(isPresented: $show) {
                 ConfirmationAlert()

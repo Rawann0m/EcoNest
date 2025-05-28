@@ -16,6 +16,7 @@ class HomeViewModel: ObservableObject {
     
     /// All products fetched from Firestore
     @Published var products: [Product] = []
+    
     @Published var leastProducts: [Product] = []
     
     /// Products filtered based on the search query
@@ -27,10 +28,6 @@ class HomeViewModel: ObservableObject {
         fetchLeasttQuantity()
     }
     
-    /// Computed property returning the first few product image URLs for slider
-    var sliderImages: [(name: String?, image: String?)] {
-        return leastProducts.map { ($0.name, $0.image ?? "") }
-    }
     
     /// Fetches product data from the "product" collection in Firestore
     func fetchProductData() {
