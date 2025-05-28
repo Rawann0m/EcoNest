@@ -1,4 +1,4 @@
-`//
+//
 //  PlantDetailsViewModel.swift
 //  EcoNest
 //
@@ -189,4 +189,3 @@ class PlantDetailsViewModel: ObservableObject {
             }
     }
 }
-`
