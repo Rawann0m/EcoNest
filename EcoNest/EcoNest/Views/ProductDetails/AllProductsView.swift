@@ -8,14 +8,22 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-/// A view that displays a list of all available products.
+/// Displays a scrollable list of all products related to a specific plant or category.
+///
+/// `AllProductsView` shows each product using a concise row card layout,
+/// and supports Arabic localization, dark/light themes, and navigation to detailed product views.
 struct AllProductsView: View {
-    let products: [Product]  // Array of products to display
     
-    @Environment(\.dismiss) private var dismiss        // Used to dismiss the view
-    @EnvironmentObject var themeManager: ThemeManager  // Used to observe current theme (light/dark mode)
+    /// Products to display in the list.
+    let products: [Product]
     
-    // Observes current language preference
+    /// Dismiss handler for navigation control.
+    @Environment(\.dismiss) private var dismiss
+    
+    /// Theme manager for styling consistency.
+    @EnvironmentObject var themeManager: ThemeManager
+    
+    /// Current language for layout and labels.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     var body: some View {
@@ -33,6 +41,8 @@ struct AllProductsView: View {
             }
             .padding()
         }
+        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             // MARK: - Custom Back Button
@@ -42,15 +52,18 @@ struct AllProductsView: View {
                 }
             }
         }
-        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-        .navigationBarBackButtonHidden(true)
     }
 }
 
-// MARK: - Reusable Product Card View
+/// A horizontally-aligned row card showing a product's image, name, and price.
+///
+/// `ProductRowCard` uses SDWebImage to load images and adjusts layout responsively.
+/// It's designed for use in product listing views like `AllProductsView`.
 struct ProductRowCard: View {
+    
+    /// Product to display.
     let product: Product
-
+    
     var body: some View {
         HStack(spacing: 12) {
             // MARK: - Product Image
@@ -77,7 +90,7 @@ struct ProductRowCard: View {
                     }
                 }
             }
-
+            
             // MARK: - Product Info
             VStack(alignment: .leading, spacing: 4) {
                 Text(product.name ?? "")
@@ -87,7 +100,7 @@ struct ProductRowCard: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-
+            
             Spacer()
         }
         .padding(.vertical, 6)

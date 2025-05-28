@@ -9,38 +9,47 @@ import SwiftUI
 import SceneKit
 import FirebaseStorage
 
+/// A SwiftUI wrapper for displaying a SceneKit scene.
 struct SceneKitView: UIViewRepresentable {
     let scene: SCNScene?
 
+    /// Creates and configures the SCNView.
     func makeUIView(context: Context) -> SCNView {
         let view = SCNView()
-        view.autoenablesDefaultLighting = true
-        view.allowsCameraControl = true
-        view.backgroundColor = UIColor.systemBackground
-        view.scene = scene
+        view.autoenablesDefaultLighting = true    // Enable default lighting
+        view.allowsCameraControl = true          // Allow user to rotate/zoom/pan
+        view.backgroundColor = UIColor.systemBackground  // Match system background color
+        view.scene = scene     // Assign scene
         return view
     }
-
+    /// Updates the SCNView when state changes.
     func updateUIView(_ uiView: SCNView, context: Context) {
         uiView.scene = scene
     }
 }
 
-
+/// A view that loads and displays a 3D model (.obj, .mtl, and .png) from Firebase Storage using SceneKit.
 struct SceneKitLoaderView: View {
+    
+    // MARK: - Variables
+    
     let modelName: String
     @State private var isLoading = true
     @State private var scene: SCNScene?
 
+    // MARK: - View
+    
     var body: some View {
         ZStack {
             if isLoading {
+                // Show placeholder while loading
                 Image("loading-placeholder")
                     .resizable()
                     .frame(width:300,height: 300)
             } else if let loadedScene = scene {
                 SceneKitView(scene: loadedScene)
             } else {
+                // Display error message if model fails to load
                 Text("Failed to load 3D model")
                     .foregroundColor(.red)
             }
@@ -49,6 +58,10 @@ struct SceneKitLoaderView: View {
             loadModel()
         }
     }
+    
+    // MARK: - Model Loading
+    
+    /// Downloads and loads the .obj, .mtl, and texture files from Firebase, and creates a SceneKit scene.
 
     private func loadModel() {
         let tmpDir = URL(fileURLWithPath: NSTemporaryDirectory())
@@ -61,6 +74,7 @@ struct SceneKitLoaderView: View {
         let mtlRef = storage.reference(withPath: "3D/\(modelName).mtl")
         let textureRef = storage.reference(withPath: "3D/\(modelName).png")
 
+        // Download .obj file
         objRef.write(toFile: objURL) { _, error in
             guard error == nil else {
                 print("OBJ download error: \(error!.localizedDescription)")
@@ -68,6 +82,7 @@ struct SceneKitLoaderView: View {
                 return
             }
 
+            // Download .mtl file
             mtlRef.write(toFile: mtlURL) { _, error in
                 guard error == nil else {
                     print("MTL download error: \(error!.localizedDescription)")
@@ -75,6 +90,7 @@ struct SceneKitLoaderView: View {
                     return
                 }
 
+                // Download texture file
                 textureRef.write(toFile: textureURL) { _, error in
                     guard error == nil else {
                         print("Texture download error: \(error!.localizedDescription)")
@@ -82,6 +98,7 @@ struct SceneKitLoaderView: View {
                         return
                     }
 
+                    // Load scene asynchronously
                     DispatchQueue.global().async {
                         do {
                             let sceneSource = SCNSceneSource(url: objURL, options: [
@@ -96,6 +113,7 @@ struct SceneKitLoaderView: View {
                                     geometry.materials = [material]
                                 }
 
+                                // Update UI on main thread
                                 DispatchQueue.main.async {
                                     self.scene = loadedScene
                                     self.isLoading = false

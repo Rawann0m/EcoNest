@@ -5,8 +5,6 @@
 //  Created by Rawan on 06/05/2025.
 //
 
-
-
 import SwiftUI
 
 /// A reusable custom text field component that adapts to secure or regular input.

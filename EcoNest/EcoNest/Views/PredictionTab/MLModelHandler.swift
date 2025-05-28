@@ -9,7 +9,9 @@ import SwiftUI
 import CoreML
 import Vision
 
+/// Handles CoreML model inference for binary plant detection and multiclass plant classification.
 class MLModelHandler{
+    // MARK: - Prediction Output Closures
     var topPredictions: (([(String, Float)]) -> Void)?
     @Published var showAlert = false
     var pPredictionUpdated: (( (label: String, confidence: Float) ) -> Void)?
@@ -22,6 +24,14 @@ class MLModelHandler{
         }
     }
     
+    // MARK: - Image Preprocessing
+    
+    /// Resizes a UIImage and converts it to a `CVPixelBuffer` for CoreML input.
+    ///
+    /// - Parameters:
+    ///   - image: The input UIImage.
+    ///   - targetSize: The size to which the image should be resized (default is 160x160).
+    /// - Returns: A `CVPixelBuffer` or nil if conversion fails.
     func preprocessImage(_ image: UIImage, targetSize: CGSize = CGSize(width: 160, height: 160)) -> CVPixelBuffer? {
         // Step 1: Resize the image
         UIGraphicsBeginImageContextWithOptions(targetSize, true, 2.0)
@@ -43,6 +53,11 @@ class MLModelHandler{
         return pixelBuffer
     }
     
+    // MARK: - Binary Classification ("Plant or Not")
+
+    /// Runs prediction using the `PlantOrNotClassifier` model to classify whether an image is of a plant or not.
+    ///
+    /// - Parameter image: The input UIImage to classify.
     func predictPlantOrNot(image: UIImage) {
         guard let pixelBuffer = preprocessImage(image) else {
             print("Failed to preprocess image")
@@ -67,8 +82,11 @@ class MLModelHandler{
             print("Prediction failed: \(error)")
         }
     }
-    
-    
+    // MARK: - Multiclass Classification ("Plant Type")
+
+    /// Runs prediction using the `PlantClassifier_KfoldBestB3` model to classify the type of plant.
+    ///
+    /// - Parameter image: The input UIImage to classify.
     func predictPlantType(from image: UIImage) {
         print("Loading the model...")
         

@@ -22,10 +22,6 @@ struct AuthButton: View {
             RoundedRectangle(cornerRadius: 8)
                 .fill( Color.white.opacity(0.7))
                 .frame(width: 350, height: 50)
-            
-//            Text(label)
-//                .foregroundColor()
-//                .bold()
         }
     }
 }
