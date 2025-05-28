@@ -9,9 +9,19 @@ import SwiftUI
 import CoreML
 import Vision
 
+/// Handles CoreML prediction flows for detecting plant presence and identifying plant types.
+///
+/// `MLModelHandler` preprocesses UIImages, runs them through CoreML models using Vision,
+/// and provides results via closures for easy SwiftUI integration.
 class MLModelHandler{
+    
+    /// Callback delivering top plant type predictions (label, confidence).
     var topPredictions: (([(String, Float)]) -> Void)?
+    
+    /// Callback for binary classification: plant or not.
     @Published var showAlert = false
+    
+    /// Internal storage for binary classification result.
     var pPredictionUpdated: (( (label: String, confidence: Float) ) -> Void)?
     
     var pPrediction: (label: String, confidence: Float)? {
@@ -22,6 +32,11 @@ class MLModelHandler{
         }
     }
     
+    /// Preprocesses a `UIImage` by resizing it and converting to `CVPixelBuffer`.
+    /// - Parameters:
+    ///   - image: The source image.
+    ///   - targetSize: Desired image size for model input.
+    /// - Returns: A CoreML-compatible pixel buffer or `nil`.
     func preprocessImage(_ image: UIImage, targetSize: CGSize = CGSize(width: 160, height: 160)) -> CVPixelBuffer? {
         // Step 1: Resize the image
         UIGraphicsBeginImageContextWithOptions(targetSize, true, 2.0)
@@ -43,6 +58,8 @@ class MLModelHandler{
         return pixelBuffer
     }
     
+    /// Uses the `PlantOrNotClassifier` model to detect if an image contains a plant.
+    /// - Parameter image: Input image to classify.
     func predictPlantOrNot(image: UIImage) {
         guard let pixelBuffer = preprocessImage(image) else {
             print("Failed to preprocess image")
@@ -68,7 +85,9 @@ class MLModelHandler{
         }
     }
     
-    
+    /// Uses the `PlantClassifier_KfoldBestB3` model to identify the plant type from an image.
+    /// Returns top 5 predictions with normalized confidence scores.
+    /// - Parameter image: Image to classify.
     func predictPlantType(from image: UIImage) {
         print("Loading the model...")
         
@@ -120,6 +139,8 @@ class MLModelHandler{
 // MARK: - Softmax Extension
 
 extension Array where Element == Float {
+    
+    /// Converts an array of confidence scores to a softmax-normalized distribution.
     func softmax() -> [Float] {
         let expValues = self.map { exp($0) }
         let sumExp = expValues.reduce(0, +)

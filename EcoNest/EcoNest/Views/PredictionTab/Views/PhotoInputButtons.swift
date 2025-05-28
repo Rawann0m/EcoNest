@@ -7,20 +7,47 @@
 
 import SwiftUI
 
+/// Displays animated buttons for selecting or capturing a photo,
+/// with prediction and camera integration.
+///
+/// `PhotoInputButtons` toggles between two actions: selecting an image from the library or taking a photo with the camera.
+/// It uses a `PredictionViewModel` to clear and initiate plant prediction,
+/// and utilizes a custom `CameraManager` for camera presentation.
 struct PhotoInputButtons: View {
+    
+    /// Indicates the current button state (true = select photo, false = take photo).
     @Binding var buttonSelected: Bool
+    
+    /// Controls whether the photo picker should be shown.
     @Binding var showPicker: Bool
+    
+    /// Stores the captured image (camera).
     @Binding var capturedImage: UIImage?
+    
+    /// Stores the selected image (library).
     @Binding var selectedImage: UIImage?
+    
+    /// The current language code for localization and layout direction.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
+    /// Namespace for shared animation between capsules.
     @Namespace var namespace
+    
+    /// Foreground color for the selected button.
     var selectedColor: Color
+    
+    /// Foreground color for the unselected button.
     var defaultColor: Color
+    
+    /// Camera interaction manager.
     var cameraManager: CameraManager
+    
+    /// View model for plant prediction handling.
     var viewModel: PredictionViewModel
 
     var body: some View {
         HStack(spacing: 16) {
+            // Photo Selection Button
             ZStack {
                 if buttonSelected {
                     Capsule()
@@ -49,6 +76,7 @@ struct PhotoInputButtons: View {
                 }
             }
 
+            // Take Photo Button
             ZStack {
                 if !buttonSelected {
                     Capsule()

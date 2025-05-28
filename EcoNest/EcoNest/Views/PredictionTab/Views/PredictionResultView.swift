@@ -7,14 +7,31 @@
 
 import SwiftUI
 
+
+/// Displays a prediction result image alongside top plant type predictions.
+///
+/// `PredictionResultView` shows a selected/captured image and a list of
+/// predicted plant labels with confidence percentages.
+/// It supports localization and layout direction based on language settings,
+/// and offers share and navigation capabilities.
 struct PredictionResultView: View {
+    
+    /// The image on which predictions were made.
     let image: UIImage
+    
+    /// A list of (label, confidence) prediction results.
     let predictions: [(String, Float)]
+    
+    /// Current language code for text and layout.
     let currentLanguage: String
+    
+    /// Triggered when the share button is tapped.
     let onShare: () -> Void
     
     var body: some View {
         VStack {
+            
+            // Display the predicted image
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
@@ -25,6 +42,8 @@ struct PredictionResultView: View {
             
             
             VStack {
+                
+                // Top predictions header and share
                 HStack {
                     Text("TopPredictions:".localized(using: currentLanguage))
                         .font(.title)
@@ -40,6 +59,8 @@ struct PredictionResultView: View {
                     .buttonStyle(.plain)
                     
                 }
+                
+                // List of predictions with navigation
                 ForEach(predictions, id: \.0) { prediction in
                     NavigationLink(destination: PlantDetails(plantName: prediction.0)) {
                         HStack {

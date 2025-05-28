@@ -8,9 +8,16 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-// MARK: - Main view
+/// A detailed view for showcasing a product's images, price, description, and selectable sizes.
+///
+/// `ProductDetailsView` supports tabbed media (image/3D), localized content, and cart integration.
+/// It adjusts to dark/light themes and provides inline login prompting when needed.
 struct ProductDetailsView: View {
+    
+    /// The selected product's document ID.
     var productId: String
+    
+    
     @State private var selectedTab = 0
     @StateObject var productVM = ProductDetailsViewModel()
     @ObservedObject private var cartViewModel = CartViewModel()
@@ -21,7 +28,6 @@ struct ProductDetailsView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String =
     Locale.current.language.languageCode?.identifier ?? "en"
     
-    // MARK: Body
     var body: some View {
         Group {
             if let product = productVM.product {
@@ -57,8 +63,9 @@ struct ProductDetailsView: View {
     }
 }
 
-// MARK: - Private sub-views (pure refactors)
+// MARK: - Subviews
 
+/// Top section displaying a tab view of image/3D model and a custom back button bar.
 private extension ProductDetailsView {
     
     // Header with top shape, back bar, and hero image
@@ -212,6 +219,7 @@ private extension ProductDetailsView {
     }
 }
 
+/// A simple top navigation bar with a back button and localized product title.
 struct ProductDetailBar: View {
     let productName: String
     @Environment(\.dismiss) private var dismiss
@@ -234,6 +242,7 @@ struct ProductDetailBar: View {
     }
 }
 
+/// A card representing a specific size option of the product with pricing and selection highlighting.
 struct ProductSizeCard: View {
     let product: Product
     var isSelected: Bool = false
