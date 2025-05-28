@@ -114,18 +114,13 @@ class DirectMessageViewModel: ObservableObject {
     /// Deletes all messages between the current user and the selected conversation partner
     /// and removes the conversation from recent messages list.
     /// - Parameter index: The index set of the conversation to delete.
-    func DeleteMessage(index: IndexSet) {
+    func deleteMessage(message: RecentMessage) {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             return
         }
         
-        guard let index = index.first else {
-            return
-        }
-        
-        // Determine the ID of the conversation partner
-        let toId = self.recentMessages[index].toId == uid ? self.recentMessages[index].fromId : self.recentMessages[index].toId
-        print("Deleting messages with user: \(toId)")
+        let toId = message.toId == uid ? message.fromId : message.toId
+    
         
         // Fetch and delete all message documents in the conversation sub-collection
         FirebaseManager.shared.firestore.collection("messages")
@@ -151,7 +146,12 @@ class DirectMessageViewModel: ObservableObject {
                 print("All messages deleted with user: \(toId)")
                 
                 // Remove from local array
-                self.recentMessages.remove(at: index)
+                DispatchQueue.main.async {
+                         self.recentMessages.removeAll(where: {
+                             ($0.fromId == message.fromId && $0.toId == message.toId) ||
+                             ($0.fromId == message.toId && $0.toId == message.fromId)
+                         })
+                     }
             }
     }
     

@@ -28,7 +28,13 @@ struct DirectMessageListView: View {
                                 selectedUser = User(id: uid, username: message.username, email: "", profileImage: message.profileImage ?? "", receiveMessages: false)
                             }
                     }
-                    .onDelete(perform: viewModel.DeleteMessage)
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            let sortedMessages = viewModel.recentMessages.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })
+                            let messageToDelete = sortedMessages[index]
+                            viewModel.deleteMessage(message: messageToDelete)
+                        }
+                    }
                 }
                 .id(currentLanguage)
                 .listStyle(.plain)
