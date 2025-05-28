@@ -26,10 +26,12 @@ struct CartView: View {
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @State private var goToCheckout = false
     
+    @Binding var openCart: Bool
+
     var body: some View {
         
         NavigationStack {
-            
+            VStack{
             // Show loading indicator if data is being fetched
             if cartViewModel.isLoading {
                 ProgressView()
@@ -109,7 +111,7 @@ struct CartView: View {
 
                     // Navigation link that activates when goToCheckout is true
                     NavigationLink(
-                        destination: CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage)
+                        destination: CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage, openCart: $openCart)
                             .environmentObject(locationViewModel),
                         isActive: $goToCheckout,
                         label: { EmptyView() }
@@ -132,6 +134,7 @@ struct CartView: View {
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                 }
             }
+        }
         }
         // Adjust layout direction based on language (RTL for Arabic)
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
