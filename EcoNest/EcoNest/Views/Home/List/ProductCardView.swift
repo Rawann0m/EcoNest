@@ -19,7 +19,8 @@ struct ProductCardView: View {
     @State private var navigateToLogin = false
     @ObservedObject var cartViewModel: CartViewModel
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    
+    @State private var processingProductID: String? = nil
+
     var product: Product
     
     var body: some View {
@@ -61,36 +62,54 @@ struct ProductCardView: View {
                 }
                 
                 let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
-                // Add-to-cart button
-                    Button(action: {
-                        if FirebaseManager.shared.isLoggedIn {
-                            if isAddedToCart {
-                                if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
-                                    cartViewModel.removeFormCart(cart: cartItem)
-                                }
-                            } else {
-                                viewModel.addToCart(product: product)
+                let isProcessing = processingProductID == product.id
+
+                Button(action: {
+                    guard !isProcessing else { return }
+                    processingProductID = product.id
+
+                    if FirebaseManager.shared.isLoggedIn {
+                        if isAddedToCart {
+                            if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
+                                cartViewModel.removeFormCart(cart: cartItem)
                             }
-                            
                         } else {
-                            AlertManager.shared.showAlert(title: "Alert".localized(using: currentLanguage), message: "YouNeedToLoginFirst".localized(using: currentLanguage))
+                            viewModel.addToCart(product: product)
                         }
-                    }, label: {
-                        Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
-                            .resizable()
-                            .foregroundStyle(isAddedToCart ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15) : Color("LimeGreen"))
-                            .frame(width: 35, height: 35)
-                    })
-                    .alert(isPresented: $alertManager.alertState.isPresented) {
-                        Alert(
-                            title: Text(alertManager.alertState.title),
-                            message: Text(alertManager.alertState.message),
-                            primaryButton: .default(Text("Login".localized(using: currentLanguage))) {
-                                navigateToLogin = true
-                            },
-                            secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
+
+                        // Reset processing state after Firestore update (can be improved using callback)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            processingProductID = nil
+                        }
+
+                    } else {
+                        AlertManager.shared.showAlert(
+                            title: "Alert".localized(using: currentLanguage),
+                            message: "YouNeedToLoginFirst".localized(using: currentLanguage)
                         )
+                        processingProductID = nil
                     }
+                }, label: {
+                    Image(systemName: isAddedToCart ? "minus.circle.fill" : "plus.circle.fill")
+                        .resizable()
+                        .foregroundStyle(
+                            isAddedToCart
+                            ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15)
+                            : Color("LimeGreen")
+                        )
+                        .frame(width: 35, height: 35)
+                })
+                .disabled(isProcessing)
+                .alert(isPresented: $alertManager.alertState.isPresented) {
+                    Alert(
+                        title: Text(alertManager.alertState.title),
+                        message: Text(alertManager.alertState.message),
+                        primaryButton: .default(Text("Login".localized(using: currentLanguage))) {
+                            navigateToLogin = true
+                        },
+                        secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
+                    )
+                }
                 
             }
         }

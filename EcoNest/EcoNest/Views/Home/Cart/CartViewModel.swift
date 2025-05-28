@@ -47,7 +47,10 @@ class CartViewModel: ObservableObject {
         let db = FirebaseManager.shared.firestore
         guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
-        cartListener = userDoc.collection("cart").addSnapshotListener { snapshot, error in
+        cartListener = userDoc
+            .collection("cart")
+            .order(by: FieldPath.documentID())
+            .addSnapshotListener { snapshot, error in
             guard let documents = snapshot?.documents else {
                 print("No cart data found.")
                 self.isLoading = false
@@ -86,7 +89,7 @@ class CartViewModel: ObservableObject {
             }
 
             group.notify(queue: .main) {
-                self.cartProducts = fetchedCart.sorted(by: { $0.id < $1.id })
+                self.cartProducts = fetchedCart
                 self.isLoading = false
             }
         }
@@ -269,7 +272,9 @@ class CartViewModel: ObservableObject {
 
                 // Update the local cart on the main thread after successful deletion
                 DispatchQueue.main.async {
-                    self.cartProducts.remove(at: i)
+                    if self.cartProducts.indices.contains(i) {
+                           self.cartProducts.remove(at: i)
+                       }
                 }
             }
     }
