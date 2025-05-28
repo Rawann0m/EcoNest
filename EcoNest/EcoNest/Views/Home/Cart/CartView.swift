@@ -24,11 +24,11 @@ struct CartView: View {
     
     /// Stores and observes the current language preference.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    
+    @Binding var openCart: Bool
     var body: some View {
         
         NavigationStack {
-            
+            VStack{
             // Show loading indicator if data is being fetched
             if cartViewModel.isLoading {
                 ProgressView()
@@ -92,7 +92,7 @@ struct CartView: View {
                     
                     // Right side: continue to review
                     NavigationLink(destination:
-                        CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage)
+                        CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage, openCart: $openCart)
                             .environmentObject(locationViewModel)
                     ) {
                         
@@ -124,6 +124,7 @@ struct CartView: View {
                         .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                 }
             }
+        }
         }
         // Adjust layout direction based on language (RTL for Arabic)
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)

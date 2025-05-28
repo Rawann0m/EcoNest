@@ -22,6 +22,7 @@ struct CheckoutView: View {
     
     @EnvironmentObject var locViewModel: LocationViewModel
     @State var show = false
+    @Binding var openCart: Bool
     
     var body: some View {
         
@@ -132,7 +133,7 @@ struct CheckoutView: View {
             }
             .navigationBarBackButtonHidden(true)
             .fullScreenCover(isPresented: $show) {
-                ConfirmationAlert()
+                ConfirmationAlert(openCart: $openCart)
             }
             .fullScreenCover(isPresented: $locViewModel.showMap) {
                 MapView()
