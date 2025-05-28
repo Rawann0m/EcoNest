@@ -9,19 +9,11 @@ import SwiftUI
 import CoreML
 import Vision
 
-/// Handles CoreML prediction flows for detecting plant presence and identifying plant types.
-///
-/// `MLModelHandler` preprocesses UIImages, runs them through CoreML models using Vision,
-/// and provides results via closures for easy SwiftUI integration.
+/// Handles CoreML model inference for binary plant detection and multiclass plant classification.
 class MLModelHandler{
-    
-    /// Callback delivering top plant type predictions (label, confidence).
+    // MARK: - Prediction Output Closures
     var topPredictions: (([(String, Float)]) -> Void)?
-    
-    /// Callback for binary classification: plant or not.
     @Published var showAlert = false
-    
-    /// Internal storage for binary classification result.
     var pPredictionUpdated: (( (label: String, confidence: Float) ) -> Void)?
     
     var pPrediction: (label: String, confidence: Float)? {
@@ -32,11 +24,14 @@ class MLModelHandler{
         }
     }
     
-    /// Preprocesses a `UIImage` by resizing it and converting to `CVPixelBuffer`.
+    // MARK: - Image Preprocessing
+    
+    /// Resizes a UIImage and converts it to a `CVPixelBuffer` for CoreML input.
+    ///
     /// - Parameters:
-    ///   - image: The source image.
-    ///   - targetSize: Desired image size for model input.
-    /// - Returns: A CoreML-compatible pixel buffer or `nil`.
+    ///   - image: The input UIImage.
+    ///   - targetSize: The size to which the image should be resized (default is 160x160).
+    /// - Returns: A `CVPixelBuffer` or nil if conversion fails.
     func preprocessImage(_ image: UIImage, targetSize: CGSize = CGSize(width: 160, height: 160)) -> CVPixelBuffer? {
         // Step 1: Resize the image
         UIGraphicsBeginImageContextWithOptions(targetSize, true, 2.0)
@@ -58,8 +53,11 @@ class MLModelHandler{
         return pixelBuffer
     }
     
-    /// Uses the `PlantOrNotClassifier` model to detect if an image contains a plant.
-    /// - Parameter image: Input image to classify.
+    // MARK: - Binary Classification ("Plant or Not")
+
+    /// Runs prediction using the `PlantOrNotClassifier` model to classify whether an image is of a plant or not.
+    ///
+    /// - Parameter image: The input UIImage to classify.
     func predictPlantOrNot(image: UIImage) {
         guard let pixelBuffer = preprocessImage(image) else {
             print("Failed to preprocess image")
@@ -84,10 +82,11 @@ class MLModelHandler{
             print("Prediction failed: \(error)")
         }
     }
-    
-    /// Uses the `PlantClassifier_KfoldBestB3` model to identify the plant type from an image.
-    /// Returns top 5 predictions with normalized confidence scores.
-    /// - Parameter image: Image to classify.
+    // MARK: - Multiclass Classification ("Plant Type")
+
+    /// Runs prediction using the `PlantClassifier_KfoldBestB3` model to classify the type of plant.
+    ///
+    /// - Parameter image: The input UIImage to classify.
     func predictPlantType(from image: UIImage) {
         print("Loading the model...")
         
@@ -139,8 +138,6 @@ class MLModelHandler{
 // MARK: - Softmax Extension
 
 extension Array where Element == Float {
-    
-    /// Converts an array of confidence scores to a softmax-normalized distribution.
     func softmax() -> [Float] {
         let expValues = self.map { exp($0) }
         let sumExp = expValues.reduce(0, +)

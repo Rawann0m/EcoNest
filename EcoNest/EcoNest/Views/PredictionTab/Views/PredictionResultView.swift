@@ -7,48 +7,29 @@
 
 import SwiftUI
 
-
-/// Displays a prediction result image alongside top plant type predictions.
-///
-/// `PredictionResultView` shows a selected/captured image and a list of
-/// predicted plant labels with confidence percentages.
-/// It supports localization and layout direction based on language settings,
-/// and offers share and navigation capabilities.
 struct PredictionResultView: View {
-    
-    /// The image on which predictions were made.
     let image: UIImage
-    
-    /// A list of (label, confidence) prediction results.
     let predictions: [(String, Float)]
-    
-    /// Current language code for text and layout.
     let currentLanguage: String
-    
-    /// Triggered when the share button is tapped.
     let onShare: () -> Void
     
     var body: some View {
         VStack {
-            
-            // Display the predicted image
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
                 .cornerRadius(15)
                 .shadow(radius: 5)
-                .frame(width: 300, height: 300)
+                .frame(width: 360, height: 360)
             
             
             
             VStack {
-                
-                // Top predictions header and share
                 HStack {
                     Text("TopPredictions:".localized(using: currentLanguage))
                         .font(.title)
                         .padding()
-                    
+                    Spacer()
                     Button(action: onShare) {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
@@ -58,9 +39,7 @@ struct PredictionResultView: View {
                     }
                     .buttonStyle(.plain)
                     
-                }
-                
-                // List of predictions with navigation
+                }.padding(.trailing)
                 ForEach(predictions, id: \.0) { prediction in
                     NavigationLink(destination: PlantDetails(plantName: prediction.0)) {
                         HStack {
@@ -89,10 +68,10 @@ struct PredictionResultView: View {
                 
                 
             }
-            .frame(maxWidth: 300)
-            .background(Color("LimeGreen").opacity(0.9))
+            //.frame(maxWidth: 300)
+            //.background(Color.gray.opacity(0.9))
             .cornerRadius(15)
-            .shadow(radius: 5)
+           // .shadow(radius: 5)
         }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         
         

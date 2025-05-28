@@ -154,15 +154,17 @@ struct SettingsView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         
+                        if FirebaseManager.shared.isLoggedIn {
                         settingRow(icon: "cart", text: "Orders".localized(using: currentLanguage), trailingView: {
                             NavigationLink{
                                 OrderView(currentLanguage: currentLanguage)
                             } label:{
                                 Image(systemName: currentLanguage == "ar" ? "chevron.left"  : "chevron.right")
                                     .foregroundColor(Color("LimeGreen"))
-                                    
+                                
                             }
                         }, color: themeManager.textColor)
+                    }
                         
                         
                         settingRow(icon: "globe", text: "Language".localized(using: currentLanguage), trailingView: {
