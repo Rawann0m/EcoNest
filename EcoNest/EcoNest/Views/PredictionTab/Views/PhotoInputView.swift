@@ -9,20 +9,31 @@ import SwiftUI
 import Vision
 import PhotosUI
 
+
+/// A UI for users to select or capture a photo, run plant recognition, and optionally share or post results.
+///
+/// `PredictionView` handles image input (from gallery or camera), runs ML predictions using `PredictionViewModel`,
+/// and displays classification results. If a plant is detected, users can share results or post them in a community.
 struct PredictionView: View {
+    
+    // MARK: - Image Selection State
     @State private var showPicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
+    @State private var capturedImage: UIImage? = nil
+    
+    // MARK: - UI and Logic State
     @Namespace private var namespace
     @State private var buttonSelected = true
     @State private var cameraManager = CameraManager()
-    @State private var capturedImage: UIImage? = nil
     @StateObject private var viewModel = PredictionViewModel()
     
+    // MARK: - Localization and Theming
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var themeManager: ThemeManager
     
+    // MARK: - Navigation
     @State private var navigateToCreatePost = false
     
     private var selectedColor: Color {
@@ -49,6 +60,8 @@ struct PredictionView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     Spacer()
+                    
+                    // Buttons for photo input
                     PhotoInputButtons(
                         buttonSelected: $buttonSelected,
                         showPicker: $showPicker,
@@ -76,6 +89,7 @@ struct PredictionView: View {
                         }
                     }
                     
+                    // Prediction results or placeholder
                     if let image = selectedImage ?? capturedImage {
                         VStack {
                             PredictionResultView(
@@ -128,6 +142,7 @@ struct PredictionView: View {
         }
     }
     
+    /// Shares the prediction result using a UIActivityViewController.
     private func sharePrediction(image: UIImage, text: String) {
         let activityVC = UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

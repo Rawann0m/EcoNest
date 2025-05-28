@@ -7,8 +7,16 @@
 
 import SwiftUI
 
+/// A placeholder view displayed when no image is selected or available for prediction.
+///
+/// `ImagePlaceholderView` shows a neutral grey box with an informative icon and localized instruction text.
+/// It dynamically adapts to dark mode via `ThemeManager` and supports Arabic layout direction.
 struct ImagePlaceholderView: View {
+    
+    /// Stores and observes current language for localization.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    
+    /// Provides access to app-wide theming settings (light/dark).
     @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {

@@ -67,7 +67,7 @@ struct AppBar: View {
             }
             Button("Cancel".localized(using: currentLanguage), role: .cancel) {}
         } message: {
-            Text("Youneedtologinfirst!".localized(using: currentLanguage))
+            Text("YouNeedToLoginFirst".localized(using: currentLanguage))
         }
         .fullScreenCover(isPresented: $navigateToLogin) {
             AuthViewPage()
