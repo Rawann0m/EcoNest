@@ -42,9 +42,9 @@ struct FavoritesView: View {
                     selectedPlant = plant
                 } label: {
                     FavoriteCard(plant: plant)
-                        .listRowSeparator(.hidden)
+                        
                 }
-                
+                .listRowSeparator(.hidden)
                 .buttonStyle(.plain)
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
