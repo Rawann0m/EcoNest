@@ -42,6 +42,7 @@ struct FavoritesView: View {
                     selectedPlant = plant
                 } label: {
                     FavoriteCard(plant: plant)
+                        .listRowSeparator(.hidden)
                 }
                 
                 .buttonStyle(.plain)
