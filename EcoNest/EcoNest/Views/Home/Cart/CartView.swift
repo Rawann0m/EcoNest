@@ -27,114 +27,112 @@ struct CartView: View {
     @State private var goToCheckout = false
     
     @Binding var openCart: Bool
-
+    
     var body: some View {
         
         NavigationStack {
             VStack{
-            // Show loading indicator if data is being fetched
-            if cartViewModel.isLoading {
-                ProgressView()
-            }
-            
-            // Show empty state if the cart has no products
-            else if cartViewModel.cartProducts.isEmpty {
-                
-                VStack(spacing: 10) {
-                    
-                    // Cart image placeholder
-                    Image("Cart")
-                        .resizable()
-                        .frame(width: 230, height: 230)
-                    
-                    // Localized text indicating the cart is empty
-                    Text("YourCartEmpty".localized(using: currentLanguage))
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                    
-                    // Localized instruction to add products
-                    Text("AddProductsHere".localized(using: currentLanguage))
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                    
+                // Show loading indicator if data is being fetched
+                if cartViewModel.isLoading {
+                    ProgressView()
                 }
-                .padding()
-            }
-            
-            // Display cart items when the cart is not empty
-            else {
                 
-                List {
-                    ForEach(cartViewModel.cartProducts) { cart in
-                        // Reusable row view for each cart item
-                        CartProductRow(viewModel: cartViewModel, cartProduct: cart)
-                            .listRowSeparator(.hidden) // Remove default separators
+                // Show empty state if the cart has no products
+                else if cartViewModel.cartProducts.isEmpty {
+                    
+                    VStack(spacing: 10) {
+                        
+                        // Cart image placeholder
+                        Image("Cart")
+                            .resizable()
+                            .frame(width: 230, height: 230)
+                        
+                        // Localized text indicating the cart is empty
+                        Text("YourCartEmpty".localized(using: currentLanguage))
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                        
+                        // Localized instruction to add products
+                        Text("AddProductsHere".localized(using: currentLanguage))
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                        
                     }
-                    .onDelete(perform: cartViewModel.removeFormCart) // Enable swipe-to-delete
+                    .padding()
                 }
-                .listStyle(.plain)
                 
-                // Bottom section: total price and continue button
-                HStack {
+                // Display cart items when the cart is not empty
+                else {
                     
-                    // Left side: display total cart price
+                    List {
+                        ForEach(cartViewModel.cartProducts) { cart in
+                            // Reusable row view for each cart item
+                            CartProductRow(viewModel: cartViewModel, cartProduct: cart, currentLanguage: currentLanguage)
+                                .listRowSeparator(.hidden) // Remove default separators
+                        }
+                        .onDelete(perform: cartViewModel.removeFormCart) // Enable swipe-to-delete
+                    }
+                    .listStyle(.plain)
+                    
+                    // Bottom section: total price and continue button
                     HStack {
                         
-                        Text("\(cartViewModel.calculateTotal(), specifier: "%.2f")")
-                            .font(.title)
-                            .fontWeight(.bold)
+                        // Left side: display total cart price
+                        HStack {
+                            
+                            Text("\(cartViewModel.calculateTotal(), specifier: "%.2f")")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            
+                            // Currency icon that adapts to theme mode
+                            Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                        }
+                        .padding(.horizontal)
                         
-                        // Currency icon that adapts to theme mode
-                        Image(themeManager.isDarkMode ? "RiyalW" : "RiyalB")
-                            .resizable()
-                            .frame(width: 30, height: 30)
+                        Spacer()
+                        
+                        // Right side: continue to review
+                        Button {
+                            cartViewModel.commitQuantityChanges()
+                            goToCheckout = true
+                        } label: {
+                            Text("Continue".localized(using: currentLanguage))
+                                .font(.title2)
+                                .fontWeight(.heavy)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color("LimeGreen"))
+                                .cornerRadius(8)
+                        }
+                        .padding(.horizontal)
+                        
                     }
-                    .padding(.horizontal)
-                    
-                    Spacer()
-                    
-                    // Right side: continue to review
-                    Button {
-                        cartViewModel.commitQuantityChanges()
-                        goToCheckout = true // Trigger navigation AFTER update is called
-                    } label: {
-                        Text("Continue".localized(using: currentLanguage))
-                            .font(.title2)
-                            .fontWeight(.heavy)
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color("LimeGreen"))
-                            .cornerRadius(8)
-                    }
-                    .padding(.horizontal)
-
-                    // Navigation link that activates when goToCheckout is true
-                    NavigationLink(
-                        destination: CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage, openCart: $openCart)
-                            .environmentObject(locationViewModel),
-                        isActive: $goToCheckout,
-                        label: { EmptyView() }
-                    )
+                    .padding([.top, .bottom])
                 }
-                .padding([.top, .bottom])
             }
-        }
-        .padding(.top)
-        .toolbar {
-            // Custom back button title with localized label
-            ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
-                CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: { dismiss() })
+            .padding(.top)
+            .navigationDestination(isPresented: $goToCheckout) {
+                CheckoutView(viewModel: cartViewModel, currentLanguage: currentLanguage, openCart: $openCart)
+                    .environmentObject(locationViewModel)
             }
             
-            // Navigation to order history (bag icon)
-            ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarLeading : .navigationBarTrailing) {
-                NavigationLink(destination: OrderView(currentLanguage: currentLanguage)) {
-                    Image(systemName: "bag")
-                        .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+            .toolbar {
+                // Custom back button title with localized label
+                ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarTrailing : .navigationBarLeading) {
+                    CustomBackward(title: "MyCart".localized(using: currentLanguage), tapEvent: { dismiss() })
+                }
+                
+                // Navigation to order history (bag icon)
+                ToolbarItem(placement: currentLanguage == "ar" ? .navigationBarLeading : .navigationBarTrailing) {
+                    NavigationLink(destination: OrderView(currentLanguage: currentLanguage)) {
+                        Image(systemName: "bag")
+                            .foregroundStyle(themeManager.isDarkMode ? .white : .black)
+                    }
                 }
             }
-        }
         }
         // Adjust layout direction based on language (RTL for Arabic)
         .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)

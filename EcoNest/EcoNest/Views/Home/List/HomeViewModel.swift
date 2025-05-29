@@ -17,94 +17,88 @@ class HomeViewModel: ObservableObject {
     /// All products fetched from Firestore.
     @Published var products: [Product] = []
     
-    /// Products with the least quantity (used for the image slider).
+    /// Products with the least quantity (used for the promotional image slider).
     @Published var leastProducts: [Product] = []
     
-    /// Products filtered based on the search query.
+    /// Products filtered based on the user's search query.
     @Published var filtered: [Product] = []
     
-    /// Initializes the view model and fetches product data.
-    init() {
-        fetchProductData()
-        fetchLeasttQuantity()
-    }
     
     // MARK: - Firestore Fetching
-    
-    /// Fetches all product data from the "product" collection in Firestore where quantity > 0.
+    /// Fetches all product data from the "product" collection in Firestore where `quantity > 0`.
     func fetchProductData() {
         let db = FirebaseManager.shared.firestore
         
         db.collection("product")
             .whereField("quantity", isGreaterThan: 0)
-            .getDocuments { (snapshot, error) in
-                guard let documents = snapshot?.documents else { return }
+            .getDocuments { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    print("Failed to fetch products: \(error?.localizedDescription ?? "Unknown error")")
+                    return
+                }
                 
-                // Decode each document into a Product model
+                // Decode each Firestore document into a Product model
                 self.products = documents.compactMap { document in
                     try? document.data(as: Product.self)
                 }
                 
-                // Initially, filtered products = all products
+                // Initialize the filtered list with all products
                 self.filtered = self.products
             }
     }
 
-    /// Fetches up to 4 products with the least quantity to display in the image slider.
+    
+    /// Fetches up to 4 products with the lowest quantity to use in a promotional image slider.
     func fetchLeasttQuantity() {
         let db = FirebaseManager.shared.firestore
 
         db.collection("product")
-            .order(by: "quantity") // Ascending order by quantity
-            .limit(to: 4)          // Limit results to 4 products
-            .getDocuments { (snapshot, error) in
-                guard let itemData = snapshot else {
-                    print("Error fetching documents: \(error?.localizedDescription ?? "Unknown error")")
+            .order(by: "quantity")
+            .limit(to: 4)
+            .getDocuments { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    print("Failed to fetch least quantity products: \(error?.localizedDescription ?? "Unknown error")")
                     return
                 }
 
-                // Decode each document into a Product model
-                self.leastProducts = itemData.documents.compactMap { document in
+                // Decode each Firestore document into a Product model
+                self.leastProducts = documents.compactMap { document in
                     try? document.data(as: Product.self)
                 }
             }
     }
     
-    // MARK: - Search Filtering
     
-    /// Filters the product list based on the current search query.
+    // MARK: - Search Filtering
+    /// Filters the products array based on the current search query.
     func filterData() {
         withAnimation(.spring) {
             self.filtered = self.products.filter {
-                // Case-insensitive search within product names
+                // Case-insensitive matching on product name
                 ($0.name?.lowercased().contains(self.search.lowercased())) ?? false
             }
         }
     }
     
     // MARK: - Cart Interaction
-    
-    /// Adds a product to the current user's cart in Firestore.
-    /// - Parameter product: The product to be added to the cart.
+    /// Adds the given product to the current user's cart in Firestore.
+    /// - Parameter product: The Product to be added to the cart.
     func addToCart(product: Product) {
-        let db = FirebaseManager.shared.firestore
-        
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("User must be logged in to add to cart.")
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else {
+            print("User not logged in.")
             return
         }
         
-        db.collection("users")
-            .document(userId)
+        userDoc
             .collection("cart")
-            .document() // Auto-generated document ID
+            .document() 
             .setData([
                 "productId": product.id ?? "",
                 "quantity": 1,
-                "price": product.price ?? ""
-            ]) { err in
-                if let err = err {
-                    print("Error adding to cart: \(err.localizedDescription)")
+                "price": product.price ?? 0.0
+            ]) { error in
+                if let error = error {
+                    print("Error adding to cart: \(error.localizedDescription)")
                 }
             }
     }

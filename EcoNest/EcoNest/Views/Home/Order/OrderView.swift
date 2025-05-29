@@ -28,9 +28,7 @@ struct OrderView: View {
     var body: some View {
         
         NavigationStack {
-            
             ScrollView {
-                
                 LazyVStack {
                     
                     // Segmented control for filtering orders by status
@@ -64,6 +62,7 @@ struct OrderView: View {
                                 }
                             }
                             .padding()
+                            
                         } else {
                             // Display each filtered order
                             ForEach(filteredOrders) { order in
@@ -95,7 +94,7 @@ struct OrderView: View {
         }
     }
     
-    /// Custom segmented control used to switch between order categories
+    /// Custom segmented control used to switch between order categories.
     func CustomSegmentedControl() -> some View {
         
         HStack {

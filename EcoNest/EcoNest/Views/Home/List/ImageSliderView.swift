@@ -111,7 +111,7 @@ struct ImageSliderView: View {
     /// Invalidates and clears the timer.
     private func stopTimer() {
         
-        timer?.invalidate()
-        timer = nil
+        timer?.invalidate() // Stops the timer from firing in the future
+        timer = nil // Sets the reference to nil to free memory
     }
 }

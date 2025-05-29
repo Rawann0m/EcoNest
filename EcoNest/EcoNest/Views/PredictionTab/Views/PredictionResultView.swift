@@ -30,14 +30,17 @@ struct PredictionResultView: View {
                         .font(.title)
                         .padding()
                     Spacer()
-                    Button(action: onShare) {
-                        Image(systemName: "square.and.arrow.up")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .padding(10)
+                    
+                    if FirebaseManager.shared.isLoggedIn {
+                        Button(action: onShare) {
+                            Image(systemName: "square.and.arrow.up")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                                .padding(10)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                     
                 }.padding(.trailing)
                 ForEach(predictions, id: \.0) { prediction in

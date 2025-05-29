@@ -68,6 +68,8 @@
 "Continue" = "Continue";
 "Login" = "Login";
 "Cancel" = "Cancel";
+"OutofStock" = "Out of Stock";
+"ProductOutStock" = "The product is out of stock.";
 
 // Review
 "ReviewConfirm" = "Review and Confirm";
@@ -77,7 +79,7 @@
 "PickupDate" = "Pickup Date:";
 "Total" = "Total:";
 "Next" = "Next";
-"OrderSuccessfuly" = "Order confirmed Successfuly";
+"OrderSuccessfuly" = "Order confirmed Successfully";
 "Home" = "Home";
 "Orders" = "Orders";
 "GoBack" = "Go Back";

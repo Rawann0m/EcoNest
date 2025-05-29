@@ -105,7 +105,7 @@ struct HomeView: View {
                                 }
                             }
                             .padding(.horizontal, 16)
-                            .padding(.bottom, 100) // Space for safe area and future bottom sheet
+                            .padding(.bottom, 100)
                         }
                     }
                 }
@@ -129,6 +129,10 @@ struct HomeView: View {
                     homeViewModel.filtered = homeViewModel.products
                 }
             }
+        }
+        .onAppear {
+            homeViewModel.fetchProductData()
+            homeViewModel.fetchLeasttQuantity()
         }
     }
 }

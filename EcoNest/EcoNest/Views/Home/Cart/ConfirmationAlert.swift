@@ -27,7 +27,9 @@ struct ConfirmationAlert: View {
                 
                 // Confirmation checkmark with animated background circles
                 ZStack {
+                    
                     AnimatedCircle(delay: 1.0, animate: animationCircle)
+                    
                     AnimatedCircle(delay: 1.5, animate: animationCircle)
                         .onAppear {
                             animationCircle.toggle()  // Start the animation when view appears

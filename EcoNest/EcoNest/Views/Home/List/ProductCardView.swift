@@ -63,7 +63,7 @@ struct ProductCardView: View {
                             .foregroundStyle(themeManager.isDarkMode ? .white : .black)
                             .padding(.vertical, 1)
                         
-
+                        
                         // Product size
                         Text(product.size ?? "")
                             .foregroundStyle(.gray)
@@ -85,10 +85,12 @@ struct ProductCardView: View {
                 // MARK: - Add/Remove from Cart Button
                 
                 let isAddedToCart = cartViewModel.cartProducts.contains(where: { $0.product.id == product.id })
+                // Checks if the current product is the one being processed (the one the user just tapped on)
                 let isProcessing = processingProductID == product.id
                 
                 Button(action: {
                     
+                    // Prevent double-taps
                     guard !isProcessing else { return }
                     
                     processingProductID = product.id
@@ -97,6 +99,7 @@ struct ProductCardView: View {
                         
                         // Toggle cart state
                         if isAddedToCart {
+                            
                             if let cartItem = cartViewModel.cartProducts.first(where: { $0.product.id == product.id }) {
                                 cartViewModel.removeFormCart(cart: cartItem)
                             }
@@ -104,7 +107,7 @@ struct ProductCardView: View {
                             viewModel.addToCart(product: product)
                         }
                         
-                        // Reset processing state after Firestore update (can be improved using callback)
+                        // Reset processing state after Firestore update
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             processingProductID = nil
                         }
@@ -122,8 +125,8 @@ struct ProductCardView: View {
                         .resizable()
                         .foregroundStyle(
                             isAddedToCart
-                                ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15)
-                                : Color("LimeGreen")
+                            ? themeManager.isDarkMode ? .white.opacity(0.15) : .black.opacity(0.15)
+                            : Color("LimeGreen")
                         )
                         .frame(width: 35, height: 35)
                 })
