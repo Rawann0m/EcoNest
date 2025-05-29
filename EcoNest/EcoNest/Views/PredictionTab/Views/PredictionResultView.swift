@@ -71,12 +71,8 @@ struct PredictionResultView: View {
                 
                 
             }
-            //.frame(maxWidth: 300)
-            //.background(Color.gray.opacity(0.9))
             .cornerRadius(15)
-           // .shadow(radius: 5)
         }.environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
-        
         
     }
 }
