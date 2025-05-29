@@ -127,7 +127,7 @@ private extension ProductDetailsView {
                         if let cartItem =
                             cartViewModel.cartProducts
                             .first(where: { $0.product.id == product.id }) {
-                            //cartViewModel.removeFormCart(cart: cartItem)
+                            cartViewModel.removeFormCart(cart: cartItem)
                         }
                     } else {
                         homeViewModel.addToCart(product: product)   // <-- SAME CALL

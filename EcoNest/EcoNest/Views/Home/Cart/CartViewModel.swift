@@ -84,11 +84,25 @@ class CartViewModel: ObservableObject {
                 }
 
                 group.notify(queue: .main) {
-                    self.cartProductsRaw = fetchedCart
+                    // Preserve any uncommitted quantity changes
+                    var mergedCart: [Cart] = []
+
+                    for newCart in fetchedCart {
+                        if let existing = self.cartProductsRaw.first(where: { $0.id == newCart.id }) {
+                            var updated = newCart
+                            updated.quantity = existing.quantity // retain local quantity
+                            mergedCart.append(updated)
+                        } else {
+                            mergedCart.append(newCart)
+                        }
+                    }
+
+                    self.cartProductsRaw = mergedCart
                     self.isLoading = false
                 }
             }
     }
+
 
     func calculateTotal() -> Double {
         cartProducts.reduce(0) { total, item in
@@ -96,33 +110,45 @@ class CartViewModel: ObservableObject {
         }
     }
 
-    func addOrder(locationId: String) {
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
-
-        let productData = cartProducts.map {
-            [
-                "name": $0.product.name ?? "",
-                "price": $0.price,
-                "quantity": $0.quantity,
-                "image": $0.product.image ?? "",
-                "size": $0.product.size ?? ""
+    
+    /// Adds a new order to the user's "orders" collection in Firestore.
+    /// - Parameter locationId: The ID of the selected pickup location.
+    func addOrder(locationId: String, completion: @escaping (Bool) -> Void) {
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else {
+            completion(false)
+            return
+        }
+        
+        let productData = cartProducts.map { cart in
+            return [
+                "id": cart.product.id ?? "", 
+                "name": cart.product.name ?? "",
+                "price": cart.price,
+                "quantity": cart.quantity,
+                "image": cart.product.image ?? "",
+                "size": cart.product.size ?? "",
             ]
         }
 
-        userDoc.collection("orders").document().setData([
-            "products": productData,
-            "total": calculateTotal(),
-            "date": Timestamp(date: selectedDate),
-            "pickupLocation": locationId,
-            "status": OrderStatus.awaitingPickup.rawValue
-        ]) { error in
-            if let error = error {
-                print("Failed to place order: \(error.localizedDescription)")
-                return
-            }
-
-            self.reduceQuantity()
-            self.clearCartFromFirestore()
+        userDoc
+            .collection("orders")
+            .document()
+            .setData([
+                "products": productData,
+                "total": calculateTotal(),
+                "date": Timestamp(date: selectedDate),
+                "pickupLocation": locationId,
+                "status": OrderStatus.awaitingPickup.rawValue
+            ]) { error in
+                if let error = error {
+                    print("Failed to place order: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                self.reduceQuantity()
+                self.clearCartFromFirestore()
+                completion(true)
         }
     }
 
@@ -152,40 +178,68 @@ class CartViewModel: ObservableObject {
     private func clearCartFromFirestore() {
         guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
+        // Temporarily remove Firestore listener
+        cartListener?.remove()
+
         userDoc.collection("cart").getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {
                 print("No cart items found.")
+                DispatchQueue.main.async {
+                    self.cartProductsRaw.removeAll()
+                }
                 return
             }
 
+            let group = DispatchGroup()
             for doc in documents {
-                doc.reference.delete()
+                group.enter()
+                doc.reference.delete { _ in group.leave() }
             }
 
-            DispatchQueue.main.async {
+            group.notify(queue: .main) {
                 self.cartProductsRaw.removeAll()
                 print("Cart cleared after order placement.")
+
+                // Re-enable real-time updates
+                self.fetchCartData()
             }
         }
     }
 
-    func updateQuantity(cart: Cart, change: Bool) {
+    func updateQuantityLocally(cart: Cart, change: Bool) {
         guard let index = cartProductsRaw.firstIndex(where: { $0.id == cart.id }) else { return }
-        guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
         if change {
             cartProductsRaw[index].quantity += 1
         } else {
             cartProductsRaw[index].quantity = max(cartProductsRaw[index].quantity - 1, 1)
         }
+    }
 
-        userDoc.collection("cart")
-            .document(cart.id)
-            .updateData(["quantity": cartProductsRaw[index].quantity]) { error in
-                if let error = error {
-                    print("Failed to update quantity: \(error.localizedDescription)")
+    func commitQuantityChanges(completion: @escaping () -> Void = {}) {
+        guard let userDoc = FirebaseManager.shared.getCurrentUser() else {
+            completion()
+            return
+        }
+
+        let dispatchGroup = DispatchGroup()
+
+        for cart in cartProductsRaw {
+            dispatchGroup.enter()
+            userDoc.collection("cart")
+                .document(cart.id)
+                .updateData(["quantity": cart.quantity]) { error in
+                    if let error = error {
+                        print("Failed to update quantity for \(cart.id): \(error.localizedDescription)")
+                    }
+                    dispatchGroup.leave()
                 }
-            }
+        }
+
+        // Notify when all updates are done
+        dispatchGroup.notify(queue: .main) {
+            completion()
+        }
     }
 
     func removeFormCart(index: IndexSet) {
@@ -202,7 +256,9 @@ class CartViewModel: ObservableObject {
                 }
 
                 DispatchQueue.main.async {
-                    self.cartProductsRaw.removeAll { $0.id == itemToRemove.id }
+                    if let idx = self.cartProductsRaw.firstIndex(where: { $0.id == itemToRemove.id }) {
+                                        self.cartProductsRaw.remove(at: idx)
+                                    }
                 }
             }
     }
@@ -212,7 +268,8 @@ class CartViewModel: ObservableObject {
     func removeFormCart(cart: Cart) {
         guard let userDoc = FirebaseManager.shared.getCurrentUser() else { return }
 
-        userDoc.collection("cart")
+        userDoc
+            .collection("cart")
             .document(cart.id)
             .delete { err in
                 if let err = err {
@@ -221,7 +278,9 @@ class CartViewModel: ObservableObject {
                 }
 
                 DispatchQueue.main.async {
-                    self.cartProductsRaw.removeAll { $0.id == cart.id }
+                    if let index = self.cartProductsRaw.firstIndex(where: { $0.id == cart.id }) {
+                        self.cartProductsRaw.remove(at: index)
+                    }
                 }
             }
     }

@@ -16,6 +16,8 @@ struct OrderCardView: View {
     /// Theme manager to apply dynamic styling based on light/dark mode.
     @EnvironmentObject var themeManager: ThemeManager
     
+    @State private var showCancelAlert = false
+
     /// The order data to display in this card.
     var order: Order
     
@@ -28,8 +30,10 @@ struct OrderCardView: View {
             
             // MARK: - Scheduled date section
             VStack {
+                
                 Text("Scheduled".localized(using: currentLanguage)) // "Scheduled" title localized
-                Text(order.date.formattedAsOrderDate()) // Formatted order date
+                
+                Text(order.date.formattedDate()) // Formatted order date
             }
             .padding()
             .font(.headline)
@@ -60,13 +64,13 @@ struct OrderCardView: View {
                 // Cancel button appears only if status is "awaitingPickup"
                 if order.status == .awaitingPickup {
                     Button(action: {
-                        orderViewModel.showCancelAlert = true
+                        showCancelAlert = true
                     }) {
                         Text("Cancel".localized(using: currentLanguage))
                             .foregroundStyle(.red)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
-                    .alert("CancelOrder".localized(using: currentLanguage), isPresented: $orderViewModel.showCancelAlert) {
+                    .alert("CancelOrder".localized(using: currentLanguage), isPresented: $showCancelAlert) {
                         
                         // Confirm cancellation
                         Button("Yes".localized(using: currentLanguage), role: .destructive) {

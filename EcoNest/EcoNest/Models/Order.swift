@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 /// A model representing a customer's order.
-struct Order: Identifiable {
+struct Order: Identifiable, Codable {
     
-    var id: String
+    @DocumentID var id: String?
     var products: [Product]
     var total: Double
     var date: Date
-    var pickupLocation: Location
+    var pickupLocation: String
     var status: OrderStatus
 }
 

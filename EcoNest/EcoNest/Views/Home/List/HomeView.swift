@@ -10,37 +10,42 @@ import SwiftUI
 /// Main view representing the home screen of the app
 struct HomeView: View {
     
-    // Stores and observes the current language preference
-    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
+    // MARK: - State Objects
     
-    // State objects for managing cart and product data
+    /// ViewModel for managing the user's cart
     @StateObject private var cartViewModel = CartViewModel()
+    
+    /// ViewModel for managing product data and search
     @StateObject private var homeViewModel = HomeViewModel()
+    
+    /// Controls the number of visible products in the grid
     @State private var visibleProductCount = 12
+    
+    /// Observes and stores the user's current language preference
+    @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
     
     var body: some View {
         
         ZStack(alignment: .top) {
-            
             NavigationStack {
-                
                 ScrollView(showsIndicators: false) {
                     
                     VStack {
+                        // MARK: - Top Bar
                         
-                        // Custom top app bar with title
+                        // Custom App Bar with title and cart/favorite icons
                         AppBar(viewModel: cartViewModel)
                             .padding(.top)
                         
-                        // Search bar for filtering products
+                        // Search bar for filtering product list
                         SearchView(viewModel: homeViewModel)
                         
-                        // Auto-playing promotional image slider
+                        // Image slider shown only when no search is active
                         if homeViewModel.search.isEmpty {
                             ImageSliderView(viewModel: homeViewModel)
                         }
                         
-                        // Section title for product grid
+                        // Section title for products
                         HStack {
                             Text("Explore".localized(using: currentLanguage))
                                 .font(.title)
@@ -49,16 +54,19 @@ struct HomeView: View {
                         }
                         .padding(.horizontal, 16)
                         
-                        // Calculate number of columns based on screen width
-                        // Use adaptive GridItem to ensure responsiveness on different screen sizes
+                        // MARK: - Product Grid
+                        
+                        // Responsive grid layout using adaptive sizing
                         let gridLayout = [
                             GridItem(.adaptive(minimum: 150, maximum: 250), spacing: 20)
                         ]
                         
+                        // Show loading indicator while products are being fetched
                         if homeViewModel.products.isEmpty {
                             ProgressView()
                         }
                         
+                        // Show empty state if filtered results are empty
                         else if homeViewModel.filtered.isEmpty {
                             VStack {
                                 Image("Search")
@@ -74,6 +82,7 @@ struct HomeView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         
+                        // Show filtered product grid
                         else {
                             VStack(spacing: 16) {
                                 LazyVGrid(columns: gridLayout, spacing: 15) {
@@ -81,9 +90,9 @@ struct HomeView: View {
                                         ProductCardView(viewModel: homeViewModel, cartViewModel: cartViewModel, product: product)
                                     }
                                 }
-                                
+
+                                // "See More" button to load additional products
                                 if visibleProductCount < homeViewModel.filtered.count {
-                                    
                                     Text("SeeMore".localized(using: currentLanguage))
                                         .font(.headline)
                                         .frame(maxWidth: .infinity)
@@ -101,21 +110,29 @@ struct HomeView: View {
                     }
                 }
             }
-        }.navigationBarBackButtonHidden(true)
-        // Observe changes in the search term and filter products accordingly
-            .onChange(of: homeViewModel.search) { oldValue, newValue in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    if newValue == homeViewModel.search && !newValue.isEmpty {
-                        homeViewModel.filterData()
-                    }
-                }
-                
-                // Reset filtered list if search is cleared
-                if newValue.isEmpty {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        homeViewModel.filtered = homeViewModel.products
-                    }
+        }
+        .navigationBarBackButtonHidden(true)
+        
+        // MARK: - Search Filtering Behavior
+        
+        .onChange(of: homeViewModel.search) { oldValue, newValue in
+            // Add debounce delay before filtering
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if newValue == homeViewModel.search && !newValue.isEmpty {
+                    homeViewModel.filterData()
                 }
             }
+            
+            // Reset filter if the search is cleared
+            if newValue.isEmpty {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    homeViewModel.filtered = homeViewModel.products
+                }
+            }
+        }
+        .onAppear {
+            homeViewModel.fetchProductData()
+            homeViewModel.fetchLeasttQuantity()
+        }
     }
 }
