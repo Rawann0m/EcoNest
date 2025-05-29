@@ -21,6 +21,10 @@ struct CartProductRow: View {
     /// The cart item to be displayed in the row.
     var cartProduct: Cart
     
+    @State private var showOutOfStockAlert = false
+
+    var currentLanguage: String
+    
     var body: some View {
         
         HStack(spacing: 15) {
@@ -66,8 +70,15 @@ struct CartProductRow: View {
                         .font(.system(size: 24))
                         .onTapGesture {
                             if cartProduct.quantity != cartProduct.product.quantity {
-                                viewModel.updateQuantity(cart: cartProduct, change: true)
+                                viewModel.updateQuantityLocally(cart: cartProduct, change: true)
+                            } else {
+                                showOutOfStockAlert = true
                             }
+                        }
+                        .alert("OutofStock".localized(using: currentLanguage), isPresented: $showOutOfStockAlert) {
+                            Button("OK".localized(using: currentLanguage), role: .cancel) {}
+                        } message: {
+                            Text("ProductOutStock".localized(using: currentLanguage))
                         }
                     
                     // Display current quantity
@@ -80,7 +91,7 @@ struct CartProductRow: View {
                         .font(.system(size: 24))
                         .onTapGesture {
                             if cartProduct.quantity > 1 {
-                                viewModel.updateQuantity(cart: cartProduct, change: false)
+                                viewModel.updateQuantityLocally(cart: cartProduct, change: false)
                             } else {
                                 viewModel.removeFormCart(cart: cartProduct)
                             }

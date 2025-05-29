@@ -20,14 +20,16 @@ struct ConfirmationAlert: View {
     
     /// Stores and observes the current language preference.
     @AppStorage("AppleLanguages") var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en"
-    
+    @Binding var openCart: Bool
     var body: some View {
         NavigationView {
             VStack(spacing: 50) {
                 
                 // Confirmation checkmark with animated background circles
                 ZStack {
+                    
                     AnimatedCircle(delay: 1.0, animate: animationCircle)
+                    
                     AnimatedCircle(delay: 1.5, animate: animationCircle)
                         .onAppear {
                             animationCircle.toggle()  // Start the animation when view appears
@@ -49,7 +51,7 @@ struct ConfirmationAlert: View {
                 
                 // Navigation button to go back to main view
                 HStack(spacing: 20){
-                    Button(action: {dismiss()}) {
+                    Button(action: {openCart = false}) {
                         Text("GoBack".localized(using: currentLanguage))
                             .foregroundStyle(.white)
                             .bold()

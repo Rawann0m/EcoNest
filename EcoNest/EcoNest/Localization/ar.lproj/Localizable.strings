@@ -67,6 +67,8 @@
 "Continue" = "استمرار";
 "Login" = "تسجيل الدخول";
 "Cancel" = "إلغاء";
+"OutofStock" = "نفدت الكمية";
+"ProductOutStock" = "هذا المنتج غير متوفر حالياً.";
 
 // Review
 "ReviewConfirm" = "مراجعة وتأكيد";

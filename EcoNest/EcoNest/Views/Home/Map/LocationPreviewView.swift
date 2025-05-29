@@ -8,17 +8,27 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+/// A SwiftUI view that shows a preview for a specific location,
+/// including its image, name, description, and a "Next" button for navigation.
 struct LocationPreviewView: View {
     
-    let location: Location
+    /// Environment object providing location-related functionalities.
     @EnvironmentObject private var viewModel: LocationViewModel
+    
+    /// The location data to display in the preview.
+    let location: Location
+    
+    /// The current language code used for localization.
     var currentLanguage: String
     
     var body: some View {
+        
         HStack(alignment: .center, spacing: 0) {
+            
             VStack(alignment: .leading, spacing: 16) {
+                
                 ZStack {
-                    
+                    // Load the image from a URL using WebImage
                     WebImage(url: URL(string: location.image))
                         .resizable()
                         .scaledToFill()
@@ -30,20 +40,25 @@ struct LocationPreviewView: View {
                 .cornerRadius(10)
                 
                 VStack(alignment: .leading, spacing: 4) {
+                    // Location name
                     Text(location.name)
                         .font(.headline)
                         .fontWeight(.bold)
                     
+                    // Location description
                     Text(location.description)
                         .font(.subheadline)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             
+            // The "Next" button
             VStack {
+                
                 Button {
                     viewModel.nextButtonPressed()
                 } label: {
+                    
                     Text("Next".localized(using: currentLanguage))
                         .font(.headline)
                         .frame(width: 125, height: 35)
@@ -51,7 +66,6 @@ struct LocationPreviewView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(Color("LimeGreen"))
             }
-            
         }
         .padding(20)
         .background(
@@ -62,4 +76,3 @@ struct LocationPreviewView: View {
         .cornerRadius(10)
     }
 }
-

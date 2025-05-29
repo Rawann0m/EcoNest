@@ -11,7 +11,7 @@ import Foundation
 extension Date {
     
     /// Formats the date instance into a string formatted as "day month year"
-    func formattedAsOrderDate() -> String {
+    func formattedDate() -> String {
         // Create a DateFormatter instance
         let formatter = DateFormatter()
         
