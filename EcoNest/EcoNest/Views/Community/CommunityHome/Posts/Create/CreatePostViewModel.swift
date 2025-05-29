@@ -41,4 +41,35 @@ class CreatePostViewModel: ObservableObject {
                 print("Successfully saved post data")
             }
     }
+    
+    func checkUserIsAMember(communityId: String, completion: @escaping (Bool) -> Void) {
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            print("No authenticated user.")
+            completion(false)
+            return
+        }
+        
+        FirebaseManager.shared.firestore
+            .collection("community")
+            .document(communityId)
+            .getDocument { snapshot, error in
+                
+                if let error = error {
+                    print("Error getting document: \(error)")
+                    completion(false)
+                    return
+                }
+                
+                guard let data = snapshot?.data() else {
+                    print("No community data found.")
+                    completion(false)
+                    return
+                }
+                
+                let members = data["members"] as? [String] ?? []
+                let isMember = members.contains(uid)
+                completion(isMember)
+            }
+    }
 }
