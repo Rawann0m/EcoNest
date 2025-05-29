@@ -25,6 +25,7 @@ struct CreatePost: View {
     @StateObject var alertManager = AlertManager.shared
     @Binding var isLoading: Bool
     let imageCount = 4
+    @State var showAlert: Bool = false
     // MARK: - UI Design
     var body: some View {
         NavigationStack{
@@ -131,93 +132,106 @@ struct CreatePost: View {
                     
                     Button{
                         if let userId = FirebaseManager.shared.auth.currentUser?.uid {
-                            isLoading  = true
-                            PhotoUploaderManager.shared.uploadImages(images: selectedImages, isPost: true) { result in
-                                switch result {
-                                case .success(let urls):
-                                    let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
-                                    viewModel.addPost(communityId: communityId, post: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
-                                    isLoading  = false
+                            viewModel.checkUserIsAMember(communityId: communityId) { isMember in
+                                if isMember{
+                                    isLoading  = true
+                                    PhotoUploaderManager.shared.uploadImages(images: selectedImages, isPost: true) { result in
+                                        switch result {
+                                        case .success(let urls):
+                                            let contentArray = [message.trimmingCharacters(in: .whitespacesAndNewlines)] + urls.map { $0.absoluteString }
+                                            viewModel.addPost(communityId: communityId, post: Post(userId: userId, content: contentArray, timestamp: Timestamp(), likes: []))
+                                            isLoading  = false
+                                            dismiss()
+                                        case .failure(let error):
+                                            print("Image upload failed: \(error.localizedDescription)")
+                                        }
+                                    }
+                                } else {
+                                    showAlert.toggle()
+                                }
+                                if !showAlert{
                                     dismiss()
-                                case .failure(let error):
-                                    print("Image upload failed: \(error.localizedDescription)")
                                 }
                             }
                         }
-                        
-                        dismiss()
-                        
-                    } label: {
-                        Text("Post".localized(using: currentLanguage))
-                            .padding(10)
-                            .bold()
-                            .foregroundColor(.white)
-                            .background{
-                                Capsule()
-                                    .fill(textEmpty ? .gray : Color("LimeGreen"))
+                        } label: {
+                            Text("Post".localized(using: currentLanguage))
+                                .padding(10)
+                                .bold()
+                                .foregroundColor(.white)
+                                .background{
+                                    Capsule()
+                                        .fill(textEmpty ? .gray : Color("LimeGreen"))
+                                }
+                        }
+                        .disabled(textEmpty)
+                        .alert("Error".localized(using: currentLanguage), isPresented: $showAlert) {
+                            Button("OK".localized(using: currentLanguage)) {
+                                showAlert = false
                             }
-                    }
-                    .disabled(textEmpty)
-                    
-                }
-            }
-            .padding()
-        }
-        .fullScreenCover(isPresented: $showCamera) {
-            ImagePicker(sourceType: .camera) { image in
-                if canAddMoreImages() {
-                    selectedImages.append(image)
-                } else {
-                    showMaxImagesAlert()
-                }
-            }
-            .ignoresSafeArea(.all)
-        }
-        .photosPicker(
-            isPresented: $showImagePicker,
-            selection: $selectedItems,
-            maxSelectionCount: imageCount - selectedImages.count,
-            matching: .images
-        )
-        .onChange(of: selectedItems) { _, newItems in
-            Task {
-                selectedItems = []
-                if !canAddMoreImages() { return }
-                for item in newItems {
-                    if let data = try? await item.loadTransferable(type: Data.self),
-                       let uiImage = UIImage(data: data) {
-                        selectedImages.append(uiImage)
+                        } message: {
+                            Text("You need to be a member of a community to post")
+                        }
+                        
                     }
                 }
+                .padding()
             }
+            .fullScreenCover(isPresented: $showCamera) {
+                ImagePicker(sourceType: .camera) { image in
+                    if canAddMoreImages() {
+                        selectedImages.append(image)
+                    } else {
+                        showMaxImagesAlert()
+                    }
+                }
+                .ignoresSafeArea(.all)
+            }
+            .photosPicker(
+                isPresented: $showImagePicker,
+                selection: $selectedItems,
+                maxSelectionCount: imageCount - selectedImages.count,
+                matching: .images
+            )
+            .onChange(of: selectedItems) { _, newItems in
+                Task {
+                    selectedItems = []
+                    if !canAddMoreImages() { return }
+                    for item in newItems {
+                        if let data = try? await item.loadTransferable(type: Data.self),
+                           let uiImage = UIImage(data: data) {
+                            selectedImages.append(uiImage)
+                        }
+                    }
+                }
+            }
+            .alert(isPresented: $alertManager.alertState.isPresented) {
+                Alert(
+                    title: Text(alertManager.alertState.title),
+                    message: Text(alertManager.alertState.message),
+                    primaryButton: .default(Text("OK".localized(using: currentLanguage))) {
+                        
+                    },
+                    secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
+                )
+            }
+            .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
         }
-        .alert(isPresented: $alertManager.alertState.isPresented) {
-            Alert(
-                title: Text(alertManager.alertState.title),
-                message: Text(alertManager.alertState.message),
-                primaryButton: .default(Text("OK".localized(using: currentLanguage))) {
-                    
-                },
-                secondaryButton: .cancel(Text("Cancel".localized(using: currentLanguage)))
+        
+        var textEmpty: Bool {
+            let text = message.trimmingCharacters(in: .whitespacesAndNewlines)
+            return text.isEmpty
+        }
+        
+        func showMaxImagesAlert() {
+            AlertManager.shared.showAlert(
+                title: "Error".localized(using: currentLanguage),
+                message: "You can upload up to \(imageCount) images only.".localized(using: currentLanguage)
             )
         }
-        .environment(\.layoutDirection, currentLanguage == "ar" ? .rightToLeft : .leftToRight)
+        
+        func canAddMoreImages() -> Bool {
+            return selectedImages.count < imageCount
+        }
     }
     
-    var textEmpty: Bool {
-        let text = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        return text.isEmpty
-    }
-    
-    func showMaxImagesAlert() {
-        AlertManager.shared.showAlert(
-            title: "Error".localized(using: currentLanguage),
-            message: "You can upload up to \(imageCount) images only.".localized(using: currentLanguage)
-        )
-    }
-    
-    func canAddMoreImages() -> Bool {
-        return selectedImages.count < imageCount
-    }
-}
-
