@@ -5,13 +5,6 @@ It combines **plant recognition**, **community collaboration**, **shopping & che
 
 ---
 
-## Demo & User Journey
-
-- 📱 **[App Demo](https://drive.google.com/file/d/1UG76WbRLJg7LBb5oUjzaycftVdRRKygL/view?usp=drive_link)** 
-- 🎥 **[User Journey Walkthrough](https://drive.google.com/file/d/1wO7a6RhrIMGlbA8CHcAKv5AhUmWXlROZ/view?usp=drive_link)** 
-
----
-
 ## 🚀 Key Highlights
 
 * **Plant Identifier**: Binary + multiclass Core ML models with top-5 predictions, 3D model preview, and SceneKit rendering.
@@ -213,20 +206,6 @@ It combines **plant recognition**, **community collaboration**, **shopping & che
 ## Contributions
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
-
----
-
-## Team
-
-Rawan Majed Alraddadi iOS Developer | AI | SwiftUI Enthusiast 📧 [https://github.com/Rawann0m]
-
-Rayaheen Taofig Mseri IOS Developer | SwiftUI Enthusiast 📧 [https://github.com/RayaheenMseri]
-
-Tahani Ayman IOS Developer | SwiftUI Enthusiast 📧 [https://github.com/Tahani50]
-
-Naif Ghannam Saleh Almutairi iOS Developer | Data Scientist | SwiftUI Enthusiast 📧 [https://github.com/NaifGhannam]
-
-Abdullah Mohammed Hafiz iOS Developer | Data Scientist | AI 📧 [https://github.com/AbdullahHafiz30]
 
 ---
 
