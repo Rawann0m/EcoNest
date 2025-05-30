@@ -6,7 +6,28 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3675EC5E2DCB1602009E6FA9 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3675EC5D2DCB1602009E6FA9 /* FirebaseStorage */; };
+		3675EC602DCB1635009E6FA9 /* FirebaseInAppMessaging-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 3675EC5F2DCB1635009E6FA9 /* FirebaseInAppMessaging-Beta */; };
+		3675EC622DCB1635009E6FA9 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 3675EC612DCB1635009E6FA9 /* FirebaseMessaging */; };
+		992114B62DC8A3D800F80334 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 992114B52DC8A3D800F80334 /* FirebaseAuth */; };
+		992114B82DC8A3D800F80334 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 992114B72DC8A3D800F80334 /* FirebaseCore */; };
+		9921172B2DC8B7CE00F80334 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9921172A2DC8B7CE00F80334 /* FirebaseFirestore */; };
+		DF4CE6A42DCBF9F500A7B0F9 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DF4CE6A32DCBF9F500A7B0F9 /* SDWebImageSwiftUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		36E7827B2DDC4DBD000B3C55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 992113672DC7C19700F80334 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9921136E2DC7C19700F80334;
+			remoteInfo = EcoNest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		36E782752DDC4DBD000B3C55 /* EcoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EcoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9921136F2DC7C19700F80334 /* EcoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -19,10 +40,24 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		36E782722DDC4DBD000B3C55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9921136C2DC7C19700F80334 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF4CE6A42DCBF9F500A7B0F9 /* SDWebImageSwiftUI in Frameworks */,
+				3675EC622DCB1635009E6FA9 /* FirebaseMessaging in Frameworks */,
+				992114B82DC8A3D800F80334 /* FirebaseCore in Frameworks */,
+				3675EC5E2DCB1602009E6FA9 /* FirebaseStorage in Frameworks */,
+				992114B62DC8A3D800F80334 /* FirebaseAuth in Frameworks */,
+				9921172B2DC8B7CE00F80334 /* FirebaseFirestore in Frameworks */,
+				3675EC602DCB1635009E6FA9 /* FirebaseInAppMessaging-Beta in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				992113712DC7C19700F80334 /* EcoNest */,
+				992114B42DC8A3D800F80334 /* Frameworks */,
 				992113702DC7C19700F80334 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,13 +77,41 @@
 			isa = PBXGroup;
 			children = (
 				9921136F2DC7C19700F80334 /* EcoNest.app */,
+				36E782752DDC4DBD000B3C55 /* EcoNestUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		992114B42DC8A3D800F80334 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		36E782742DDC4DBD000B3C55 /* EcoNestUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36E7827D2DDC4DBD000B3C55 /* Build configuration list for PBXNativeTarget "EcoNestUITests" */;
+			buildPhases = (
+				36E782712DDC4DBD000B3C55 /* Sources */,
+				36E782722DDC4DBD000B3C55 /* Frameworks */,
+				36E782732DDC4DBD000B3C55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				36E7827C2DDC4DBD000B3C55 /* PBXTargetDependency */,
+			);
+			name = EcoNestUITests;
+			packageProductDependencies = (
+			);
+			productName = EcoNestUITests;
+			productReference = 36E782752DDC4DBD000B3C55 /* EcoNestUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		9921136E2DC7C19700F80334 /* EcoNest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9921137D2DC7C19A00F80334 /* Build configuration list for PBXNativeTarget "EcoNest" */;
@@ -65,6 +129,13 @@
 			);
 			name = EcoNest;
 			packageProductDependencies = (
+				992114B52DC8A3D800F80334 /* FirebaseAuth */,
+				992114B72DC8A3D800F80334 /* FirebaseCore */,
+				9921172A2DC8B7CE00F80334 /* FirebaseFirestore */,
+				3675EC5D2DCB1602009E6FA9 /* FirebaseStorage */,
+				3675EC5F2DCB1635009E6FA9 /* FirebaseInAppMessaging-Beta */,
+				3675EC612DCB1635009E6FA9 /* FirebaseMessaging */,
+				DF4CE6A32DCBF9F500A7B0F9 /* SDWebImageSwiftUI */,
 			);
 			productName = EcoNest;
 			productReference = 9921136F2DC7C19700F80334 /* EcoNest.app */;
@@ -80,6 +151,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					36E782742DDC4DBD000B3C55 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 9921136E2DC7C19700F80334;
+					};
 					9921136E2DC7C19700F80334 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -91,20 +166,33 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = 992113662DC7C19700F80334;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DF4CE6A22DCBF9F500A7B0F9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 992113702DC7C19700F80334 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				9921136E2DC7C19700F80334 /* EcoNest */,
+				36E782742DDC4DBD000B3C55 /* EcoNestUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		36E782732DDC4DBD000B3C55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9921136D2DC7C19700F80334 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +203,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		36E782712DDC4DBD000B3C55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9921136B2DC7C19700F80334 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,12 +219,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		36E7827C2DDC4DBD000B3C55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9921136E2DC7C19700F80334 /* EcoNest */;
+			targetProxy = 36E7827B2DDC4DBD000B3C55 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		36E7827E2DDC4DBD000B3C55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EcoNest;
+			};
+			name = Debug;
+		};
+		36E7827F2DDC4DBD000B3C55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EcoNest;
+			};
+			name = Release;
+		};
 		9921137B2DC7C19A00F80334 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -193,6 +329,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -249,11 +386,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EcoNest/EcoNest.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to take photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -264,8 +405,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AbdullahTeam.EcoNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -277,11 +419,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EcoNest/EcoNest.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EcoNest/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to take photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -292,8 +438,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Rawan.EcoNest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AbdullahTeam.EcoNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -303,6 +450,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		36E7827D2DDC4DBD000B3C55 /* Build configuration list for PBXNativeTarget "EcoNestUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36E7827E2DDC4DBD000B3C55 /* Debug */,
+				36E7827F2DDC4DBD000B3C55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9921136A2DC7C19700F80334 /* Build configuration list for PBXProject "EcoNest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -322,6 +478,63 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+		DF4CE6A22DCBF9F500A7B0F9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3675EC5D2DCB1602009E6FA9 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		3675EC5F2DCB1635009E6FA9 /* FirebaseInAppMessaging-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseInAppMessaging-Beta";
+		};
+		3675EC612DCB1635009E6FA9 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		992114B52DC8A3D800F80334 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		992114B72DC8A3D800F80334 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		9921172A2DC8B7CE00F80334 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992114B32DC8A38D00F80334 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		DF4CE6A32DCBF9F500A7B0F9 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DF4CE6A22DCBF9F500A7B0F9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 992113672DC7C19700F80334 /* Project object */;
 }
