@@ -199,7 +199,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Team
 
-| Name | Role / Focus | Links |
+| Name | Expertise | Links |
 | ---- | ------------ | ----- |
 | **Abdullah Mohammed Hafiz** | iOS Developer · AI & Data Science | [GitHub](https://github.com/AbdullahHafiz30) · [LinkedIn](https://www.linkedin.com/in/abdullah-hafiz30/) |
 | **Naif Ghannam Saleh Almutairi** | iOS Developer · Data Scientist · SwiftUI Enthusiast | [GitHub](https://github.com/NaifGhannam) · [LinkedIn](https://www.linkedin.com/in/naif-almutairi-5283121b2/) |
